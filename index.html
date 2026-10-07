@@ -148,31 +148,31 @@
                         document.getElementById('newsContainer').innerHTML = html;
 
                         // นำข่าวล่าสุด (รายการแรก) มาแสดงเป็น Popup เด้งขึ้นมา
-                        let latestNews = data.data[0];
-                        let popupImages = [];
-                        try { popupImages = JSON.parse(latestNews.image_url || "[]"); } catch(e) {}
+        //                 let latestNews = data.data[0];
+        //                 let popupImages = [];
+        //                 try { popupImages = JSON.parse(latestNews.image_url || "[]"); } catch(e) {}
 
-                        document.getElementById('popupNewsTitle').innerText = latestNews.title;
-                        document.getElementById('popupNewsContent').innerText = latestNews.content.substring(0, 150) + "...";
+        //                 document.getElementById('popupNewsTitle').innerText = latestNews.title;
+        //                 document.getElementById('popupNewsContent').innerText = latestNews.content.substring(0, 150) + "...";
                         
-                        if(popupImages.length > 0) {
-                            let pImg = document.getElementById('popupNewsImg');
-                            pImg.src = popupImages[0];
-                            pImg.style.display = "block";
-                        }
+        //                 if(popupImages.length > 0) {
+        //                     let pImg = document.getElementById('popupNewsImg');
+        //                     pImg.src = popupImages[0];
+        //                     pImg.style.display = "block";
+        //                 }
 
-                        document.getElementById('popupDetailBtn').onclick = function() {
-                            popupModal.hide();
-                            openNewsDetail(latestNews.news_id);
-                        };
+        //                 document.getElementById('popupDetailBtn').onclick = function() {
+        //                     popupModal.hide();
+        //                     openNewsDetail(latestNews.news_id);
+        //                 };
 
-                        // แสดง Popup เด้งขึ้นมาอัตโนมัติ
-                        popupModal.show();
-                    } else {
-                        document.getElementById('newsContainer').innerHTML = '<div class="text-center text-muted">ไม่พบข้อมูลข่าวสาร</div>';
-                    }
-                });
-        }
+        //                 // แสดง Popup เด้งขึ้นมาอัตโนมัติ
+        //                 popupModal.show();
+        //             } else {
+        //                 document.getElementById('newsContainer').innerHTML = '<div class="text-center text-muted">ไม่พบข้อมูลข่าวสาร</div>';
+        //             }
+        //         });
+        // }
 
         function openNewsDetail(newsId) {
             let item = globalNewsList.find(n => n.news_id === newsId);
