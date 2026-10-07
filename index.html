@@ -57,6 +57,27 @@
         </section>
     </div>
 
+    <!-- Popup Modal เด้งอัตโนมัติเมื่อเข้าเว็บ -->
+    <div class="modal fade" id="welcomePopupModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-success border-2">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="fa-solid fa-bullhorn me-2"></i>ประกาศสำคัญ / ข่าวล่าสุด</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="popupNewsImg" src="" class="img-fluid rounded mb-3 shadow-sm" style="max-height: 250px; width: 100%; object-fit: cover; display: none;" alt="ภาพประกาศ">
+                    <h4 id="popupNewsTitle" class="text-success fw-bold"></h4>
+                    <p id="popupNewsContent" class="text-muted small mt-2" style="max-height: 100px; overflow-y: auto;"></p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success btn-sm px-4" id="popupDetailBtn">อ่านรายละเอียดเพิ่มเติม</button>
+                    <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal สำหรับแสดงรายละเอียดข่าวและรูปภาพทั้งหมด -->
     <div class="modal fade" id="newsDetailModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -78,7 +99,7 @@
 
     <footer class="bg-dark text-white text-center py-4">
         <div class="container">
-            <p class="mb-1">ศูนย์ป่าไม้ขอนแก่น ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น</p>
+            <p class="mb-1">ศูนย์ป่าไม้ขอนแก่น 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น</p>
             <p class="text-muted small">© 2026 Khon Kaen Forest Office. All Rights Reserved.</p>
         </div>
     </footer>
@@ -87,10 +108,11 @@
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbwNe1W4XFNW3EMOs7JEWOb7HaU0FCvUDCY4THURjM50MD5b9YDJckKtuY4fvV1ZJ8naww/exec";
         let globalNewsList = [];
-        let detailModal;
+        let detailModal, popupModal;
 
         window.addEventListener('DOMContentLoaded', () => {
             detailModal = new bootstrap.Modal(document.getElementById('newsDetailModal'));
+            popupModal = new bootstrap.Modal(document.getElementById('welcomePopupModal'));
             loadNews();
             loadDocuments();
         });
@@ -106,7 +128,6 @@
                             let images = [];
                             try { images = JSON.parse(item.image_url || "[]"); } catch(e) {}
                             
-                            // ใช้ภาพแรกเป็นภาพหลักหน้าเว็บ ถ้าไม่มีใช้ภาพสำรอง
                             let imgSrc = images.length > 0 ? images[0] : "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
                             
                             html += `
@@ -125,6 +146,28 @@
                                 </div>`;
                         });
                         document.getElementById('newsContainer').innerHTML = html;
+
+                        // นำข่าวล่าสุด (รายการแรก) มาแสดงเป็น Popup เด้งขึ้นมา
+                        let latestNews = data.data[0];
+                        let popupImages = [];
+                        try { popupImages = JSON.parse(latestNews.image_url || "[]"); } catch(e) {}
+
+                        document.getElementById('popupNewsTitle').innerText = latestNews.title;
+                        document.getElementById('popupNewsContent').innerText = latestNews.content.substring(0, 150) + "...";
+                        
+                        if(popupImages.length > 0) {
+                            let pImg = document.getElementById('popupNewsImg');
+                            pImg.src = popupImages[0];
+                            pImg.style.display = "block";
+                        }
+
+                        document.getElementById('popupDetailBtn').onclick = function() {
+                            popupModal.hide();
+                            openNewsDetail(latestNews.news_id);
+                        };
+
+                        // แสดง Popup เด้งขึ้นมาอัตโนมัติ
+                        popupModal.show();
                     } else {
                         document.getElementById('newsContainer').innerHTML = '<div class="text-center text-muted">ไม่พบข้อมูลข่าวสาร</div>';
                     }
@@ -180,3 +223,4 @@
     </script>
 </body>
 </html>
+ 
