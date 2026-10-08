@@ -117,9 +117,22 @@
             loadDocuments();
         });
 
+        // ฟังก์ชันแปลงลิงก์ Google Drive อัตโนมัติให้แสดงรูปได้
+        function formatDriveUrl(url) {
+            url = url.trim();
+            // ถ้ารูปมาจาก Google Drive แบบแชร์ปกติ ให้แปลงเป็น Direct Link
+            if (url.includes("drive.google.com")) {
+                let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return "https://lh3.googleusercontent.com/d/" + match[1];
+                }
+            }
+            return url;
+        }
+
         function getImagesArray(imageUrlStr) {
             if (!imageUrlStr) return [];
-            return imageUrlStr.split(',').map(url => url.trim()).filter(url => url.length > 0);
+            return imageUrlStr.split(',').map(url => formatDriveUrl(url)).filter(url => url.length > 0);
         }
 
         function loadNews() {
@@ -131,12 +144,13 @@
                         let html = "";
                         data.data.forEach((item) => {
                             let images = getImagesArray(item.image_url);
-                            let imgSrc = images.length > 0 ? images[0] : "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
+                            let defaultImg = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
+                            let imgSrc = images.length > 0 ? images[0] : defaultImg;
                             
                             html += `
                                 <div class="col-md-4 mb-4">
                                     <div class="card h-100">
-                                        <img src="${imgSrc}" class="card-img-top news-img" alt="ภาพข่าว" onclick="openNewsDetail('${item.news_id}')">
+                                        <img src="${imgSrc}" class="card-img-top news-img" alt="ภาพข่าว" onclick="openNewsDetail('${item.news_id}')" onerror="this.src='${defaultImg}'">
                                         <div class="card-body">
                                             <h5 class="card-title text-success" style="cursor:pointer;" onclick="openNewsDetail('${item.news_id}')">${item.title}</h5>
                                             <p class="card-text text-muted small">${item.content.substring(0, 90)}...</p>
@@ -157,10 +171,13 @@
                         document.getElementById('popupNewsTitle').innerText = latestNews.title;
                         document.getElementById('popupNewsContent').innerText = latestNews.content.substring(0, 150) + "...";
                         
+                        let pImg = document.getElementById('popupNewsImg');
                         if(popupImages.length > 0) {
-                            let pImg = document.getElementById('popupNewsImg');
                             pImg.src = popupImages[0];
                             pImg.style.display = "block";
+                            pImg.onerror = function() { this.style.display = 'none'; };
+                        } else {
+                            pImg.style.display = "none";
                         }
 
                         document.getElementById('popupDetailBtn').onclick = function() {
@@ -187,7 +204,7 @@
                 let imgHtml = "";
                 if(images.length > 0) {
                     images.forEach(url => {
-                        imgHtml += `<div class="col-md-4 mb-3"><a href="${url}" target="_blank"><img src="${url}" class="img-fluid rounded shadow-sm" style="height:180px; width:100%; object-fit:cover;"></a></div>`;
+                        imgHtml += `<div class="col-md-4 mb-3"><a href="${url}" target="_blank"><img src="${url}" class="img-fluid rounded shadow-sm" style="height:180px; width:100%; object-fit:cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80';"></a></div>`;
                     });
                 } else {
                     imgHtml = '<div class="text-muted col-12">ไม่มีรูปภาพประกอบเพิ่มเติม</div>';
