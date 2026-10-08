@@ -173,12 +173,13 @@
             document.getElementById('nav-' + tab).classList.add('active');
         }
 
-        function loadAdminNews() {
+                function loadAdminNews() {
             fetch(API_URL + "?action=getNews").then(res => res.json()).then(data => {
                 if(data.status === "success") {
-                    allNewsData = data.data;
+                    // เรียงจากใหม่ไปเก่า
+                    allNewsData = data.data.reverse();
                     let html = "";
-                    data.data.forEach(item => {
+                    allNewsData.forEach(item => {
                         html += `<tr>
                             <td>${item.title}</td>
                             <td>${item.author}</td>
@@ -197,8 +198,10 @@
         function loadAdminDocs() {
             fetch(API_URL + "?action=getDocuments").then(res => res.json()).then(data => {
                 if(data.status === "success") {
+                    // เรียงเอกสารจากใหม่ไปเก่า
+                    let docs = data.data.reverse();
                     let html = "";
-                    data.data.forEach(item => {
+                    docs.forEach(item => {
                         html += `<tr>
                             <td>${item.title}</td>
                             <td><span class="badge bg-secondary">${item.category}</span></td>
@@ -213,7 +216,6 @@
                 }
             });
         }
-
         function loadLogs() {
             fetch(API_URL + "?action=getLogs").then(res => res.json()).then(data => {
                 if(data.status === "success") {
