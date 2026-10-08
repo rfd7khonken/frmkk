@@ -28,6 +28,7 @@
                     </div>
                     <div class="py-2">
                         <a href="#" onclick="switchTab('dashboard')" class="active" id="nav-dashboard"><i class="fa-solid fa-chart-pie me-2"></i>แดชบอร์ด</a>
+                        <a href="#" onclick="switchTab('slides')" id="nav-slides"><i class="fa-solid fa-images me-2"></i>จัดการสไลด์หน้าแรก</a>
                         <a href="#" onclick="switchTab('news')" id="nav-news"><i class="fa-solid fa-bullhorn me-2"></i>จัดการข่าวสาร</a>
                         <a href="#" onclick="switchTab('docs')" id="nav-docs"><i class="fa-solid fa-file-lines me-2"></i>จัดการเอกสาร</a>
                         <a href="#" onclick="switchTab('logs')" id="nav-logs"><i class="fa-solid fa-clock-rotate-left me-2"></i>Activity Log</a>
@@ -45,43 +46,52 @@
                 <div id="tab-dashboard" class="content-tab">
                     <h3 class="mb-4 text-success fw-bold"><i class="fa-solid fa-chart-line me-2"></i>ภาพรวมระบบ (Dashboard)</h3>
                     <div class="row g-4 mb-4">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="card stat-card bg-success text-white p-3">
                                 <div class="card-body d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="card-title mb-1">ข่าวสารและกิจกรรมทั้งหมด</h6>
-                                        <h2 class="fw-bold mb-0" id="statNewsCount">0</h2>
-                                    </div>
+                                    <div><h6 class="card-title mb-1">ภาพสไลด์หน้าแรก</h6><h2 class="fw-bold mb-0" id="statSlideCount">0</h2></div>
+                                    <i class="fa-solid fa-images fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stat-card bg-primary text-white p-3">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div><h6 class="card-title mb-1">ข่าวสารและกิจกรรม</h6><h2 class="fw-bold mb-0" id="statNewsCount">0</h2></div>
                                     <i class="fa-solid fa-bullhorn fa-3x opacity-50"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card stat-card bg-primary text-white p-3">
+                        <div class="col-md-3">
+                            <div class="card stat-card bg-warning text-dark p-3">
                                 <div class="card-body d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="card-title mb-1">เอกสารราชการทั้งหมด</h6>
-                                        <h2 class="fw-bold mb-0" id="statDocCount">0</h2>
-                                    </div>
+                                    <div><h6 class="card-title mb-1">เอกสารราชการ</h6><h2 class="fw-bold mb-0" id="statDocCount">0</h2></div>
                                     <i class="fa-solid fa-file-arrow-down fa-3x opacity-50"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="card stat-card bg-dark text-white p-3">
                                 <div class="card-body d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="card-title mb-1">ประวัติการใช้งาน (Logs)</h6>
-                                        <h2 class="fw-bold mb-0" id="statLogCount">0</h2>
-                                    </div>
+                                    <div><h6 class="card-title mb-1">ประวัติการใช้งาน</h6><h2 class="fw-bold mb-0" id="statLogCount">0</h2></div>
                                     <i class="fa-solid fa-clock-rotate-left fa-3x opacity-50"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card p-4 shadow-sm">
-                        <h5 class="text-success mb-3"><i class="fa-solid fa-circle-info me-2"></i>ยินดีต้อนรับสู่ระบบจัดการเว็บไซต์ ศูนย์ป่าไม้ขอนแก่น</h5>
-                        <p class="text-muted">คุณสามารถใช้เมนูด้านซ้ายเพื่อจัดการข้อมูลข่าวสารประชาสัมพันธ์ เพิ่ม/ลบเอกสารดาวน์โหลดราชการ และตรวจสอบประวัติการทำรายการต่างๆ ภายในระบบได้อย่างสะดวกรวดเร็ว</p>
+                </div>
+
+                <!-- Slides Tab -->
+                <div id="tab-slides" class="content-tab d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3>จัดการภาพสไลด์หน้าแรก (Hero Slideshow)</h3>
+                        <button class="btn btn-success" onclick="openAddSlideModal()"><i class="fa-solid fa-plus me-1"></i>เพิ่มภาพสไลด์</button>
+                    </div>
+                    <div class="card p-3 shadow-sm">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-success"><tr><th>ตัวอย่างภาพ</th><th>หัวข้อ / ป้ายกำกับ</th><th>ลำดับ</th><th class="text-center">จัดการ</th></tr></thead>
+                            <tbody id="adminSlideTable"></tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -127,6 +137,33 @@
         </div>
     </div>
 
+    <!-- Slide Modal (Add / Edit) -->
+    <div class="modal fade" id="slideModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="slideModalTitle">เพิ่มภาพสไลด์ใหม่</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="slideForm">
+                        <input type="hidden" id="slideId">
+                        <div class="mb-3"><label class="form-label">หัวข้อ / คำอธิบาย (ไม่ใส่ก็ได้)</label><input type="text" id="slideTitle" class="form-control"></div>
+                        <div class="mb-3">
+                            <label class="form-label">ลิงก์รูปภาพ (Google Drive หรือ URL ตรง)</label>
+                            <input type="text" id="slideImgUrl" class="form-control" placeholder="วางลิงก์รูปภาพ" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">ลำดับการแสดงผล (Sort Order)</label>
+                            <input type="number" id="slideSortOrder" class="form-control" placeholder="เช่น 1, 2, 3 (เลขน้อยแสดงก่อน)">
+                        </div>
+                        <button type="submit" class="btn btn-success w-100" id="slideSubmitBtn">บันทึกสไลด์</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- News Modal (Add / Edit) -->
     <div class="modal fade" id="newsModal" tabindex="-1">
         <div class="modal-dialog">
@@ -142,11 +179,10 @@
                         <div class="mb-3">
                             <label class="form-label">ลิงก์รูปภาพ (Image URLs)</label>
                             <input type="text" id="newsImgUrl" class="form-control" placeholder="วางลิงก์ภาพ คั่นด้วยเครื่องหมายจุลภาค (,) กรณีมีหลายภาพ">
-                            <div class="form-text text-muted">ตัวอย่าง: https://img1.jpg, https://img2.jpg (ภาพแรกสุดจะแสดงที่หน้าแรก)</div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">ลำดับการแสดงผล (Sort Order)</label>
-                            <input type="number" id="newsSortOrder" class="form-control" placeholder="เช่น 1, 2, 3 (เลขน้อยแสดงก่อน)">
+                            <input type="number" id="newsSortOrder" class="form-control" placeholder="เช่น 1, 2, 3">
                         </div>
                         <div class="mb-3"><label class="form-label">เนื้อหาข่าว</label><textarea id="newsContent" rows="4" class="form-control" required></textarea></div>
                         <button type="submit" class="btn btn-success w-100" id="newsSubmitBtn">บันทึกข่าว</button>
@@ -164,8 +200,8 @@
                 <div class="modal-body">
                     <form id="docForm">
                         <div class="mb-3"><label class="form-label">ชื่อเอกสาร</label><input type="text" id="docTitle" class="form-control" required></div>
-                        <div class="mb-3"><label class="form-label">หมวดหมู่</label><input type="text" id="docCategory" class="form-control" placeholder="เช่น คำสั่ง, ระเบียบ, แบบฟอร์ม" required></div>
-                        <div class="mb-3"><label class="form-label">ลิงก์ Google Drive (แชร์สาธารณะ)</label><input type="url" id="docUrl" class="form-control" required></div>
+                        <div class="mb-3"><label class="form-label">หมวดหมู่</label><input type="text" id="docCategory" class="form-control" placeholder="เช่น คำสั่ง, ระเบียบ" required></div>
+                        <div class="mb-3"><label class="form-label">ลิงก์ Google Drive</label><input type="url" id="docUrl" class="form-control" required></div>
                         <button type="submit" class="btn btn-success w-100">บันทึกเอกสาร</button>
                     </form>
                 </div>
@@ -173,7 +209,7 @@
         </div>
     </div>
 
-    <!-- Popup Modal แจ้งเตือนความสำเร็จ (Alert Modal) -->
+    <!-- Alert Modal -->
     <div class="modal fade" id="alertModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content text-center p-3">
@@ -188,10 +224,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzhTzLN-otJfviZz2WQox9XiZ2ugevPIRgv1_NaAji00FHTV5bUytE8DCqf_xmV0OFUHg/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbw6DJAtdLV2v28IVloB_wKqm72IO6q3YXPb0l86lTos8rvBQue-T2bh1rYhjGWu5rmONg/exec";
         let currentUser = JSON.parse(localStorage.getItem("user"));
-        let newsModalObj, alertModalObj;
-        let allNewsData = [];
+        let slideModalObj, newsModalObj, alertModalObj;
+        let allSlideData = [], allNewsData = [];
 
         if(!currentUser) {
             window.location.href = "login.html";
@@ -200,12 +236,26 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            slideModalObj = new bootstrap.Modal(document.getElementById('slideModal'));
             newsModalObj = new bootstrap.Modal(document.getElementById('newsModal'));
             alertModalObj = new bootstrap.Modal(document.getElementById('alertModal'));
+            loadAdminSlides();
             loadAdminNews();
             loadAdminDocs();
             loadLogs();
         });
+
+        function formatDriveUrl(url) {
+            if (!url) return "";
+            url = url.trim();
+            if (url.includes("drive.google.com")) {
+                let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return "https://lh3.googleusercontent.com/d/" + match[1];
+                }
+            }
+            return url;
+        }
 
         function showAlert(message, callback) {
             document.getElementById('alertMessage').innerText = message;
@@ -225,14 +275,34 @@
             document.getElementById('nav-' + tab).classList.add('active');
         }
 
+        function loadAdminSlides() {
+            fetch(API_URL + "?action=getSlides").then(res => res.json()).then(data => {
+                if(data.status === "success") {
+                    allSlideData = data.data.sort((a, b) => (Number(a.sort_order) || 999) - (Number(b.sort_order) || 999));
+                    document.getElementById('statSlideCount').innerText = allSlideData.length;
+
+                    let html = "";
+                    allSlideData.forEach(item => {
+                        let img = formatDriveUrl(item.image_url);
+                        html += `<tr>
+                            <td><img src="${img}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=100&q=80'"></td>
+                            <td>${item.title || '(ไม่มีหัวข้อ)'}</td>
+                            <td><span class="badge bg-secondary">${item.sort_order || '-'}</span></td>
+                            <td class="text-center">
+                                <button onclick="openEditSlideModal('${item.slide_id}')" class="btn btn-sm btn-warning me-1"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button onclick="deleteItem('Slides', '${item.slide_id}')" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>`;
+                    });
+                    document.getElementById('adminSlideTable').innerHTML = html;
+                }
+            }).catch(e => { document.getElementById('statSlideCount').innerText = 0; });
+        }
+
         function loadAdminNews() {
             fetch(API_URL + "?action=getNews").then(res => res.json()).then(data => {
                 if(data.status === "success") {
-                    allNewsData = data.data.sort((a, b) => {
-                        let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
-                        let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
-                        return orderA - orderB;
-                    });
+                    allNewsData = data.data.sort((a, b) => (Number(a.sort_order) || 999) - (Number(b.sort_order) || 999));
                     document.getElementById('statNewsCount').innerText = allNewsData.length;
 
                     let html = "";
@@ -290,12 +360,53 @@
             });
         }
 
+        function openAddSlideModal() {
+            document.getElementById('slideForm').reset();
+            document.getElementById('slideId').value = "";
+            document.getElementById('slideModalTitle').innerText = "เพิ่มภาพสไลด์ใหม่";
+            slideModalObj.show();
+        }
+
+        function openEditSlideModal(slideId) {
+            let item = allSlideData.find(s => s.slide_id === slideId);
+            if(item) {
+                document.getElementById('slideId').value = item.slide_id;
+                document.getElementById('slideTitle').value = item.title || "";
+                document.getElementById('slideImgUrl').value = item.image_url || "";
+                document.getElementById('slideSortOrder').value = item.sort_order || "";
+                document.getElementById('slideModalTitle').innerText = "แก้ไขภาพสไลด์";
+                slideModalObj.show();
+            }
+        }
+
+        document.getElementById('slideForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let slideId = document.getElementById('slideId').value;
+            let actionName = slideId ? "updateSlide" : "saveSlide";
+
+            let payload = {
+                action: actionName,
+                slide_id: slideId,
+                title: document.getElementById('slideTitle').value,
+                image_url: document.getElementById('slideImgUrl').value,
+                sort_order: document.getElementById('slideSortOrder').value,
+                username: currentUser.username
+            };
+
+            fetch(API_URL, { method: "POST", body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(data => {
+                slideModalObj.hide();
+                showAlert(data.message, () => {
+                    loadAdminSlides();
+                    loadLogs();
+                });
+            });
+        });
+
         function openAddNewsModal() {
             document.getElementById('newsForm').reset();
             document.getElementById('newsId').value = "";
-            document.getElementById('newsSortOrder').value = "";
-            document.getElementById('newsModalTitle').innerText = "เพิ่มข่าวสารใหม่";
-            document.getElementById('newsSubmitBtn').innerText = "บันทึกข่าว";
             newsModalObj.show();
         }
 
@@ -307,18 +418,12 @@
                 document.getElementById('newsImgUrl').value = item.image_url || "";
                 document.getElementById('newsSortOrder').value = item.sort_order || "";
                 document.getElementById('newsContent').value = item.content;
-                document.getElementById('newsModalTitle').innerText = "แก้ไขข่าวสารและกิจกรรม";
-                document.getElementById('newsSubmitBtn').innerText = "บันทึกการแก้ไข";
                 newsModalObj.show();
             }
         }
 
         document.getElementById('newsForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            let submitBtn = document.getElementById('newsSubmitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = "กำลังบันทึก...";
-
             let newsId = document.getElementById('newsId').value;
             let actionName = newsId ? "updateNews" : "saveNews";
 
@@ -337,14 +442,10 @@
             .then(res => res.json())
             .then(data => {
                 newsModalObj.hide();
-                submitBtn.disabled = false;
                 showAlert(data.message, () => {
                     loadAdminNews();
                     loadLogs();
                 });
-            }).catch(err => {
-                submitBtn.disabled = false;
-                showAlert("เกิดข้อผิดพลาดในการเชื่อมต่อ");
             });
         });
 
@@ -354,12 +455,8 @@
             fetch(API_URL, { method: "POST", body: JSON.stringify(payload) })
             .then(res => res.json())
             .then(data => {
-                let modalEl = bootstrap.Modal.getInstance(document.getElementById('docModal'));
-                modalEl.hide();
-                showAlert(data.message, () => {
-                    loadAdminDocs();
-                    loadLogs();
-                });
+                bootstrap.Modal.getInstance(document.getElementById('docModal')).hide();
+                showAlert(data.message, () => { loadAdminDocs(); loadLogs(); });
             });
         });
 
@@ -370,6 +467,7 @@
                 .then(res => res.json())
                 .then(data => {
                     showAlert(data.message, () => {
+                        loadAdminSlides();
                         loadAdminNews();
                         loadAdminDocs();
                         loadLogs();
