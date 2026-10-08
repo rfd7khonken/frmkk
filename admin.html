@@ -97,6 +97,10 @@
                             <div class="form-text text-muted">ตัวอย่าง: https://img1.jpg, https://img2.jpg (ภาพแรกสุดจะแสดงที่หน้าแรก)</div>
                         </div>
                         <div class="mb-3"><label class="form-label">เนื้อหาข่าว</label><textarea id="newsContent" rows="4" class="form-control" required></textarea></div>
+                                                <div class="mb-3">
+                            <label class="form-label">ลำดับการแสดงผล (Sort Order)</label>
+                            <input type="number" id="newsSortOrder" class="form-control" placeholder="เช่น 1, 2, 3 (เลขน้อยแสดงก่อน)">
+                        </div>
                         <button type="submit" class="btn btn-success w-100" id="newsSubmitBtn">บันทึกข่าว</button>
                     </form>
                 </div>
@@ -173,26 +177,56 @@
             document.getElementById('nav-' + tab).classList.add('active');
         }
 
-                function loadAdminNews() {
+
+        function loadAdminNews() {
+
             fetch(API_URL + "?action=getNews").then(res => res.json()).then(data => {
+
                 if(data.status === "success") {
-                    // เรียงจากใหม่ไปเก่า
-                    allNewsData = data.data.reverse();
-                    let html = "";
-                    allNewsData.forEach(item => {
-                        html += `<tr>
-                            <td>${item.title}</td>
-                            <td>${item.author}</td>
-                            <td>${new Date(item.created_at).toLocaleDateString('th-TH')}</td>
-                            <td class="text-center">
-                                <button onclick="openEditNewsModal('${item.news_id}')" class="btn btn-sm btn-warning me-1"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button onclick="deleteItem('News', '${item.news_id}')" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>`;
+
+                    // จัดเรียงในตารางหลังบ้านตาม sort_order
+
+                    allNewsData = data.data.sort((a, b) => {
+
+                        let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
+
+                        let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
+
+                        return orderA - orderB;
+
                     });
+
+
+                    let html = "";
+
+                    allNewsData.forEach(item => {
+
+                        html += `<tr>
+
+                            <td><span class="badge bg-secondary me-2">ลำดับ: ${item.sort_order || '-'}</span> ${item.title}</td>
+
+                            <td>${item.author}</td>
+
+                            <td>${new Date(item.created_at).toLocaleDateString('th-TH')}</td>
+
+                            <td class="text-center">
+
+                                <button onclick="openEditNewsModal('${item.news_id}')" class="btn btn-sm btn-warning me-1"><i class="fa-solid fa-pen-to-square"></i></button>
+
+                                <button onclick="deleteItem('News', '${item.news_id}')" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+
+                            </td>
+
+                        </tr>`;
+
+                    });
+
                     document.getElementById('adminNewsTable').innerHTML = html;
+
                 }
+
             });
+
         }
 
         function loadAdminDocs() {
@@ -229,74 +263,113 @@
         }
 
         function openAddNewsModal() {
+
             document.getElementById('newsForm').reset();
+
             document.getElementById('newsId').value = "";
+
+            document.getElementById('newsSortOrder').value = "";
+
             document.getElementById('newsModalTitle').innerText = "เพิ่มข่าวสารใหม่";
+
             document.getElementById('newsSubmitBtn').innerText = "บันทึกข่าว";
+
             newsModalObj.show();
+
         }
 
-        function openEditNewsModal(newsId) {
+      function openEditNewsModal(newsId) {
+
             let item = allNewsData.find(n => n.news_id === newsId);
+
             if(item) {
+
                 document.getElementById('newsId').value = item.news_id;
+
                 document.getElementById('newsTitle').value = item.title;
+
                 document.getElementById('newsImgUrl').value = item.image_url || "";
+
+                document.getElementById('newsSortOrder').value = item.sort_order || "";
+
                 document.getElementById('newsContent').value = item.content;
+
                 document.getElementById('newsModalTitle').innerText = "แก้ไขข่าวสารและกิจกรรม";
+
                 document.getElementById('newsSubmitBtn').innerText = "บันทึกการแก้ไข";
+
                 newsModalObj.show();
+
             }
+
         }
+
 
         document.getElementById('newsForm').addEventListener('submit', function(e) {
+
             e.preventDefault();
+
             let submitBtn = document.getElementById('newsSubmitBtn');
+
             submitBtn.disabled = true;
+
             submitBtn.innerHTML = "กำลังบันทึก...";
 
+
             let newsId = document.getElementById('newsId').value;
+
             let actionName = newsId ? "updateNews" : "saveNews";
 
+
             let payload = { 
+
                 action: actionName, 
+
                 news_id: newsId,
+
                 title: document.getElementById('newsTitle').value, 
+
                 content: document.getElementById('newsContent').value, 
+
                 image_url: document.getElementById('newsImgUrl').value,
+
+                sort_order: document.getElementById('newsSortOrder').value,
+
                 username: currentUser.username,
+
                 author: currentUser.username 
+
             };
 
+
             fetch(API_URL, { method: "POST", body: JSON.stringify(payload) })
+
             .then(res => res.json())
+
             .then(data => {
+
                 newsModalObj.hide();
+
                 submitBtn.disabled = false;
+
                 showAlert(data.message, () => {
+
                     loadAdminNews();
+
                     loadLogs();
+
                 });
+
             }).catch(err => {
+
                 submitBtn.disabled = false;
+
                 showAlert("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+
             });
+
         });
 
-        document.getElementById('docForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            let payload = { action: "saveDocument", title: document.getElementById('docTitle').value, category: document.getElementById('docCategory').value, file_url: document.getElementById('docUrl').value, uploaded_by: currentUser.username };
-            fetch(API_URL, { method: "POST", body: JSON.stringify(payload) })
-            .then(res => res.json())
-            .then(data => {
-                let modalEl = bootstrap.Modal.getInstance(document.getElementById('docModal'));
-                modalEl.hide();
-                showAlert(data.message, () => {
-                    loadAdminDocs();
-                    loadLogs();
-                });
-            });
-        });
 
         function deleteItem(sheetName, id) {
             if(confirm("ยืนยันการลบข้อมูลใช่หรือไม่?")) {
