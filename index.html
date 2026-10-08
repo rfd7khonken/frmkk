@@ -3,17 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ศูนย์ป่าไม้ขอนแก่น - KhonKaen Forest Office</title>
+    <title>ศูนย์ป่าไม้ขอนแก่น - Khon Kaen Forest Office</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Sarabun', sans-serif; background-color: #f8f9fa; }
-        .hero-section { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80'); background-size: cover; color: white; padding: 100px 0; text-align: center; }
+        body { font-family: 'Sarabun', sans-serif; background-color: #f8f9fa; position: relative; overflow-x: hidden; }
         .card { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
         .card:hover { transform: translateY(-5px); }
         .news-img { height: 200px; object-fit: cover; cursor: pointer; }
-    /* เอฟเฟกต์หิมะตก */
+        
+        /* สัดส่วนสไลด์ A4 แนวนอน */
+        .carousel-a4-container { background-color: #111; padding: 30px 0; }
+        .carousel-a4 {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            aspect-ratio: 1.414 / 1;
+            max-height: 600px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .carousel-a4 .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #222;
+        }
+        .carousel-caption-custom {
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 6px;
+            padding: 10px 15px;
+            bottom: 20px;
+        }
+
+        /* เอฟเฟกต์หิมะตก */
         .snowflake {
             position: fixed;
             top: -10px;
@@ -52,11 +77,25 @@
         </div>
     </nav>
 
-    <div class="hero-section">
+    <!-- ส่วนสไลด์ภาพหน้าแรก (A4 Size Carousel) -->
+    <div class="carousel-a4-container">
         <div class="container">
-            <h1 class="display-4 fw-bold">ยินดีต้อนรับสู่ </h1> 
-            <h1 class="display-4 fw-bold">ศูนย์ป่าไม้ขอนแก่น </h1>
-            <p class="lead">สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)</p>
+            <div id="heroA4Carousel" class="carousel slide carousel-a4 shadow" data-bs-ride="carousel">
+                <div class="carousel-indicators" id="carouselIndicators"></div>
+                <div class="carousel-inner h-100" id="carouselInner">
+                    <div class="carousel-item active h-100 text-center text-white d-flex align-items-center justify-content-center">
+                        <div class="spinner-border text-success" role="status"></div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#heroA4Carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroA4Carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -88,7 +127,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img id="popupNewsImg" src="" class="img-fluid rounded mb-3 shadow-sm" style="max-height: 250px; width: 100%; object-fit: cover; display: none;" alt="ภาพประกาศ">
+                    <img id="popupNewsImg" src="" class="img-fluid rounded mb-3 shadow-sm" style="max-height: 250px; width: 100%; object-fit: contain; background: #000; display: none;" alt="ภาพประกาศ">
                     <h4 id="popupNewsTitle" class="text-success fw-bold"></h4>
                     <p id="popupNewsContent" class="text-muted small mt-2" style="max-height: 100px; overflow-y: auto;"></p>
                 </div>
@@ -100,7 +139,7 @@
         </div>
     </div>
 
-        <!-- Modal สำหรับแสดงรายละเอียดข่าวและรูปภาพทั้งหมด -->
+    <!-- Modal สำหรับแสดงรายละเอียดข่าวและรูปภาพทั้งหมด -->
     <div class="modal fade" id="newsDetailModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -111,7 +150,6 @@
                 <div class="modal-body">
                     <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
                         <p class="text-muted small mb-0"><i class="fa-solid fa-calendar-days me-1"></i> <span id="modalNewsDate"></span> | โดย: <span id="modalNewsAuthor"></span></p>
-                        <!-- ปุ่มแชร์โซเชียล -->
                         <div class="dropdown">
                             <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                 <i class="fa-solid fa-share-nodes me-1"></i> แชร์กิจกรรมนี้
@@ -140,24 +178,24 @@
                 <div class="col-md-6">
                     <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-tree me-2"></i>ศูนย์ป่าไม้ขอนแก่น</h5>
                     <p class="text-white small mb-2"><i class="fa-solid fa-location-dot me-2 text-success"></i> เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น</p>
-                    <p class="text-white small mb-2"><i class="fa-solid fa-phone me-2 text-success"></i> โทรศัพท์ / โทรสาร: 043-330381 - 115</p>
-                    <p class="text-white small"><i class="fa-solid fa-envelope me-2 text-success"></i> อีเมล: Rfd7kk01@gmail.com</p>
+                    <p class="text-white small mb-2"><i class="fa-solid fa-phone me-2 text-success"></i> โทรศัพท์ / โทรสาร: 043-XXXXXX</p>
+                    <p class="text-white small mb-3"><i class="fa-solid fa-envelope me-2 text-success"></i> อีเมล: khonkaen_forest@forest.go.th</p>
+                    <a href="https://www.facebook.com/profile.php?id=*************05" target="_blank" class="btn btn-outline-light btn-sm">
+                        <i class="fa-brands fa-facebook text-primary me-1"></i> ติดตาม Facebook เพจ
+                    </a>
                 </div>
                 <div class="col-md-6 text-md-end d-flex flex-column justify-content-center">
                     <h6 class="fw-bold text-white mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h6>
                     <div class="d-flex flex-column gap-1">
                         <a href="https://forest.go.th" target="_blank" class="text-decoration-none text-white small"><i class="fa-solid fa-angle-right me-1 text-success"></i> กรมป่าไม้</a>
-                        <a href="forest.go.th/khonkaen7" class="text-decoration-none text-white small"><i class="fa-solid fa-angle-right me-1 text-success"></i> สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)</a>
-                        <a href="https://www.facebook.com/profile.php?id=100066888055705" target="_blank" class="btn btn-outline-light btn-sm">
-                        <i class="fa-brands fa-facebook text-primary me-1"></i> ติดตาม Facebook เพจ
-                        </a>
+                        <a href="#" class="text-decoration-none text-white small"><i class="fa-solid fa-angle-right me-1 text-success"></i> สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)</a>
                     </div>
                 </div>
             </div>
             <hr class="border-secondary">
             <div class="row text-center">
                 <div class="col">
-                    <p class="text-white small mb-0">© 2026 KhonKaen Forest Office. All Rights Reserved.</p>
+                    <p class="text-white small mb-0">© 2026 Khon Kaen Forest Office. All Rights Reserved.</p>
                 </div>
             </div>
         </div>
@@ -172,142 +210,38 @@
         window.addEventListener('DOMContentLoaded', () => {
             detailModal = new bootstrap.Modal(document.getElementById('newsDetailModal'));
             popupModal = new bootstrap.Modal(document.getElementById('welcomePopupModal'));
+            loadSlides();
             loadNews();
             loadDocuments();
+            initSnowEffect(); // เริ่มต้นทำงานเอฟเฟกต์หิมะ
         });
 
-        
-// ฟังก์ชันสร้างหิมะโปรยปราย
-
+        // ฟังก์ชันสร้างหิมะโปรยปราย
         function initSnowEffect() {
-
             const snowCount = 40; // จำนวนเกล็ดหิมะบนหน้าจอ
-
             for (let i = 0; i < snowCount; i++) {
-
                 let star = document.createElement('div');
-
                 star.className = 'snowflake';
-
                 star.innerHTML = '❄';
-
                 let startLeft = Math.random() * window.innerWidth;
-
                 let startOpacity = Math.random() * 0.7 + 0.3;
-
                 let size = Math.random() * 10 + 10;
-
                 let duration = Math.random() * 10 + 5;
-
                 let delay = Math.random() * 10;
 
-
                 star.style.left = startLeft + 'px';
-
                 star.style.opacity = startOpacity;
-
                 star.style.fontSize = size + 'px';
-
                 star.style.animationDuration = duration + 's';
-
                 star.style.animationDelay = delay + 's';
-
                 
-
                 document.body.appendChild(star);
-
             }
-
         }
 
-  //Slides      
-function loadSlides() {
-
-            fetch(API_URL + "?action=getSlides")
-
-                .then(res => res.json())
-
-                .then(data => {
-
-                    let carouselInnerHtml = "";
-
-                    let carouselIndicatorsHtml = "";
-
-                    
-
-                    if(data.status === "success" && data.data.length > 0) {
-
-                        let slides = data.data.sort((a, b) => {
-
-                            let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
-
-                            let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
-
-                            return orderA - orderB;
-
-                        });
-
-
-                        slides.forEach((item, index) => {
-
-                            let imgUrl = formatDriveUrl(item.image_url);
-
-                            let activeClass = index === 0 ? "active" : "";
-
-                            carouselIndicatorsHtml += `<button type="button" data-bs-target="#heroA4Carousel" data-bs-slide-to="${index}" class="${activeClass}"></button>`;
-
-                            
-
-                            carouselInnerHtml += `
-
-                                <div class="carousel-item ${activeClass} h-100">
-
-                                    <img src="${imgUrl}" class="d-block w-100" alt="${item.title}" style="object-fit: contain; background: #111;">
-
-                                    ${item.title ? `<div class="carousel-caption carousel-caption-custom d-none d-md-block"><h5 class="fw-bold text-success mb-0">${item.title}</h5></div>` : ''}
-
-                                </div>`;
-
-                        });
-
-
-                        document.getElementById('carouselInner').innerHTML = carouselInnerHtml;
-
-                        document.getElementById('carouselIndicators').innerHTML = carouselIndicatorsHtml;
-
-                    } else {
-
-                        document.getElementById('carouselInner').innerHTML = `<div class="carousel-item active h-100 d-flex align-items-center justify-content-center text-white"><h5>ศูนย์ป่าไม้ขอนแก่น</h5></div>`;
-
-                    }
-
-                }).catch(err => {
-
-                    document.getElementById('carouselInner').innerHTML = `<div class="carousel-item active h-100 d-flex align-items-center justify-content-center text-white"><h5>ศูนย์ป่าไม้ขอนแก่น</h5></div>`;
-
-                });
-
-        }
-
-
-        window.addEventListener('DOMContentLoaded', () => {
-
-            detailModal = new bootstrap.Modal(document.getElementById('newsDetailModal'));
-
-            popupModal = new bootstrap.Modal(document.getElementById('welcomePopupModal'));
-
-            loadSlides(); // โหลดภาพสไลด์
-
-            loadNews();
-
-            loadDocuments();
-
-        });
-        
-        // ฟังก์ชันแปลงลิงก์ Google Drive อัตโนมัติให้แสดงรูปได้
         function formatDriveUrl(url) {
+            if (!url) return "";
             url = url.trim();
-            // ถ้ารูปมาจาก Google Drive แบบแชร์ปกติ ให้แปลงเป็น Direct Link
             if (url.includes("drive.google.com")) {
                 let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
                 if (match && match[1]) {
@@ -322,12 +256,47 @@ function loadSlides() {
             return imageUrlStr.split(',').map(url => formatDriveUrl(url)).filter(url => url.length > 0);
         }
 
+        function loadSlides() {
+            fetch(API_URL + "?action=getSlides")
+                .then(res => res.json())
+                .then(data => {
+                    let carouselInnerHtml = "";
+                    let carouselIndicatorsHtml = "";
+                    
+                    if(data.status === "success" && data.data.length > 0) {
+                        let slides = data.data.sort((a, b) => {
+                            let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
+                            let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
+                            return orderA - orderB;
+                        });
+
+                        slides.forEach((item, index) => {
+                            let imgUrl = formatDriveUrl(item.image_url);
+                            let activeClass = index === 0 ? "active" : "";
+                            carouselIndicatorsHtml += `<button type="button" data-bs-target="#heroA4Carousel" data-bs-slide-to="${index}" class="${activeClass}"></button>`;
+                            
+                            carouselInnerHtml += `
+                                <div class="carousel-item ${activeClass} h-100">
+                                    <img src="${imgUrl}" class="d-block w-100" alt="${item.title}" style="object-fit: contain; background: #111;">
+                                    ${item.title ? `<div class="carousel-caption carousel-caption-custom d-none d-md-block"><h5 class="fw-bold text-success mb-0">${item.title}</h5></div>` : ''}
+                                </div>`;
+                        });
+
+                        document.getElementById('carouselInner').innerHTML = carouselInnerHtml;
+                        document.getElementById('carouselIndicators').innerHTML = carouselIndicatorsHtml;
+                    } else {
+                        document.getElementById('carouselInner').innerHTML = `<div class="carousel-item active h-100 d-flex align-items-center justify-content-center text-white"><h5>ศูนย์ป่าไม้ขอนแก่น</h5></div>`;
+                    }
+                }).catch(err => {
+                    document.getElementById('carouselInner').innerHTML = `<div class="carousel-item active h-100 d-flex align-items-center justify-content-center text-white"><h5>ศูนย์ป่าไม้ขอนแก่น</h5></div>`;
+                });
+        }
+
         function loadNews() {
             fetch(API_URL + "?action=getNews")
                 .then(res => res.json())
                 .then(data => {
                     if(data.status === "success" && data.data.length > 0) {
-                        // จัดเรียงตาม sort_order (ค่าน้อยขึ้นก่อน) ถ้าเท่ากันให้เรียงจากวันใหม่ไปเก่า
                         globalNewsList = data.data.sort((a, b) => {
                             let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
                             let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
@@ -360,7 +329,6 @@ function loadSlides() {
                         });
                         document.getElementById('newsContainer').innerHTML = html;
 
-                        // ตั้งค่า Popup ข่าวล่าสุด (รายการแรกสุดตามลำดับที่จัด)
                         let latestNews = globalNewsList[0];
                         let popupImages = getImagesArray(latestNews.image_url);
 
@@ -388,7 +356,7 @@ function loadSlides() {
                 });
         }
 
-                function openNewsDetail(newsId) {
+        function openNewsDetail(newsId) {
             let item = globalNewsList.find(n => n.news_id === newsId);
             if(item) {
                 document.getElementById('modalNewsTitle').innerText = item.title;
@@ -396,7 +364,6 @@ function loadSlides() {
                 document.getElementById('modalNewsAuthor').innerText = item.author;
                 document.getElementById('modalNewsContent').innerText = item.content;
 
-                // สร้างลิงก์สำหรับแชร์
                 let currentUrl = window.location.href.split('#')[0] + "#news=" + item.news_id;
                 let encodedUrl = encodeURIComponent(currentUrl);
                 let encodedTitle = encodeURIComponent(item.title);
