@@ -140,9 +140,10 @@
                 .then(res => res.json())
                 .then(data => {
                     if(data.status === "success" && data.data.length > 0) {
-                        globalNewsList = data.data;
+                        // เรียงลำดับจากใหม่ไปเก่า (เอาวันที่ล่าสุดขึ้นบน)
+                        globalNewsList = data.data.reverse();
                         let html = "";
-                        data.data.forEach((item) => {
+                        globalNewsList.forEach((item) => {
                             let images = getImagesArray(item.image_url);
                             let defaultImg = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
                             let imgSrc = images.length > 0 ? images[0] : defaultImg;
@@ -164,8 +165,8 @@
                         });
                         document.getElementById('newsContainer').innerHTML = html;
 
-                        // ตั้งค่า Popup ข่าวล่าสุด
-                        let latestNews = data.data[0];
+                        // ตั้งค่า Popup ข่าวล่าสุด (รายการแรกหลังเรียงแล้วคือใหม่ที่สุด)
+                        let latestNews = globalNewsList[0];
                         let popupImages = getImagesArray(latestNews.image_url);
 
                         document.getElementById('popupNewsTitle').innerText = latestNews.title;
