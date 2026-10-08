@@ -154,6 +154,48 @@
             loadNews();
             loadDocuments();
         });
+// ฟังก์ชันสร้างหิมะโปรยปราย
+
+        function initSnowEffect() {
+
+            const snowCount = 40; // จำนวนเกล็ดหิมะบนหน้าจอ
+
+            for (let i = 0; i < snowCount; i++) {
+
+                let star = document.createElement('div');
+
+                star.className = 'snowflake';
+
+                star.innerHTML = '❄';
+
+                let startLeft = Math.random() * window.innerWidth;
+
+                let startOpacity = Math.random() * 0.7 + 0.3;
+
+                let size = Math.random() * 10 + 10;
+
+                let duration = Math.random() * 10 + 5;
+
+                let delay = Math.random() * 10;
+
+
+                star.style.left = startLeft + 'px';
+
+                star.style.opacity = startOpacity;
+
+                star.style.fontSize = size + 'px';
+
+                star.style.animationDuration = duration + 's';
+
+                star.style.animationDelay = delay + 's';
+
+                
+
+                document.body.appendChild(star);
+
+            }
+
+        }
 
   //Slides      
 function loadSlides() {
