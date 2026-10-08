@@ -12,6 +12,8 @@
         .sidebar { min-height: 100vh; background: #198754; color: white; }
         .sidebar a { color: white; text-decoration: none; display: block; padding: 12px 20px; transition: 0.2s; }
         .sidebar a:hover, .sidebar a.active { background: #157347; }
+        .stat-card { border-radius: 10px; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-3px); }
     </style>
 </head>
 <body>
@@ -25,7 +27,8 @@
                         <small id="userFullName"></small>
                     </div>
                     <div class="py-2">
-                        <a href="#" onclick="switchTab('news')" class="active" id="nav-news"><i class="fa-solid fa-bullhorn me-2"></i>จัดการข่าวสาร</a>
+                        <a href="#" onclick="switchTab('dashboard')" class="active" id="nav-dashboard"><i class="fa-solid fa-chart-pie me-2"></i>แดชบอร์ด</a>
+                        <a href="#" onclick="switchTab('news')" id="nav-news"><i class="fa-solid fa-bullhorn me-2"></i>จัดการข่าวสาร</a>
                         <a href="#" onclick="switchTab('docs')" id="nav-docs"><i class="fa-solid fa-file-lines me-2"></i>จัดการเอกสาร</a>
                         <a href="#" onclick="switchTab('logs')" id="nav-logs"><i class="fa-solid fa-clock-rotate-left me-2"></i>Activity Log</a>
                     </div>
@@ -37,8 +40,53 @@
 
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 p-4">
+                
+                <!-- Dashboard Tab -->
+                <div id="tab-dashboard" class="content-tab">
+                    <h3 class="mb-4 text-success fw-bold"><i class="fa-solid fa-chart-line me-2"></i>ภาพรวมระบบ (Dashboard)</h3>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="card stat-card bg-success text-white p-3">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-1">ข่าวสารและกิจกรรมทั้งหมด</h6>
+                                        <h2 class="fw-bold mb-0" id="statNewsCount">0</h2>
+                                    </div>
+                                    <i class="fa-solid fa-bullhorn fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card stat-card bg-primary text-white p-3">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-1">เอกสารราชการทั้งหมด</h6>
+                                        <h2 class="fw-bold mb-0" id="statDocCount">0</h2>
+                                    </div>
+                                    <i class="fa-solid fa-file-arrow-down fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card stat-card bg-dark text-white p-3">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-1">ประวัติการใช้งาน (Logs)</h6>
+                                        <h2 class="fw-bold mb-0" id="statLogCount">0</h2>
+                                    </div>
+                                    <i class="fa-solid fa-clock-rotate-left fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-4 shadow-sm">
+                        <h5 class="text-success mb-3"><i class="fa-solid fa-circle-info me-2"></i>ยินดีต้อนรับสู่ระบบจัดการเว็บไซต์ ศูนย์ป่าไม้ขอนแก่น</h5>
+                        <p class="text-muted">คุณสามารถใช้เมนูด้านซ้ายเพื่อจัดการข้อมูลข่าวสารประชาสัมพันธ์ เพิ่ม/ลบเอกสารดาวน์โหลดราชการ และตรวจสอบประวัติการทำรายการต่างๆ ภายในระบบได้อย่างสะดวกรวดเร็ว</p>
+                    </div>
+                </div>
+
                 <!-- News Tab -->
-                <div id="tab-news" class="content-tab">
+                <div id="tab-news" class="content-tab d-none">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3>จัดการข่าวสารประชาสัมพันธ์</h3>
                         <button class="btn btn-success" onclick="openAddNewsModal()"><i class="fa-solid fa-plus me-1"></i>เพิ่มข่าวใหม่</button>
@@ -96,11 +144,11 @@
                             <input type="text" id="newsImgUrl" class="form-control" placeholder="วางลิงก์ภาพ คั่นด้วยเครื่องหมายจุลภาค (,) กรณีมีหลายภาพ">
                             <div class="form-text text-muted">ตัวอย่าง: https://img1.jpg, https://img2.jpg (ภาพแรกสุดจะแสดงที่หน้าแรก)</div>
                         </div>
-                        <div class="mb-3"><label class="form-label">เนื้อหาข่าว</label><textarea id="newsContent" rows="4" class="form-control" required></textarea></div>
-                                                <div class="mb-3">
+                        <div class="mb-3">
                             <label class="form-label">ลำดับการแสดงผล (Sort Order)</label>
                             <input type="number" id="newsSortOrder" class="form-control" placeholder="เช่น 1, 2, 3 (เลขน้อยแสดงก่อน)">
                         </div>
+                        <div class="mb-3"><label class="form-label">เนื้อหาข่าว</label><textarea id="newsContent" rows="4" class="form-control" required></textarea></div>
                         <button type="submit" class="btn btn-success w-100" id="newsSubmitBtn">บันทึกข่าว</button>
                     </form>
                 </div>
@@ -177,63 +225,39 @@
             document.getElementById('nav-' + tab).classList.add('active');
         }
 
-
         function loadAdminNews() {
-
             fetch(API_URL + "?action=getNews").then(res => res.json()).then(data => {
-
                 if(data.status === "success") {
-
-                    // จัดเรียงในตารางหลังบ้านตาม sort_order
-
                     allNewsData = data.data.sort((a, b) => {
-
                         let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
-
                         let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
-
                         return orderA - orderB;
-
                     });
-
+                    document.getElementById('statNewsCount').innerText = allNewsData.length;
 
                     let html = "";
-
                     allNewsData.forEach(item => {
-
                         html += `<tr>
-
                             <td><span class="badge bg-secondary me-2">ลำดับ: ${item.sort_order || '-'}</span> ${item.title}</td>
-
                             <td>${item.author}</td>
-
                             <td>${new Date(item.created_at).toLocaleDateString('th-TH')}</td>
-
                             <td class="text-center">
-
                                 <button onclick="openEditNewsModal('${item.news_id}')" class="btn btn-sm btn-warning me-1"><i class="fa-solid fa-pen-to-square"></i></button>
-
                                 <button onclick="deleteItem('News', '${item.news_id}')" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
-
                             </td>
-
                         </tr>`;
-
                     });
-
                     document.getElementById('adminNewsTable').innerHTML = html;
-
                 }
-
             });
-
         }
 
         function loadAdminDocs() {
             fetch(API_URL + "?action=getDocuments").then(res => res.json()).then(data => {
                 if(data.status === "success") {
-                    // เรียงเอกสารจากใหม่ไปเก่า
                     let docs = data.data.reverse();
+                    document.getElementById('statDocCount').innerText = docs.length;
+
                     let html = "";
                     docs.forEach(item => {
                         html += `<tr>
@@ -250,11 +274,15 @@
                 }
             });
         }
+
         function loadLogs() {
             fetch(API_URL + "?action=getLogs").then(res => res.json()).then(data => {
                 if(data.status === "success") {
+                    let logs = data.data.reverse();
+                    document.getElementById('statLogCount').innerText = logs.length;
+
                     let html = "";
-                    data.data.reverse().forEach(item => {
+                    logs.forEach(item => {
                         html += `<tr><td>${item.username}</td><td><span class="badge bg-info">${item.action}</span></td><td>${item.details}</td><td>${new Date(item.timestamp).toLocaleString('th-TH')}</td></tr>`;
                     });
                     document.getElementById('logTable').innerHTML = html;
@@ -263,113 +291,77 @@
         }
 
         function openAddNewsModal() {
-
             document.getElementById('newsForm').reset();
-
             document.getElementById('newsId').value = "";
-
             document.getElementById('newsSortOrder').value = "";
-
             document.getElementById('newsModalTitle').innerText = "เพิ่มข่าวสารใหม่";
-
             document.getElementById('newsSubmitBtn').innerText = "บันทึกข่าว";
-
             newsModalObj.show();
-
         }
 
-      function openEditNewsModal(newsId) {
-
+        function openEditNewsModal(newsId) {
             let item = allNewsData.find(n => n.news_id === newsId);
-
             if(item) {
-
                 document.getElementById('newsId').value = item.news_id;
-
                 document.getElementById('newsTitle').value = item.title;
-
                 document.getElementById('newsImgUrl').value = item.image_url || "";
-
                 document.getElementById('newsSortOrder').value = item.sort_order || "";
-
                 document.getElementById('newsContent').value = item.content;
-
                 document.getElementById('newsModalTitle').innerText = "แก้ไขข่าวสารและกิจกรรม";
-
                 document.getElementById('newsSubmitBtn').innerText = "บันทึกการแก้ไข";
-
                 newsModalObj.show();
-
             }
-
         }
-
 
         document.getElementById('newsForm').addEventListener('submit', function(e) {
-
             e.preventDefault();
-
             let submitBtn = document.getElementById('newsSubmitBtn');
-
             submitBtn.disabled = true;
-
             submitBtn.innerHTML = "กำลังบันทึก...";
 
-
             let newsId = document.getElementById('newsId').value;
-
             let actionName = newsId ? "updateNews" : "saveNews";
 
-
             let payload = { 
-
                 action: actionName, 
-
                 news_id: newsId,
-
                 title: document.getElementById('newsTitle').value, 
-
                 content: document.getElementById('newsContent').value, 
-
                 image_url: document.getElementById('newsImgUrl').value,
-
                 sort_order: document.getElementById('newsSortOrder').value,
-
                 username: currentUser.username,
-
                 author: currentUser.username 
-
             };
 
-
             fetch(API_URL, { method: "POST", body: JSON.stringify(payload) })
-
             .then(res => res.json())
-
             .then(data => {
-
                 newsModalObj.hide();
-
                 submitBtn.disabled = false;
-
                 showAlert(data.message, () => {
-
                     loadAdminNews();
-
                     loadLogs();
-
                 });
-
             }).catch(err => {
-
                 submitBtn.disabled = false;
-
                 showAlert("เกิดข้อผิดพลาดในการเชื่อมต่อ");
-
             });
-
         });
 
+        document.getElementById('docForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let payload = { action: "saveDocument", title: document.getElementById('docTitle').value, category: document.getElementById('docCategory').value, file_url: document.getElementById('docUrl').value, uploaded_by: currentUser.username };
+            fetch(API_URL, { method: "POST", body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(data => {
+                let modalEl = bootstrap.Modal.getInstance(document.getElementById('docModal'));
+                modalEl.hide();
+                showAlert(data.message, () => {
+                    loadAdminDocs();
+                    loadLogs();
+                });
+            });
+        });
 
         function deleteItem(sheetName, id) {
             if(confirm("ยืนยันการลบข้อมูลใช่หรือไม่?")) {
