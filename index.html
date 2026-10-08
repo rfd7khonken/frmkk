@@ -140,8 +140,16 @@
                 .then(res => res.json())
                 .then(data => {
                     if(data.status === "success" && data.data.length > 0) {
-                        // เรียงลำดับจากใหม่ไปเก่า (เอาวันที่ล่าสุดขึ้นบน)
-                        globalNewsList = data.data.reverse();
+                        // จัดเรียงตาม sort_order (ค่าน้อยขึ้นก่อน) ถ้าเท่ากันให้เรียงจากวันใหม่ไปเก่า
+                        globalNewsList = data.data.sort((a, b) => {
+                            let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
+                            let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
+                            if (orderA !== orderB) {
+                                return orderA - orderB;
+                            }
+                            return new Date(b.created_at) - new Date(a.created_at);
+                        });
+
                         let html = "";
                         globalNewsList.forEach((item) => {
                             let images = getImagesArray(item.image_url);
@@ -165,7 +173,7 @@
                         });
                         document.getElementById('newsContainer').innerHTML = html;
 
-                        // ตั้งค่า Popup ข่าวล่าสุด (รายการแรกหลังเรียงแล้วคือใหม่ที่สุด)
+                        // ตั้งค่า Popup ข่าวล่าสุด (รายการแรกสุดตามลำดับที่จัด)
                         let latestNews = globalNewsList[0];
                         let popupImages = getImagesArray(latestNews.image_url);
 
