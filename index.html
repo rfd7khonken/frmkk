@@ -312,6 +312,21 @@
                         <i class="fa-brands fa-facebook text-primary me-1"></i> ติดตาม Facebook เพจ
                     </a>
                 </div>
+                                <!-- กล่องสถิติยอดผู้เข้าชมดีไซน์สวยงามกลมกลืนตรงกลาง -->
+
+                <div class="col-md-3 text-center">
+
+                    <div class="bg-black bg-opacity-40 border border-success border-opacity-50 rounded p-3 shadow-sm">
+
+                        <div class="text-white-50 small mb-1"><i class="fa-solid fa-chart-line me-1 text-success"></i> สถิติผู้เข้าชมเว็บไซต์</div>
+
+                        <h3 class="fw-bold text-success mb-0" id="footerVisitorCount"><i class="fa-solid fa-spinner fa-spin fs-5"></i></h3>
+
+                        <div class="text-white-50 x-small mt-1">ครั้ง</div>
+
+                    </div>
+
+                </div>
                 <div class="col-md-6 text-md-end d-flex flex-column justify-content-center">
                     <h6 class="fw-bold text-white mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h6>
                     <div class="d-flex flex-column gap-1">
@@ -564,6 +579,32 @@
                     document.getElementById('docTableBody').innerHTML = '<tr><td colspan="5" class="text-center text-muted">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
                 });
         }
+
+        function trackVisitor() {
+            // เช็คว่าใน Session นี้บันทึกหรือยัง ป้องกันการนับซ้ำเวลากดรีเฟรชรัวๆ
+            let isVisited = sessionStorage.getItem('visited');
+            let payload = {
+                action: "recordVisit",
+                session_id: "Visitor_" + Math.random().toString(36).substring(2, 9)
+            };
+
+            let req = isVisited ? fetch(API_URL + "?action=getVisitors") : fetch(API_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => {
+                sessionStorage.setItem('visited', 'true');
+                return fetch(API_URL + "?action=getVisitors");
+            });
+
+            req.then(res => res.json())
+               .then(data => {
+                   if(data.status === "success") {
+                       // แสดงตัวเลขยอดผู้เข้าชมที่ Footer (ใส่ลูกเล่นคั่นหลักพัน เช่น 1,234)
+                       let totalVisits = data.data.length;
+                       document.getElementById('footerVisitorCount').innerText = totalVisits.toLocaleString();
+                   }
+               }).catch(err => {
+                   document.getElementById('footerVisitorCount').innerText = "-";
+               });
+        }
+        
     </script>
 </body>
 </html>
