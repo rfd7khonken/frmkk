@@ -13,6 +13,27 @@
         .card { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
         .card:hover { transform: translateY(-5px); }
         .news-img { height: 200px; object-fit: cover; cursor: pointer; }
+    /* เอฟเฟกต์หิมะตก */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 9999;
+            user-select: none;
+            cursor: default;
+            color: #ffffff;
+            font-opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) translateX(20px);
+                opacity: 0.3;
+            }
+        }
     </style>
 </head>
 <body>
@@ -154,6 +175,8 @@
             loadNews();
             loadDocuments();
         });
+
+        
 // ฟังก์ชันสร้างหิมะโปรยปราย
 
         function initSnowEffect() {
