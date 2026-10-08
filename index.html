@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <!-- Modal สำหรับแสดงรายละเอียดข่าวและรูปภาพทั้งหมด -->
+        <!-- Modal สำหรับแสดงรายละเอียดข่าวและรูปภาพทั้งหมด -->
     <div class="modal fade" id="newsDetailModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -88,7 +88,22 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="text-muted small"><i class="fa-solid fa-calendar-days me-1"></i> <span id="modalNewsDate"></span> | โดย: <span id="modalNewsAuthor"></span></p>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                        <p class="text-muted small mb-0"><i class="fa-solid fa-calendar-days me-1"></i> <span id="modalNewsDate"></span> | โดย: <span id="modalNewsAuthor"></span></p>
+                        <!-- ปุ่มแชร์โซเชียล -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-share-nodes me-1"></i> แชร์กิจกรรมนี้
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" id="shareFacebook" target="_blank"><i class="fa-brands fa-facebook text-primary me-2"></i> Facebook</a></li>
+                                <li><a class="dropdown-item" href="#" id="shareLine" target="_blank"><i class="fa-brands fa-line text-success me-2"></i> LINE</a></li>
+                                <li><a class="dropdown-item" href="#" id="shareTwitter" target="_blank"><i class="fa-brands fa-x-twitter me-2"></i> X (Twitter)</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" onclick="copyCurrentLink(event)"><i class="fa-solid fa-copy me-2"></i> คัดลอกลิงก์</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     <hr>
                     <p id="modalNewsContent" style="white-space: pre-line;"></p>
                     <h6 class="mt-4 mb-3"><i class="fa-solid fa-images me-2"></i>รูปภาพกิจกรรมทั้งหมด</h6>
@@ -105,7 +120,7 @@
                     <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-tree me-2"></i>ศูนย์ป่าไม้ขอนแก่น</h5>
                     <p class="text-white small mb-2"><i class="fa-solid fa-location-dot me-2 text-success"></i> เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น</p>
                     <p class="text-white small mb-2"><i class="fa-solid fa-phone me-2 text-success"></i> โทรศัพท์ / โทรสาร: 043-330381 - 115</p>
-                    <p class="text-white small"><i class="fa-solid fa-envelope me-2 text-success"></i> อีเมล: ....@forest.go.th</p>
+                    <p class="text-white small"><i class="fa-solid fa-envelope me-2 text-success"></i> อีเมล: Rfd7kk01@gmail.com</p>
                 </div>
                 <div class="col-md-6 text-md-end d-flex flex-column justify-content-center">
                     <h6 class="fw-bold text-white mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h6>
@@ -224,13 +239,22 @@
                 });
         }
 
-        function openNewsDetail(newsId) {
+                function openNewsDetail(newsId) {
             let item = globalNewsList.find(n => n.news_id === newsId);
             if(item) {
                 document.getElementById('modalNewsTitle').innerText = item.title;
                 document.getElementById('modalNewsDate').innerText = new Date(item.created_at).toLocaleDateString('th-TH');
                 document.getElementById('modalNewsAuthor').innerText = item.author;
                 document.getElementById('modalNewsContent').innerText = item.content;
+
+                // สร้างลิงก์สำหรับแชร์
+                let currentUrl = window.location.href.split('#')[0] + "#news=" + item.news_id;
+                let encodedUrl = encodeURIComponent(currentUrl);
+                let encodedTitle = encodeURIComponent(item.title);
+
+                document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+                document.getElementById('shareLine').href = `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`;
+                document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
 
                 let images = getImagesArray(item.image_url);
                 let imgHtml = "";
@@ -244,6 +268,13 @@
                 document.getElementById('modalImagesContainer').innerHTML = imgHtml;
                 detailModal.show();
             }
+        }
+
+        function copyCurrentLink(e) {
+            e.preventDefault();
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert("คัดลอกลิงก์เรียบร้อยแล้ว!");
+            });
         }
 
         function loadDocuments() {
