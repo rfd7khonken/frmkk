@@ -3,175 +3,373 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ข้อมูลหน่วยงาน บุคลากร ภารกิจ และผลการปฏิบัติงานของศูนย์ป่าไม้ขอนแก่น">
     <title>ข้อมูลองค์กร - ศูนย์ป่าไม้ขอนแก่น</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Sarabun', sans-serif; background-color: #f8f9fa; position: relative; overflow-x: hidden; }
-        .card { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-3px); }
-        
-        /* Navbar โปร่งใสทันสมัย */
-        .navbar-custom {
-            background: rgba(25, 135, 84, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        :root {
+            --forest-green: #08734f;
+            --forest-dark: #064b37;
+            --forest-light: #eaf5ef;
+            --gold: #d5a62e;
         }
 
-        /* ส่วนหัว Header ของหน้า */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f7f9f7;
+            color: #26332d;
+            overflow-x: hidden;
+        }
+
+        .navbar-custom {
+            background: rgba(8, 115, 79, 0.97);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .navbar-brand {
+            white-space: normal;
+        }
+
         .page-header {
-            background: linear-gradient(rgba(10, 40, 20, 0.75), rgba(10, 30, 20, 0.85)), url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80');
+            position: relative;
+            color: #fff;
+            text-align: center;
+            padding: 78px 0;
+            background:
+                linear-gradient(rgba(5, 46, 31, 0.78), rgba(5, 46, 31, 0.84)),
+                url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
-            color: white;
-            padding: 70px 0;
-            text-align: center;
+        }
+
+        .page-header h1 {
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        }
+
+        .page-header .lead {
+            max-width: 850px;
+            margin: 0 auto;
         }
 
         .section-title {
-            color: #198754;
-            border-bottom: 2px solid #198754;
-            padding-bottom: 8px;
-            margin-bottom: 25px;
+            color: var(--forest-green);
+            border-bottom: 2px solid var(--forest-green);
+            padding-bottom: 10px;
+            margin-bottom: 22px;
             font-weight: 700;
         }
 
-        .table-custom th {
-            background-color: #198754 !important;
-            color: white;
+        .content-card {
+            border: 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         }
 
-        /* เอฟเฟกต์หิมะตก */
-        .snowflake {
-            position: fixed;
-            top: -10px;
-            z-index: 9999;
-            user-select: none;
-            cursor: default;
-            color: #ffffff;
-            animation: fall linear infinite;
+        .history-box {
+            border-left: 5px solid var(--forest-green);
+            background: #fff;
+            border-radius: 8px;
+            line-height: 1.9;
         }
-        @keyframes fall {
-            0% { transform: translateY(-10px) translateX(0); opacity: 1; }
-            100% { transform: translateY(105vh) translateX(20px); opacity: 0.3; }
+
+        .stat-card {
+            height: 100%;
+            background: #fff;
+            border: 1px solid #e2e8e4;
+            border-left: 5px solid var(--forest-green);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-card.stat-blue {
+            border-left-color: #1686bd;
+        }
+
+        .stat-card.stat-orange {
+            border-left-color: #e58a00;
+        }
+
+        .stat-number {
+            color: var(--forest-green);
+            font-size: 2rem;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        .stat-blue .stat-number {
+            color: #1686bd;
+        }
+
+        .stat-orange .stat-number {
+            color: #d17b00;
+        }
+
+        .org-heading {
+            display: inline-block;
+            color: #fff;
+            background: var(--forest-dark);
+            border: 2px solid var(--gold);
+            border-radius: 9px;
+            padding: 12px 22px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .org-unit {
+            height: 100%;
+            padding: 18px;
+            background: #fff;
+            border: 1px solid #cdded3;
+            border-radius: 10px;
+        }
+
+        .org-unit h3,
+        .org-unit h4,
+        .org-unit h5 {
+            color: var(--forest-green);
+        }
+
+        .table-custom thead th {
+            color: #fff;
+            background-color: var(--forest-green);
+            white-space: nowrap;
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: var(--forest-dark);
+            background-color: var(--forest-light);
+            box-shadow: none;
+        }
+
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.2rem rgba(8, 115, 79, 0.18);
+        }
+
+        .project-card {
+            border-left: 5px solid var(--gold);
+        }
+
+        .staff-image {
+            max-height: 1100px;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        footer a:hover {
+            color: #a9e5c6 !important;
+        }
+
+        @media (max-width: 767.98px) {
+            .page-header {
+                padding: 54px 15px;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stat-number {
+                font-size: 1.7rem;
+            }
+
+            .footer-stat {
+                text-align: left;
+            }
         }
     </style>
 </head>
+
 <body>
-    <!-- Navbar -->
+    <!-- เมนูหลัก -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="index.html"><i class="fa-solid fa-tree me-2 text-warning"></i>ศูนย์ป่าไม้ขอนแก่น</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fa-solid fa-tree me-2 text-warning"></i>ศูนย์ป่าไม้ขอนแก่น
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="เปิดเมนู">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item"><a class="nav-link px-3" href="index.html">หน้าแรก</a></li>
-                    <li class="nav-item"><a class="nav-link active px-3" href="about.html">ข้อมูลองค์กร</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="index.html#news">ข่าวสาร</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="index.html#documents">คลังเอกสาร</a></li>
-                    <li class="nav-item ms-lg-3"><a class="btn btn-warning text-dark fw-bold btn-sm px-3 py-2 shadow-sm" href="login.html"><i class="fa-solid fa-lock me-1"></i>เข้าสู่ระบบเจ้าหน้าที่</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="index.html">หน้าแรก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active px-3" aria-current="page" href="about.html">ข้อมูลองค์กร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="index.html#news">ข่าวสาร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="index.html#documents">คลังเอกสาร</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-warning text-dark fw-bold btn-sm px-3 py-2 shadow-sm" href="login.html">
+                            <i class="fa-solid fa-lock me-1"></i>เข้าสู่ระบบเจ้าหน้าที่
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <div class="page-header">
+    <!-- ส่วนหัวหน้า -->
+    <header class="page-header">
         <div class="container">
+            <div class="mb-3">
+                <i class="fa-solid fa-leaf text-warning fa-2x"></i>
+            </div>
             <h1 class="fw-bold mb-2">ข้อมูลองค์กรและผลการปฏิบัติงาน</h1>
-            <p class="lead mb-0 text-white-50">ศูนย์ป่าไม้ขอนแก่น สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)</p>
+            <p class="lead text-white-50 mb-0">
+                ศูนย์ป่าไม้ขอนแก่น สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)
+            </p>
         </div>
-    </div>
+    </header>
 
-    <div class="container my-5">
-        
-        <!-- โครงสร้างหน่วยงาน -->
+    <main class="container my-5">
+
+        <!-- ประวัติความเป็นมา -->
         <section class="mb-5">
-            <h2 class="section-title"><i class="fa-solid fa-sitemap me-2"></i>โครงสร้างและฝ่ายงานภายใน</h2>
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="card h-100 border-start border-success border-4 p-3">
-                        <div class="card-body">
-                            <h4 class="text-success fw-bold mb-3"><i class="fa-solid fa-building-user me-2"></i>1. ฝ่ายบริหารทั่วไป</h4>
-                            <p class="text-muted small">มีหน้าที่รับผิดชอบงานสารบรรณ งานงบประมาณและการเงิน งานพัสดุ งาน PSS งานบุคคล และงานบริหารทั่วไปของศูนย์ป่าไม้ขอนแก่น</p>
-                            <!-- <p class="mb-1 fw-bold text-dark"><i class="fa-solid fa-user-tie text-success me-2"></i>หัวหน้าฝ่าย:</p> -->
-                            <!-- <p class="text-muted ms-4 mb-0">นางปวริศา ดวงสาพล (นักวิชาการป่าไม้ปฏิบัติการ)</p> -->
+            <h2 class="section-title">
+                <i class="fa-solid fa-landmark me-2"></i>ประวัติความเป็นมา
+            </h2>
+
+            <div class="history-box p-4 shadow-sm">
+                <p>
+                    ศูนย์ป่าไม้ขอนแก่นจัดตั้งตามคำสั่งกรมป่าไม้ที่ 2985/2559
+                    ลงวันที่ 29 พฤศจิกายน พ.ศ. 2559 เรื่องการจัดหน่วยงานและกำหนดอำนาจหน้าที่
+                    ความรับผิดชอบในส่วนราชการกรมป่าไม้ และคำสั่งกรมป่าไม้ที่ 23/2560
+                    ลงวันที่ 5 มกราคม พ.ศ. 2560 เรื่องการจัดหน่วยงานและกำหนดอำนาจหน้าที่
+                    ความรับผิดชอบของสำนักจัดการทรัพยากรป่าไม้ที่ 1–13 และสำนักจัดการทรัพยากรป่าไม้ (สาขา)
+                </p>
+                <p>
+                    ศูนย์ป่าไม้มีหน้าที่รับผิดชอบเป็นผู้แทนกรมป่าไม้ในระดับจังหวัด
+                    เพื่อดำเนินการเกี่ยวกับการประสานงานด้านป่าไม้ในพื้นที่จังหวัด
+                    ต่อมาใน พ.ศ. 2561 มีคำสั่งกรมป่าไม้ที่ 1460/2561
+                    ลงวันที่ 30 เมษายน พ.ศ. 2561 ให้เปลี่ยนชื่อ “ศูนย์ป่าไม้จังหวัด” เป็น “ศูนย์ป่าไม้”
+                </p>
+                <p class="mb-0">
+                    ปัจจุบันศูนย์ป่าไม้ขอนแก่นตั้งอยู่ภายในบริเวณสำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)
+                </p>
+            </div>
+        </section>
+
+        <!-- ข้อมูลภาพรวม -->
+        <section class="mb-5">
+            <h2 class="section-title">
+                <i class="fa-solid fa-chart-column me-2"></i>ข้อมูลภาพรวม
+            </h2>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="stat-card p-4">
+                        <div class="text-muted">ป่าชุมชนที่รับผิดชอบ</div>
+                        <div class="stat-number">
+                            253 <small class="fs-6">ป่าชุมชน</small>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card h-100 border-start border-success border-4 p-3">
-                        <div class="card-body">
-                            <h4 class="text-success fw-bold mb-3"><i class="fa-solid fa-tree me-2"></i>2. ฝ่ายประสานและส่งเสริมงานป่าไม้</h4>
-                            <p class="text-muted small">มีหน้าที่รับผิดชอบงานส่งเสริมการปลูกป่า งานป่าชุมชน งานเครือข่ายป่าไม้ และการประสานงานด้านกิจการป่าไม้ในพื้นที่จังหวัดขอนแก่น</p>
-                            <!-- <p class="mb-1 fw-bold text-dark"><i class="fa-solid fa-user-tie text-success me-2"></i>หัวหน้าฝ่าย:</p> -->
-                            <!-- <p class="text-muted ms-4 mb-0">นางสาวชัชชนก ขำมาก (นักวิชาการป่าไม้ปฏิบัติการ)</p> -->
+                <div class="col-md-4">
+                    <div class="stat-card stat-blue p-4">
+                        <div class="text-muted">พื้นที่ป่าชุมชนรวม</div>
+                        <div class="stat-number">
+                            44,193 <small class="fs-6">ไร่</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card stat-orange p-4">
+                        <div class="text-muted">คณะกรรมการจัดการป่าชุมชน</div>
+                        <div class="stat-number">
+                            2,530 <small class="fs-6">คน</small>
                         </div>
                     </div>
                 </div>
             </div>
+            <p class="small text-muted mt-2 mb-0">ข้อมูลสถิติตามภาพข้อมูลที่ได้รับ</p>
         </section>
 
-        <!-- ข้อมูลบุคลากร -->
+        <!-- โครงสร้างหน่วยงาน -->
         <section class="mb-5">
-            <h2 class="section-title"><i class="fa-solid fa-users-rectangle me-2"></i>ทำเนียบข้าราชการและบุคลากร</h2>
-            
-            <!-- ข้าราชการ -->
-            <div class="card mb-4 p-3 shadow-sm">
-                <div class="card-body">
-                    <img src="https://drive.google.com/file/d/1uNRDwVUr7DlOdPjwyjeVaPk8l2DGd9fa/view?usp=sharing" alt="ทำเนียบบุคลากร">
-                    <!-- <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-user-shield me-2"></i>ข้าราชการ (จำนวน 3 ราย)</h5>
-                    <div class="table-responsive"> -->
-                        <!-- <table class="table table-hover align-middle table-custom">
-                            <thead>
-                                <tr>
-                                    <th width="10%">ที่</th>
-                                    <th width="40%">ชื่อ - สกุล</th>
-                                    <th width="50%">ตำแหน่ง</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>1</td><td>นายวิเชียรศักดิ์ เพชรดี</td><td>ผู้อำนวยการศูนย์ป่าไม้ขอนแก่น</td></tr>
-                                <tr><td>2</td><td>นางปวริศา ดวงสาพล</td><td>นักวิชาการป่าไม้ปฏิบัติการ หัวหน้าฝ่ายบริหารงานทั่วไป</td></tr>
-                                <tr><td>3</td><td>นางสาวชัชชนก ขำมาก</td><td>นักวิชาการป่าไม้ปฏิบัติการ หัวหน้าฝ่ายประสานและส่งเสริมงานป่าไม้</td></tr>
-                            </tbody>
-                        </table> -->
-                    <!-- </div>
-                </div>
-            </div> -->
+            <h2 class="section-title">
+                <i class="fa-solid fa-sitemap me-2"></i>โครงสร้างหน่วยงาน
+            </h2>
 
-            <!-- พนักงานราชการ -->
-            <!-- <div class="card p-3 shadow-sm"> -->
-                <!-- <div class="card-body">
-                    <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-id-badge me-2"></i>พนักงานราชการ (จำนวน 15 ราย)</h5>
-                    <div class="table-responsive"> -->
-                        <!-- <table class="table table-hover align-middle table-custom">
-                            <thead>
-                                <tr>
-                                    <th width="10%">ที่</th>
-                                    <th width="40%">ชื่อ - สกุล</th>
-                                    <th width="50%">ตำแหน่ง</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>1</td><td>นางกัลยาณี ขวัญศักดิ์</td><td>นักประชาสัมพันธ์</td></tr>
-                                <tr><td>2</td><td>นางสาวรมณีย์ ทองดี</td><td>นักวิชาการแผนที่ภาพถ่าย</td></tr>
-                                <tr><td>3</td><td>นายสุภทรชัย ภัทรธรรม</td><td>ช่างสำรวจ</td></tr>
-                                <tr><td>4</td><td>นายวิทวัฒน์ สินธุรักษ์</td><td>เจ้าพนักงานคอมพิวเตอร์</td></tr>
-                                <tr><td>5</td><td>นายวิรัตน์ จันทร์สุพร</td><td>เจ้าหน้าที่ธุรการ</td></tr>
-                                <tr><td>6</td><td>นางสาวชญาณิสา ศรีคลัง</td><td>เจ้าหน้าที่ธุรการ</td></tr>
-                                <tr><td>7</td><td>นางสาวจุไรพร พลมะณี</td><td>เจ้าหน้าที่ธุรการ</td></tr>
-                                <tr><td>8</td><td>นางมนต์ทิพย์ สีเหลือง</td><td>เจ้าหน้าที่ธุรการ</td></tr>
-                                <tr><td>9</td><td>นายปฏิพัทธ์ ชาญสุวรรณ</td><td>เจ้าหน้าที่ป่าไม้</td></tr>
-                                <tr><td>10</td><td>นายธนากร สอนซุน</td><td>เจ้าหน้าที่ป่าไม้</td></tr>
-                                <tr><td>11</td><td>นางสาวดลนภัส มาตสรรพ์</td><td>เจ้าหน้าที่พิทักษ์ป่า</td></tr>
-                                <tr><td>12</td><td>นายจตุพล อุทยานสุทธิ</td><td>เจ้าหน้าที่พิทักษ์ป่า</td></tr>
-                                <tr><td>13</td><td>นายสุทธิรักษ์ สอนถม</td><td>เจ้าหน้าที่พิทักษ์ป่า</td></tr>
-                                <tr><td>14</td><td>นางสาวศิริพร หอมสมบัติ</td><td>เจ้าหน้าที่ตรวจป่า</td></tr>
-                                <tr><td>15</td><td>นางสาวอรวรรณ นพเก้า</td><td>เจ้าหน้าที่ตรวจป่า</td></tr>
-                            </tbody>
-                        </table> -->
+            <div class="text-center mb-4">
+                <div class="org-heading">สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)</div>
+                <div class="my-2 text-success">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </div>
+                <div class="org-heading">ศูนย์ป่าไม้ขอนแก่น</div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="org-unit">
+                        <h3 class="h5 fw-bold">
+                            <i class="fa-solid fa-building-user me-2"></i>ฝ่ายบริหารทั่วไป
+                        </h3>
+                        <p class="mb-0">
+                            รับผิดชอบงานสารบรรณ งานงบประมาณและการเงิน งานพัสดุ งานบุคคล
+                            และงานบริหารทั่วไปของศูนย์ป่าไม้ขอนแก่น
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="org-unit">
+                        <h3 class="h5 fw-bold">
+                            <i class="fa-solid fa-tree me-2"></i>ฝ่ายประสานและส่งเสริมงานป่าไม้
+                        </h3>
+                        <p class="mb-0">
+                            รับผิดชอบงานส่งเสริมการปลูกป่า งานป่าชุมชน งานเครือข่ายป่าไม้
+                            และการประสานงานด้านกิจการป่าไม้ในพื้นที่จังหวัดขอนแก่น
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="h5 fw-bold mb-3">หน่วยป้องกันและพัฒนาป่าไม้</h3>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3">
+                <div class="col"><div class="org-unit text-center fw-bold">ภูเวียง</div></div>
+                <div class="col"><div class="org-unit text-center fw-bold">มัญจาคีรี</div></div>
+                <div class="col"><div class="org-unit text-center fw-bold">แวงใหญ่</div></div>
+                <div class="col"><div class="org-unit text-center fw-bold">เขาสวนกวาง</div></div>
+                <div class="col"><div class="org-unit text-center fw-bold">ภูผาม่าน</div></div>
+            </div>
+        </section>
+
+        <!-- ทำเนียบบุคลากร -->
+        <section class="mb-5">
+            <h2 class="section-title">
+                <i class="fa-solid fa-users-rectangle me-2"></i>ทำเนียบข้าราชการและบุคลากร
+            </h2>
+
+            <div class="card content-card p-3">
+                <div class="card-body text-center">
+                    <p class="fw-bold text-success">
+                        บุคลากรรวม 18 ราย: ข้าราชการ 3 ราย และพนักงานราชการ 15 ราย
+                    </p>
+                    <img
+                        src="https://drive.google.com/thumbnail?id=1uNRDwVUr7DlOdPjwyjeVaPk8l2DGd9fa&sz=w1600"
+                        alt="ทำเนียบบุคลากรศูนย์ป่าไม้ขอนแก่น"
+                        class="staff-image img-fluid rounded"
+                        loading="lazy"
+                        onerror="this.onerror=null; this.style.display='none'; document.getElementById('staffImageError').classList.remove('d-none');">
+                    <div id="staffImageError" class="alert alert-warning d-none mt-3 mb-0">
+                        ไม่สามารถแสดงภาพทำเนียบบุคลากรได้
+                        โปรดตั้งค่าการแชร์ไฟล์ Google Drive เป็น “ทุกคนที่มีลิงก์”
                     </div>
                 </div>
             </div>
@@ -179,237 +377,304 @@
 
         <!-- ผลการปฏิบัติงาน -->
         <section class="mb-5">
-            <h2 class="section-title"><i class="fa-solid fa-chart-column me-2"></i>ผลการปฏิบัติงานประจำปีงบประมาณ พ.ศ. 2569</h2>
-            
+            <h2 class="section-title">
+                <i class="fa-solid fa-chart-line me-2"></i>
+                ผลการปฏิบัติงานประจำปีงบประมาณ พ.ศ. 2569
+            </h2>
+
             <div class="accordion shadow-sm" id="performanceAccordion">
-                
-                <!-- กิจกรรมที่ 1 -->
+
+                <!-- กิจกรรม 1 -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                    <h3 class="accordion-header" id="headingOne">
+                        <button class="accordion-button fw-bold text-success" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
                             1) กิจกรรมส่งเสริมการจัดการป่าชุมชน
                         </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#performanceAccordion">
+                    </h3>
+                    <div id="collapseOne" class="accordion-collapse collapse show"
+                         aria-labelledby="headingOne" data-bs-parent="#performanceAccordion">
                         <div class="accordion-body">
-                            <p><strong>รายละเอียด:</strong> การจัดทำแนวเขตและแบ่งบริเวณการใช้ประโยชน์ป่าชุมชน ระยะทาง 12 กิโลเมตร</p>
-                            <p class="mb-2 fw-bold">ป่าชุมชนเป้าหมาย จำนวน 4 หมู่บ้าน ได้แก่</p>
-                            <ul>
-                                <li>ป่าชุมชนบ้านขามเรียน (หมู่ที่ 3 ตำบลเมืองเพีย อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                                <li>ป่าชุมชนบ้านโคกกลาง (หมู่ที่ 9 ตำบลแคนเหนือ อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                                <li>ป่าชุมชนบ้านป่าปอ (หมู่ที่ 1 ตำบลป่าปอ อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                                <li>ป่าชุมชนบ้านเสือเฒ่า (หมู่ที่ 5 ตำบลป่าปอ อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                            </ul>
+                            <p>
+                                <strong>รายละเอียด:</strong>
+                                จัดทำแนวเขตและแบ่งบริเวณการใช้ประโยชน์ป่าชุมชน ระยะทาง 12 กิโลเมตร
+                            </p>
+                            <p class="fw-bold mb-2">ป่าชุมชนเป้าหมาย 4 หมู่บ้าน ได้แก่</p>
+                            <ol>
+                                <li>ป่าชุมชนบ้านขามเรียน หมู่ที่ 3 ตำบลเมืองเพีย อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านโคกกลาง หมู่ที่ 9 ตำบลแคนเหนือ อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านป่าปอ หมู่ที่ 1 ตำบลป่าปอ อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านเสือเฒ่า หมู่ที่ 5 ตำบลป่าปอ อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                            </ol>
                         </div>
                     </div>
                 </div>
 
-                <!-- กิจกรรมที่ 2 -->
+                <!-- กิจกรรม 2 -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                            2) กิจกรรมการดำเนินงานตามพระราชบัญญัติป่าชุมชน พ.ศ. 2562
+                    <h3 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed fw-bold text-success" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                aria-expanded="false" aria-controls="collapseTwo">
+                            2) กิจกรรมตามพระราชบัญญัติป่าชุมชน พ.ศ. 2562
                         </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#performanceAccordion">
+                    </h3>
+                    <div id="collapseTwo" class="accordion-collapse collapse"
+                         aria-labelledby="headingTwo" data-bs-parent="#performanceAccordion">
                         <div class="accordion-body">
                             <ul>
                                 <li>จัดประชุมคณะกรรมการป่าชุมชนประจำจังหวัด จำนวน 2 ครั้ง</li>
                                 <li>สร้างความรู้ความเข้าใจเกี่ยวกับพระราชบัญญัติป่าชุมชน พ.ศ. 2562</li>
-                                <li>กิจกรรมตรวจสอบติดตามและประเมินผลการจัดการป่าชุมชน รวม 253 ป่าชุมชน</li>
-                                <li>สำรวจและปรับปรุงแนวเขตป่าชุมชนตามแผนที่แนบท้ายโครงการป่าชุมชน (ป่าชุมชนเป้าหมาย จำนวน 11 หมู่บ้าน ระยะทาง 35 กิโลเมตร) ได้แก่:
-                                    <ol class="mt-2">
-                                        <li>ป่าชุมชนบ้านโคกล่าม (หมู่ที่ 1 ตำบลท่าวัด อำเภอแวงน้อย จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านหนองแวงห้วยทราย (หมู่ที่ 2 ตำบลละหานนา อำเภอแวงน้อย จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านขามเรียน (หมู่ที่ 3 ตำบลเมืองเพีย อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านลาน (หมู่ที่ 4-6 ตำบลบ้านลาน อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านโนนสะอาด (หมู่ที่ 14 ตำบลบ้านลาน อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านป่าปอ (หมู่ที่ 1 ตำบลป่าปอ อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านเสือเฒ่า (หมู่ที่ 5 ตำบลป่าปอ อำเภอบ้านไผ่ จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านวังม่วง (หมู่ที่ 1 ตำบลวังม่วง อำเภอเปือยน้อย จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านโสกนาค (หมู่ที่ 8 ตำบลวังม่วง อำเภอเปือยน้อย จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านหนองนกเขียน (หมู่ที่ 5 ตำบลขามป้อม อำเภอเปือยน้อย จังหวัดขอนแก่น)</li>
-                                        <li>ป่าชุมชนบ้านห้วยแร่ (หมู่ที่ 7 ตำบลวังม่วง อำเภอเปือยน้อย จังหวัดขอนแก่น)</li>
-                                    </ol>
-                                </li>
+                                <li>ตรวจสอบ ติดตาม และประเมินผลการจัดการป่าชุมชน จำนวน 253 ป่าชุมชน</li>
                             </ul>
+
+                            <p class="fw-bold">
+                                สำรวจและปรับปรุงแนวเขตป่าชุมชนตามแผนที่แนบท้ายโครงการ
+                                เป้าหมาย 11 หมู่บ้าน ระยะทาง 35 กิโลเมตร ได้แก่
+                            </p>
+                            <ol>
+                                <li>ป่าชุมชนบ้านโคกล่าม หมู่ที่ 1 ตำบลท่าวัด อำเภอแวงน้อย จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านหนองแวงห้วยทราย หมู่ที่ 2 ตำบลละหานนา อำเภอแวงน้อย จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านขามเรียน หมู่ที่ 3 ตำบลเมืองเพีย อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านลาน หมู่ที่ 4–6 ตำบลบ้านลาน อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านโนนสะอาด หมู่ที่ 14 ตำบลบ้านลาน อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านป่าปอ หมู่ที่ 1 ตำบลป่าปอ อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านเสือเฒ่า หมู่ที่ 5 ตำบลป่าปอ อำเภอบ้านไผ่ จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านวังม่วง หมู่ที่ 1 ตำบลวังม่วง อำเภอเปือยน้อย จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านโสกนาค หมู่ที่ 8 ตำบลวังม่วง อำเภอเปือยน้อย จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านหนองนกเขียน หมู่ที่ 5 ตำบลขามป้อม อำเภอเปือยน้อย จังหวัดขอนแก่น</li>
+                                <li>ป่าชุมชนบ้านห้วยแร่ หมู่ที่ 7 ตำบลวังม่วง อำเภอเปือยน้อย จังหวัดขอนแก่น</li>
+                            </ol>
                         </div>
                     </div>
                 </div>
 
-                <!-- กิจกรรมที่ 3 -->
+                <!-- กิจกรรม 3 -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                    <h3 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed fw-bold text-success" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                aria-expanded="false" aria-controls="collapseThree">
                             3) กิจกรรมเครือข่ายป่าชุมชนบริหารจัดการป่าไม้อย่างยั่งยืน
                         </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#performanceAccordion">
+                    </h3>
+                    <div id="collapseThree" class="accordion-collapse collapse"
+                         aria-labelledby="headingThree" data-bs-parent="#performanceAccordion">
                         <div class="accordion-body">
-                            <p>รับสมัครสมาชิกรายบุคคล จำนวน 25 คน เพื่อสร้างเครือข่ายการมีส่วนร่วมในการอนุรักษ์ทรัพยากรป่าไม้</p>
+                            รับสมัครสมาชิกรายบุคคล จำนวน 25 คน
+                            เพื่อส่งเสริมเครือข่ายการมีส่วนร่วมในการจัดการป่าไม้อย่างยั่งยืน
                         </div>
                     </div>
                 </div>
 
-                <!-- กิจกรรมที่ 4 -->
+                <!-- กิจกรรม 4 -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingFour">
-                        <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
-                            4) กิจกรรมบริหารจัดการป่าชุมชนเพื่อพัฒนาคุณภาพชีวิต (เงินอุดหนุน ป่าชุมชนละ 70,000 บาท)
+                    <h3 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed fw-bold text-success" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                aria-expanded="false" aria-controls="collapseFour">
+                            4) กิจกรรมบริหารจัดการป่าชุมชนเพื่อพัฒนาคุณภาพชีวิต
                         </button>
-                    </h2>
-                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#performanceAccordion">
+                    </h3>
+                    <div id="collapseFour" class="accordion-collapse collapse"
+                         aria-labelledby="headingFour" data-bs-parent="#performanceAccordion">
                         <div class="accordion-body">
-                            <p class="fw-bold text-dark">ป่าชุมชนเป้าหมาย จำนวน 2 หมู่บ้าน ได้รับงบสนับสนุน:</p>
-                            
+                            <p>
+                                ป่าชุมชนเป้าหมาย 2 แห่ง ได้รับเงินอุดหนุนการบริหารจัดการ
+                                ป่าชุมชนละ 70,000 บาท
+                            </p>
+
                             <div class="card bg-light p-3 mb-3">
-                                <h6 class="text-success fw-bold">1. ป่าชุมชนบ้านคอกคี (หมู่ที่ 9 ตำบลบัวใหญ่ อำเภอน้ำพอง จังหวัดขอนแก่น)</h6>
-                                <p class="mb-1 fw-bold text-muted small">กิจกรรมด้านการอนุรักษ์:</p>
-                                <ul class="small mb-2">
-                                    <li>ลาดตะเวนป้องกันรักษาป่า 8 ครั้ง (จำนวนเงิน 36,000 บาท)</li>
-                                    <li>ทำแนวกันไฟ 3 กิโลเมตร (จำนวนเงิน 15,000 บาท)</li>
-                                    <li>อบรมศึกษาดูงาน 1 ครั้ง (จำนวนเงิน 5,000 บาท)</li>
-                                    <li>กิจกรรมบวชป่า 1 ครั้ง (จำนวนเงิน 5,000 บาท)</li>
+                                <h4 class="h6 text-success fw-bold">
+                                    1. ป่าชุมชนบ้านคอกคี หมู่ที่ 9 ตำบลบัวใหญ่ อำเภอน้ำพอง จังหวัดขอนแก่น
+                                </h4>
+                                <p class="small fw-bold mb-1">กิจกรรมด้านการอนุรักษ์</p>
+                                <ul class="small">
+                                    <li>ลาดตระเวนป้องกันรักษาป่า 8 ครั้ง งบประมาณ 36,000 บาท</li>
+                                    <li>ทำแนวกันไฟ 3 กิโลเมตร งบประมาณ 15,000 บาท</li>
+                                    <li>อบรมศึกษาดูงาน 1 ครั้ง งบประมาณ 5,000 บาท</li>
+                                    <li>กิจกรรมบวชป่า 1 ครั้ง งบประมาณ 5,000 บาท</li>
                                 </ul>
-                                <p class="mb-1 fw-bold text-muted small">กิจกรรมด้านการพัฒนา:</p>
+                                <p class="small fw-bold mb-1">กิจกรรมด้านการพัฒนา</p>
                                 <ul class="small mb-0">
-                                    <li>ซื้อเครื่องเป่าลมแบบเครื่องยนต์ 3 เครื่อง (จำนวนเงิน 9,000 บาท)</li>
+                                    <li>ซื้อเครื่องเป่าลมแบบเครื่องยนต์ 3 เครื่อง งบประมาณ 9,000 บาท</li>
                                 </ul>
                             </div>
 
                             <div class="card bg-light p-3">
-                                <h6 class="text-success fw-bold">2. ป่าชุมชนบ้านหัวบึง (หมู่ที่ 9 ตำบลทรายมูล อำเภอน้ำพอง จังหวัดขอนแก่น)</h6>
-                                <p class="mb-1 fw-bold text-muted small">กิจกรรมด้านการอนุรักษ์:</p>
-                                <ul class="small mb-2">
-                                    <li>ลาดตะเวนป้องกันรักษาป่า 8 ครั้ง (จำนวนเงิน 36,000 บาท)</li>
-                                    <li>ทำแนวกันไฟ 2 กิโลเมตร (จำนวนเงิน 10,000 บาท)</li>
-                                    <li>อบรมศึกษาดูงาน 1 ครั้ง (จำนวนเงิน 5,000 บาท)</li>
+                                <h4 class="h6 text-success fw-bold">
+                                    2. ป่าชุมชนบ้านหัวบึง หมู่ที่ 9 ตำบลทรายมูล อำเภอน้ำพอง จังหวัดขอนแก่น
+                                </h4>
+                                <p class="small fw-bold mb-1">กิจกรรมด้านการอนุรักษ์</p>
+                                <ul class="small">
+                                    <li>ลาดตระเวนป้องกันรักษาป่า 8 ครั้ง งบประมาณ 36,000 บาท</li>
+                                    <li>ทำแนวกันไฟ 2 กิโลเมตร งบประมาณ 10,000 บาท</li>
+                                    <li>อบรมศึกษาดูงาน 1 ครั้ง งบประมาณ 5,000 บาท</li>
                                 </ul>
-                                <p class="mb-1 fw-bold text-muted small">กิจกรรมด้านการพัฒนา:</p>
+                                <p class="small fw-bold mb-1">กิจกรรมด้านการพัฒนา</p>
                                 <ul class="small mb-0">
-                                    <li>ปรับปรุงเส้นทางเดินป่า ติดป้ายพันธุ์ไม้ ป้ายประวัติป่า (จำนวนเงิน 19,000 บาท) <br><em>(จุดเด่น: มีแหล่งน้ำแร่ และมีต้นมะเดื่อกวาง/ต้นไฮหิน)</em></li>
+                                    <li>
+                                        ปรับปรุงเส้นทางเดินป่า ติดป้ายพันธุ์ไม้และป้ายประวัติป่า
+                                        งบประมาณ 19,000 บาท
+                                    </li>
                                 </ul>
+                                <p class="small text-muted mt-2 mb-0">
+                                    จุดเด่นของป่าชุมชน: แหล่งน้ำแร่และต้นมะเดื่อกวาง (ต้นไฮหิน)
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- กิจกรรมที่ 5 & 6 -->
+                <!-- กิจกรรม 5 -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingFive">
-                        <button class="accordion-button collapsed fw-bold text-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
-                            5) กิจกรรมประกวดป่าชุมชน และ 6) คณะกรรมการควบคุมและรักษาป่าสงวนแห่งชาติ
+                    <h3 class="accordion-header" id="headingFive">
+                        <button class="accordion-button collapsed fw-bold text-success" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseFive"
+                                aria-expanded="false" aria-controls="collapseFive">
+                            5) กิจกรรมการประกวดป่าชุมชน “คนรักษ์ป่า ป่ารักชุมชน”
                         </button>
-                    </h2>
-                    <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#performanceAccordion">
+                    </h3>
+                    <div id="collapseFive" class="accordion-collapse collapse"
+                         aria-labelledby="headingFive" data-bs-parent="#performanceAccordion">
                         <div class="accordion-body">
-                            <ul>
-                                <li><strong>กิจกรรมการประกวดป่าชุมชน โครงการ “คนรักษ์ป่า ป่ารักชุมชน”:</strong> ดำเนินการจัดทำวีดิทัศน์ให้กับชุมชนเพื่อส่งเข้าประกวด</li>
-                                <li><strong>กิจกรรมบริหารงานคณะกรรมการควบคุมและรักษาป่าสงวนแห่งชาติประจำจังหวัด:</strong> จัดประชุมคณะกรรมการฯ จำนวน 1 ครั้ง</li>
-                            </ul>
+                            จัดทำวีดิทัศน์ให้กับชุมชนเพื่อใช้ในกิจกรรมการประกวดป่าชุมชน
                         </div>
                     </div>
                 </div>
 
+                <!-- กิจกรรม 6 -->
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingSix">
+                        <button class="accordion-button collapsed fw-bold text-success" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseSix"
+                                aria-expanded="false" aria-controls="collapseSix">
+                            6) กิจกรรมคณะกรรมการควบคุมและรักษาป่าสงวนแห่งชาติประจำจังหวัด
+                        </button>
+                    </h3>
+                    <div id="collapseSix" class="accordion-collapse collapse"
+                         aria-labelledby="headingSix" data-bs-parent="#performanceAccordion">
+                        <div class="accordion-body">
+                            จัดประชุมคณะกรรมการควบคุมและรักษาป่าสงวนแห่งชาติประจำจังหวัด จำนวน 1 ครั้ง
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- เงินนอกงบประมาณ -->
+        <!-- โครงการเงินนอกงบประมาณ -->
         <section class="mb-5">
-            <h2 class="section-title"><i class="fa-solid fa-hand-holding-dollar me-2"></i>โครงการเงินนอกงบประมาณ</h2>
-            <div class="row g-4">
-                <div class="col-md-12">
-                    <div class="card p-3 shadow-sm border-start border-warning border-4">
-                        <div class="card-body">
-                            <ul class="mb-0">
-                                <li class="mb-3">
-                                    <strong>โครงการอนุรักษ์ การฟื้นฟู และการจัดการป่าชุมชน 5 แห่ง (จังหวัดสระแก้ว นครราชสีมา ขอนแก่น) เพื่อลดก๊าซเรือนกระจก</strong> 
-                                    <br><span class="text-muted small">สนับสนุนโดย บริษัท ราช กรุ๊ป จำกัด (มหาชน) (โครงการปี 66) | พื้นที่จังหวัดขอนแก่น จำนวน 3 หมู่บ้าน ได้แก่ ป่าชุมชนบ้านห้วยโจด, ป่าชุมชนบ้านป่าพร้าว และป่าชุมชนบ้านโสกใหญ่</span>
-                                </li>
-                                <li class="mb-3">
-                                    <strong>โครงการอนุรักษ์ การฟื้นฟู และการจัดการป่าชุมชน 1 แห่ง (ป่าชุมชนบ้านโสกส้มกบ จังหวัดขอนแก่น) เพื่อลดก๊าซเรือนกระจก</strong> 
-                                    <br><span class="text-muted small">สนับสนุนโดย บริษัท ปตท. สำรวจและผลิตปิโตรเลียม จำกัด (มหาชน) เนื้อที่ 600 ไร่</span>
-                                </li>
-                                <li>
-                                    <strong>โครงการเพื่อการส่งเสริมการจัดการป่าชุมชนสู่ความยั่งยืน</strong> 
-                                    <br><span class="text-muted small">สนับสนุนโดยกองทุนสิ่งแวดล้อม พื้นที่ดำเนินการป่าชุมชนบ้านกุดดุก หมู่ที่ 3 ตำบลทรายมูล อำเภอน้ำพอง จังหวัดขอนแก่น งบประมาณ 500,000 บาท</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+            <h2 class="section-title">
+                <i class="fa-solid fa-hand-holding-dollar me-2"></i>โครงการเงินนอกงบประมาณ
+            </h2>
+
+            <div class="card content-card project-card p-3">
+                <div class="card-body">
+                    <ol class="mb-0">
+                        <li class="mb-3">
+                            <strong>
+                                โครงการอนุรักษ์ การฟื้นฟู และการจัดการป่าชุมชน 5 แห่ง
+                                ในจังหวัดสระแก้ว นครราชสีมา และขอนแก่น เพื่อลดก๊าซเรือนกระจก
+                            </strong>
+                            <div class="text-muted small mt-1">
+                                สนับสนุนโดย บริษัท ราช กรุ๊ป จำกัด (มหาชน) (โครงการปี 2566)
+                                พื้นที่ดำเนินโครงการในจังหวัดขอนแก่น 3 หมู่บ้าน ได้แก่
+                                ป่าชุมชนบ้านห้วยโจด ป่าชุมชนบ้านป่าพร้าว และป่าชุมชนบ้านโสกใหญ่
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <strong>
+                                โครงการอนุรักษ์ การฟื้นฟู และการจัดการป่าชุมชน 1 แห่ง
+                                ป่าชุมชนบ้านโสกส้มกบ จังหวัดขอนแก่น เพื่อลดก๊าซเรือนกระจก
+                            </strong>
+                            <div class="text-muted small mt-1">
+                                สนับสนุนโดย บริษัท ปตท. สำรวจและผลิตปิโตรเลียม จำกัด (มหาชน)
+                                พื้นที่ดำเนินโครงการ 600 ไร่
+                            </div>
+                        </li>
+                        <li>
+                            <strong>โครงการเพื่อการส่งเสริมการจัดการป่าชุมชนสู่ความยั่งยืน</strong>
+                            <div class="text-muted small mt-1">
+                                สนับสนุนโดยกองทุนสิ่งแวดล้อม ดำเนินการที่ป่าชุมชนบ้านกุดดุก
+                                หมู่ที่ 3 ตำบลทรายมูล อำเภอน้ำพอง จังหวัดขอนแก่น
+                                งบประมาณ 500,000 บาท
+                            </div>
+                        </li>
+                    </ol>
                 </div>
             </div>
         </section>
-
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-dark text-white pt-5 pb-3 mt-5 border-top border-success border-4">
         <div class="container">
             <div class="row g-4 align-items-center">
-                <div class="col-lg-5 col-md-6 mb-3 mb-lg-0">
-                    <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-tree me-2"></i>ศูนย์ป่าไม้ขอนแก่น</h5>
-                    <p class="text-white small mb-2"><i class="fa-solid fa-location-dot me-2 text-success"></i> เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น</p>
-                    <p class="text-white small mb-2"><i class="fa-solid fa-phone me-2 text-success"></i> โทรศัพท์ / โทรสาร: 043-330381 - 115</p>
-                    <p class="text-white small mb-3"><i class="fa-solid fa-envelope me-2 text-success"></i> อีเมล: Rfd7kk01@gmail.com</p>
-                    <a href="https://www.facebook.com/profile.php?id=*************05" target="_blank" class="btn btn-outline-light btn-sm">
-                        <i class="fa-brands fa-facebook text-primary me-1"></i> ติดตาม Facebook เพจ
+                <div class="col-lg-5 col-md-6">
+                    <h2 class="h5 fw-bold text-success mb-3">
+                        <i class="fa-solid fa-tree me-2"></i>ศูนย์ป่าไม้ขอนแก่น
+                    </h2>
+                    <p class="small mb-2">
+                        <i class="fa-solid fa-location-dot me-2 text-success"></i>
+                        เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น
+                    </p>
+                    <p class="small mb-2">
+                        <i class="fa-solid fa-phone me-2 text-success"></i>
+                        โทรศัพท์: 043-330-381-2 ต่อ 115
+                    </p>
+                    <p class="small mb-3">
+                        <i class="fa-solid fa-envelope me-2 text-success"></i>
+                        ติดต่อศูนย์ป่าไม้ขอนแก่น
+                    </p>
+                    <a href="https://forest.go.th" target="_blank" rel="noopener"
+                       class="btn btn-outline-light btn-sm">
+                        <i class="fa-solid fa-globe me-1"></i>เว็บไซต์กรมป่าไม้
                     </a>
                 </div>
-                
-                <div class="col-lg-2 col-md-6 mb-3 mb-lg-0 text-center">
-                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block px-3">
-                        <div class="text-white-50 small mb-2" style="font-size: 0.8rem;"><i class="fa-solid fa-chart-line me-1 text-success"></i> สถิติผู้เข้าชม</div>
-                        <div align="center">
-                            <a href='https://www.counter12.com'><img src='https://www.counter12.com/img-Z4wA8Ddb598ba92C-11.gif' border='0' alt='conter12'></a>
-                            <script type='text/javascript' src='https://www.counter12.com/ad.js?id=Z4wA8Ddb598ba92C'></script>
+
+                <div class="col-lg-2 col-md-6 text-center footer-stat">
+                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block">
+                        <div class="text-white-50 small mb-2">
+                            <i class="fa-solid fa-chart-line me-1 text-success"></i>สถิติผู้เข้าชม
+                        </div>
+                        <div>
+                            <a href="https://www.counter12.com" target="_blank" rel="noopener">
+                                <img src="https://www.counter12.com/img-Z4wA8Ddb598ba92C-11.gif"
+                                     alt="สถิติผู้เข้าชมเว็บไซต์"
+                                     loading="lazy">
+                            </a>
+                            <script src="https://www.counter12.com/ad.js?id=Z4wA8Ddb598ba92C"></script>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-5 col-md-12 text-lg-end text-md-start">
-                    <h6 class="fw-bold text-white mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h6>
+                <div class="col-lg-5 col-md-12 text-lg-end">
+                    <h2 class="h6 fw-bold mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h2>
                     <div class="d-flex flex-column gap-2">
-                        <a href="https://forest.go.th" target="_blank" class="text-decoration-none text-white small"><i class="fa-solid fa-angle-right me-1 text-success"></i> กรมป่าไม้</a>
-                        <a href="https://www.forest.go.th/khonkaen7" class="text-decoration-none text-white small"><i class="fa-solid fa-angle-right me-1 text-success"></i> สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)</a>
+                        <a href="https://forest.go.th" target="_blank" rel="noopener"
+                           class="text-decoration-none text-white small">
+                            <i class="fa-solid fa-angle-right me-1 text-success"></i>กรมป่าไม้
+                        </a>
+                        <a href="https://www.forest.go.th/khonkaen7" target="_blank" rel="noopener"
+                           class="text-decoration-none text-white small">
+                            <i class="fa-solid fa-angle-right me-1 text-success"></i>
+                            สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)
+                        </a>
                     </div>
                 </div>
             </div>
-            
+
             <hr class="border-secondary my-4">
-            
-            <div class="row text-center">
-                <div class="col">
-                    <p class="text-white small mb-0">© 2026 KhonKaen Forest Office. All Rights Reserved. By Witthawat</p>
-                </div>
+
+            <div class="text-center">
+                <p class="small mb-0">
+                    © 2026 ศูนย์ป่าไม้ขอนแก่น
+                </p>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // เอฟเฟกต์หิมะตก
-        window.addEventListener('DOMContentLoaded', () => {
-            const snowCount = 35;
-            for (let i = 0; i < snowCount; i++) {
-                let star = document.createElement('div');
-                star.className = 'snowflake';
-                star.innerHTML = '❄';
-                let startLeft = Math.random() * window.innerWidth;
-                let startOpacity = Math.random() * 0.7 + 0.3;
-                let size = Math.random() * 10 + 10;
-                let duration = Math.random() * 10 + 5;
-                let delay = Math.random() * 10;
-
-                star.style.left = startLeft + 'px';
-                star.style.opacity = startOpacity;
-                star.style.fontSize = size + 'px';
-                star.style.animationDuration = duration + 's';
-                star.style.animationDelay = delay + 's';
-                
-                document.body.appendChild(star);
-            }
-        });
-    </script>
 </body>
 </html>
