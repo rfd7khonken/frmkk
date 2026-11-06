@@ -229,6 +229,12 @@
         <section id="news" class="mb-5">
             <h2 class="text-success border-bottom pb-2 mb-4"><i class="fa-solid fa-bullhorn me-2"></i>ข่าวสารและกิจกรรม</h2>
             <div class="row" id="newsContainer"><div class="text-center text-muted py-4">กำลังโหลดข้อมูลข่าวสาร...</div></div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+    <small id="newsPageInfo" class="text-muted"></small>
+    <nav aria-label="แบ่งหน้าข่าว">
+        <ul class="pagination pagination-sm mb-0" id="newsPagination"></ul>
+    </nav>
+</div>
         </section>
 
         <section id="documents" class="mb-5">
@@ -347,7 +353,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbzn1IbL2o832StUyTrLyGDTt0DSYM-2gY3VWsSZwfxk4gnJ7c1NeF-lZbLlvQ5voTzXnQ/exec";
-        let globalNewsList = [];
+        const NEWS_PER_PAGE = 10;
+            let currentNewsPage = 1;
+            let globalNewsList = [];
+
         let detailModal, popupModal;
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -436,68 +445,175 @@
         }
 
         function loadNews() {
-            fetch(API_URL + "?action=getNews")
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === "success" && data.data.length > 0) {
-                        globalNewsList = data.data.sort((a, b) => {
-                            let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
-                            let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
-                            if (orderA !== orderB) {
-                                return orderA - orderB;
-                            }
-                            return new Date(b.created_at) - new Date(a.created_at);
-                        });
+    fetch(API_URL + "?action=getNews")
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success" && data.data && data.data.length > 0) {
+                globalNewsList = data.data.sort((a, b) => {
+                    const orderA = a.sort_order !== "" && !isNaN(a.sort_order)
+                        ? Number(a.sort_order) : 999;
+                    const orderB = b.sort_order !== "" && !isNaN(b.sort_order)
+                        ? Number(b.sort_order) : 999;
 
-                        let html = "";
-                        globalNewsList.forEach((item) => {
-                            let images = getImagesArray(item.image_url);
-                            let defaultImg = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
-                            let imgSrc = images.length > 0 ? images[0] : defaultImg;
-                            
-                            html += `
-                                <div class="col-md-4 mb-4">
-                                    <div class="card h-100">
-                                        <img src="${imgSrc}" class="card-img-top news-img" alt="ภาพข่าว" onclick="openNewsDetail('${item.news_id}')" onerror="this.src='${defaultImg}'">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-success" style="cursor:pointer;" onclick="openNewsDetail('${item.news_id}')">${item.title}</h5>
-                                            <p class="card-text text-muted small">${item.content.substring(0, 90)}...</p>
-                                        </div>
-                                        <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center text-muted small">
-                                            <span><i class="fa-solid fa-calendar-days me-1"></i> ${new Date(item.created_at).toLocaleDateString('th-TH')}</span>
-                                            <button class="btn btn-sm btn-outline-success" onclick="openNewsDetail('${item.news_id}')">อ่านเพิ่มเติม</button>
-                                        </div>
-                                    </div>
-                                </div>`;
-                        });
-                        document.getElementById('newsContainer').innerHTML = html;
-
-                        let latestNews = globalNewsList[0];
-                        let popupImages = getImagesArray(latestNews.image_url);
-
-                        document.getElementById('popupNewsTitle').innerText = latestNews.title;
-                        document.getElementById('popupNewsContent').innerText = latestNews.content.substring(0, 150) + "...";
-                        
-                        let pImg = document.getElementById('popupNewsImg');
-                        if(popupImages.length > 0) {
-                            pImg.src = popupImages[0];
-                            pImg.style.display = "block";
-                            pImg.onerror = function() { this.style.display = 'none'; };
-                        } else {
-                            pImg.style.display = "none";
-                        }
-
-                        document.getElementById('popupDetailBtn').onclick = function() {
-                            popupModal.hide();
-                            openNewsDetail(latestNews.news_id);
-                        };
-
-                        popupModal.show();
-                    } else {
-                        document.getElementById('newsContainer').innerHTML = '<div class="text-center text-muted">ไม่พบข้อมูลข่าวสาร</div>';
-                    }
+                    if (orderA !== orderB) return orderA - orderB;
+                    return new Date(b.created_at) - new Date(a.created_at);
                 });
-        }
+
+                currentNewsPage = 1;
+                renderNewsPage();
+
+                // แสดงข่าวลำดับแรกในหน้าต่างประกาศ
+                const latestNews = globalNewsList[0];
+                const popupImages = getImagesArray(latestNews.image_url);
+
+                document.getElementById("popupNewsTitle").innerText = latestNews.title || "";
+                document.getElementById("popupNewsContent").innerText =
+                    (latestNews.content || "").substring(0, 150) + "...";
+
+                const popupImage = document.getElementById("popupNewsImg");
+
+                if (popupImages.length > 0) {
+                    popupImage.src = popupImages[0];
+                    popupImage.style.display = "block";
+                    popupImage.onerror = function () {
+                        this.style.display = "none";
+                    };
+                } else {
+                    popupImage.style.display = "none";
+                }
+
+                document.getElementById("popupDetailBtn").onclick = function () {
+                    popupModal.hide();
+                    openNewsDetail(latestNews.news_id);
+                };
+
+                popupModal.show();
+            } else {
+                document.getElementById("newsContainer").innerHTML =
+                    '<div class="col-12 text-center text-muted py-4">ไม่พบข้อมูลข่าวสาร</div>';
+                document.getElementById("newsPagination").innerHTML = "";
+                document.getElementById("newsPageInfo").textContent = "";
+            }
+        })
+        .catch(error => {
+            console.error("โหลดข่าวไม่สำเร็จ:", error);
+            document.getElementById("newsContainer").innerHTML =
+                '<div class="col-12 text-center text-danger py-4">เกิดข้อผิดพลาดในการโหลดข่าวสาร</div>';
+            document.getElementById("newsPagination").innerHTML = "";
+            document.getElementById("newsPageInfo").textContent = "";
+        });
+}
+
+function renderNewsPage() {
+    const totalNews = globalNewsList.length;
+    const totalPages = Math.ceil(totalNews / NEWS_PER_PAGE);
+    const startIndex = (currentNewsPage - 1) * NEWS_PER_PAGE;
+    const pageNews = globalNewsList.slice(startIndex, startIndex + NEWS_PER_PAGE);
+
+    const defaultImg =
+        "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
+
+    let html = "";
+
+    pageNews.forEach(item => {
+        const images = getImagesArray(item.image_url);
+        const imgSrc = images.length > 0 ? images[0] : defaultImg;
+        const content = item.content || "";
+        const shortContent = content.length > 90
+            ? content.substring(0, 90) + "..."
+            : content;
+
+        html += `
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="${imgSrc}"
+                         class="card-img-top news-img"
+                         alt="ภาพข่าว"
+                         onclick="openNewsDetail('${item.news_id}')"
+                         onerror="this.src='${defaultImg}'">
+
+                    <div class="card-body">
+                        <h5 class="card-title text-success"
+                            style="cursor:pointer"
+                            onclick="openNewsDetail('${item.news_id}')">
+                            ${item.title || ""}
+                        </h5>
+                        <p class="card-text text-muted small">${shortContent}</p>
+                    </div>
+
+                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center text-muted small">
+                        <span>
+                            <i class="fa-solid fa-calendar-days me-1"></i>
+                            ${item.created_at
+                                ? new Date(item.created_at).toLocaleDateString("th-TH")
+                                : "-"}
+                        </span>
+                        <button class="btn btn-sm btn-outline-success"
+                                onclick="openNewsDetail('${item.news_id}')">
+                            อ่านเพิ่มเติม
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+    });
+
+    document.getElementById("newsContainer").innerHTML = html;
+
+    const firstItem = startIndex + 1;
+    const lastItem = Math.min(startIndex + NEWS_PER_PAGE, totalNews);
+    document.getElementById("newsPageInfo").textContent =
+        `แสดงข่าว ${firstItem}–${lastItem} จากทั้งหมด ${totalNews} ข่าว`;
+
+    renderNewsPagination(totalPages);
+}
+
+function renderNewsPagination(totalPages) {
+    const pagination = document.getElementById("newsPagination");
+
+    if (totalPages <= 1) {
+        pagination.innerHTML = "";
+        return;
+    }
+
+    let html = `
+        <li class="page-item ${currentNewsPage === 1 ? "disabled" : ""}">
+            <button class="page-link" onclick="changeNewsPage(${currentNewsPage - 1})">
+                ก่อนหน้า
+            </button>
+        </li>`;
+
+    for (let page = 1; page <= totalPages; page++) {
+        html += `
+            <li class="page-item ${page === currentNewsPage ? "active" : ""}">
+                <button class="page-link" onclick="changeNewsPage(${page})">
+                    ${page}
+                </button>
+            </li>`;
+    }
+
+    html += `
+        <li class="page-item ${currentNewsPage === totalPages ? "disabled" : ""}">
+            <button class="page-link" onclick="changeNewsPage(${currentNewsPage + 1})">
+                ถัดไป
+            </button>
+        </li>`;
+
+    pagination.innerHTML = html;
+}
+
+function changeNewsPage(page) {
+    const totalPages = Math.ceil(globalNewsList.length / NEWS_PER_PAGE);
+
+    if (page < 1 || page > totalPages) return;
+
+    currentNewsPage = page;
+    renderNewsPage();
+
+    document.getElementById("news").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
 
         function openNewsDetail(newsId) {
             let item = globalNewsList.find(n => n.news_id === newsId);
