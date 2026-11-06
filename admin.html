@@ -193,6 +193,12 @@
                         <button class="btn btn-success" onclick="openAddNewsModal()">
                             <i class="fa-solid fa-plus me-1"></i>เพิ่มข่าวใหม่
                         </button>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+    <small id="newsPageInfo" class="text-muted"></small>
+    <nav aria-label="แบ่งหน้าข่าว">
+        <ul class="pagination pagination-sm mb-0" id="newsPagination"></ul>
+    </nav>
+</div>
                     </div>
 
                     <div class="card p-3 shadow-sm">
@@ -406,7 +412,8 @@
         let alertModalObj;
         let allSlideData = [];
         let allNewsData = [];
-
+            const NEWS_PER_PAGE = 10;
+        let currentNewsPage = 1;
         try {
             currentUser = JSON.parse(localStorage.getItem("user"));
         } catch (error) {
@@ -612,60 +619,154 @@
             }
         }
 
-        async function loadAdminNews() {
-            try {
-                const result = await apiGet("getNews");
+        async function loadAdminNews(resetPage = false) {
+    try {
+        const result = await apiGet("getNews");
 
-                if (result.status !== "success") {
-                    throw new Error(result.message || "โหลดข่าวไม่สำเร็จ");
-                }
-
-                allNewsData = (result.data || []).sort(function (a, b) {
-                    return (Number(a.sort_order) || 999) - (Number(b.sort_order) || 999);
-                });
-
-                document.getElementById("statNewsCount").textContent = allNewsData.length;
-
-                if (allNewsData.length === 0) {
-                    setLoadingRow("adminNewsTable", 4, "ยังไม่มีข่าวสาร");
-                    return;
-                }
-
-                let html = "";
-
-                allNewsData.forEach(function (item) {
-                    const id = String(item.news_id || "");
-
-                    html += `
-                        <tr>
-                            <td>
-                                <span class="badge bg-secondary me-2">
-                                    ลำดับ: ${escapeHtml(item.sort_order || "-")}
-                                </span>
-                                ${escapeHtml(item.title || "")}
-                            </td>
-                            <td>${escapeHtml(item.author || "-")}</td>
-                            <td>${escapeHtml(formatThaiDate(item.created_at))}</td>
-                            <td class="text-center text-nowrap">
-                                <button onclick="openEditNewsModal('${escapeHtml(id)}')"
-                                        class="btn btn-sm btn-warning me-1" aria-label="แก้ไข">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button onclick="deleteItem('News','${escapeHtml(id)}')"
-                                        class="btn btn-sm btn-danger" aria-label="ลบ">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>`;
-                });
-
-                document.getElementById("adminNewsTable").innerHTML = html;
-            } catch (error) {
-                document.getElementById("statNewsCount").textContent = "0";
-                setLoadingRow("adminNewsTable", 4, "เกิดข้อผิดพลาดในการโหลดข่าว");
-                console.error(error);
-            }
+        if (result.status !== "success") {
+            throw new Error(result.message || "โหลดข่าวไม่สำเร็จ");
         }
+
+        allNewsData = (result.data || []).sort(function (a, b) {
+            return (Number(a.sort_order) || 999) - (Number(b.sort_order) || 999);
+        });
+
+        document.getElementById("statNewsCount").textContent = allNewsData.length;
+
+        if (resetPage) currentNewsPage = 1;
+
+        const totalPages = Math.max(1, Math.ceil(allNewsData.length / NEWS_PER_PAGE));
+        currentNewsPage = Math.min(currentNewsPage, totalPages);
+
+        renderNewsPage();
+    } catch (error) {
+        document.getElementById("statNewsCount").textContent = "0";
+        setLoadingRow("adminNewsTable", 4, "เกิดข้อผิดพลาดในการโหลดข่าว");
+        document.getElementById("newsPagination").innerHTML = "";
+        document.getElementById("newsPageInfo").textContent = "";
+        console.error(error);
+    }
+}
+
+function renderNewsPage() {
+    const tbody = document.getElementById("adminNewsTable");
+    const pagination = document.getElementById("newsPagination");
+    const pageInfo = document.getElementById("newsPageInfo");
+    const totalNews = allNewsData.length;
+    const totalPages = Math.max(1, Math.ceil(totalNews / NEWS_PER_PAGE));
+
+    if (totalNews === 0) {
+        setLoadingRow("adminNewsTable", 4, "ยังไม่มีข่าวสาร");
+        pagination.innerHTML = "";
+        pageInfo.textContent = "ไม่มีข่าว";
+        return;
+    }
+
+    currentNewsPage = Math.min(Math.max(currentNewsPage, 1), totalPages);
+
+    const startIndex = (currentNewsPage - 1) * NEWS_PER_PAGE;
+    const pageNews = allNewsData.slice(startIndex, startIndex + NEWS_PER_PAGE);
+
+    let html = "";
+
+    pageNews.forEach(function (item) {
+        const id = String(item.news_id || "");
+
+        html += `
+            <tr>
+                <td>
+                    <span class="badge bg-secondary me-2">
+                        ลำดับ: ${escapeHtml(item.sort_order || "-")}
+                    </span>
+                    ${escapeHtml(item.title || "")}
+                </td>
+                <td>${escapeHtml(item.author || "-")}</td>
+                <td>${escapeHtml(formatThaiDate(item.created_at))}</td>
+                <td class="text-center text-nowrap">
+                    <button onclick="openEditNewsModal('${escapeHtml(id)}')"
+                            class="btn btn-sm btn-warning me-1">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button onclick="deleteItem('News','${escapeHtml(id)}')"
+                            class="btn btn-sm btn-danger">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>`;
+    });
+
+    tbody.innerHTML = html;
+
+    const firstItem = startIndex + 1;
+    const lastItem = Math.min(startIndex + NEWS_PER_PAGE, totalNews);
+    pageInfo.textContent = `แสดงข่าว ${firstItem}–${lastItem} จากทั้งหมด ${totalNews} ข่าว`;
+
+    if (totalPages <= 1) {
+        pagination.innerHTML = "";
+        return;
+    }
+
+    let pages = [1];
+
+    for (
+        let page = Math.max(2, currentNewsPage - 2);
+        page <= Math.min(totalPages - 1, currentNewsPage + 2);
+        page++
+    ) {
+        pages.push(page);
+    }
+
+    pages.push(totalPages);
+    pages = [...new Set(pages)];
+
+    let paginationHtml = `
+        <li class="page-item ${currentNewsPage === 1 ? "disabled" : ""}">
+            <button class="page-link" onclick="changeNewsPage(${currentNewsPage - 1})">
+                ก่อนหน้า
+            </button>
+        </li>`;
+
+    let previousPage = 0;
+
+    pages.forEach(function (page) {
+        if (previousPage && page - previousPage > 1) {
+            paginationHtml += `
+                <li class="page-item disabled">
+                    <span class="page-link">…</span>
+                </li>`;
+        }
+
+        paginationHtml += `
+            <li class="page-item ${page === currentNewsPage ? "active" : ""}">
+                <button class="page-link" onclick="changeNewsPage(${page})">${page}</button>
+            </li>`;
+
+        previousPage = page;
+    });
+
+    paginationHtml += `
+        <li class="page-item ${currentNewsPage === totalPages ? "disabled" : ""}">
+            <button class="page-link" onclick="changeNewsPage(${currentNewsPage + 1})">
+                ถัดไป
+            </button>
+        </li>`;
+
+    pagination.innerHTML = paginationHtml;
+}
+
+function changeNewsPage(page) {
+    const totalPages = Math.ceil(allNewsData.length / NEWS_PER_PAGE);
+
+    if (page < 1 || page > totalPages) return;
+
+    currentNewsPage = page;
+    renderNewsPage();
+
+    document.getElementById("tab-news").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
 
         async function loadAdminDocs() {
             try {
