@@ -229,7 +229,15 @@
                 </div>
                 <div class="col-md-4">
                     <label for="newsCategory" class="form-label"></label>
-                    <select id="newsCategory" class="form-select">
+                    <div class="mb-3">
+    <label for="newsSearch" class="form-label">ค้นหาข่าว</label>
+    <input
+        type="search"
+        id="newsSearch"
+        class="form-control"
+        placeholder="ค้นหาจากชื่อข่าว เนื้อหา หรือผู้เผยแพร่"
+        autocomplete="off">
+</div>
                         <option value="">ทุกหมวดหมู่</option>
                     </select>
                 </div>
@@ -488,7 +496,7 @@
             popupModal = new bootstrap.Modal(document.getElementById("welcomePopupModal"));
 
             document.getElementById("newsSearch").addEventListener("input", applyNewsFilters);
-            document.getElementById("newsCategory").addEventListener("change", applyNewsFilters);
+            
             document.getElementById("documentSearch").addEventListener("input", renderDocuments);
 
             document.getElementById("previousNewsBtn").addEventListener("click", () => moveNews(-1));
@@ -664,7 +672,6 @@
                         return bDate - aDate;
                     });
 
-                    populateNewsCategories();
                     applyNewsFilters();
 
                     const hasNewsHash = /^#news=/.test(window.location.hash);
@@ -693,54 +700,24 @@
                 });
         }
 
-        function populateNewsCategories() {
-            const select = document.getElementById("newsCategory");
-            const currentValue = select.value;
-
-            const categories = [...new Set(
-                allNews
-                    .map(item => String(item.category || item.category_name || "").trim())
-                    .filter(Boolean)
-            )].sort((a, b) => a.localeCompare(b, "th"));
-
-            select.replaceChildren();
-
-            const allOption = document.createElement("option");
-            allOption.value = "";
-            allOption.textContent = "ทุกหมวดหมู่";
-            select.appendChild(allOption);
-
-            categories.forEach(category => {
-                const option = document.createElement("option");
-                option.value = category;
-                option.textContent = category;
-                select.appendChild(option);
-            });
-
-            if (categories.includes(currentValue)) select.value = currentValue;
-        }
+        
 
         function applyNewsFilters() {
-            const query = normalise(document.getElementById("newsSearch").value);
-            const category = document.getElementById("newsCategory").value;
+    const query = normalise(document.getElementById("newsSearch").value);
 
-            filteredNews = allNews.filter(item => {
-                const searchable = [
-                    item.title,
-                    item.content,
-                    item.author,
-                    item.category,
-                    item.category_name
-                ].map(normalise).join(" ");
+    filteredNews = allNews.filter(item => {
+        const searchableText = [
+            item.title,
+            item.content,
+            item.author
+        ].map(normalise).join(" ");
 
-                const itemCategory = String(item.category || item.category_name || "").trim();
-                return (!query || searchable.includes(query))
-                    && (!category || itemCategory === category);
-            });
+        return !query || searchableText.includes(query);
+    });
 
-            currentNewsPage = 1;
-            renderNewsPage();
-        }
+    currentNewsPage = 1;
+    renderNewsPage();
+}
 
         function renderNewsPage() {
             const container = document.getElementById("newsContainer");
