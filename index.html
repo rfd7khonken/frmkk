@@ -2,727 +2,1204 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="เว็บไซต์ศูนย์ป่าไม้ขอนแก่น ข่าวสาร กิจกรรม และเอกสารราชการ">
+    <meta name="theme-color" content="#198754">
     <title>ศูนย์ป่าไม้ขอนแก่น - KhonKaen Forest Office</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
-        <style>
 
-        body { font-family: 'Sarabun', sans-serif; background-color: #f8f9fa; position: relative; overflow-x: hidden; }
+    <style>
+        :root {
+            --forest-green: #198754;
+            --forest-dark: #0b3d2e;
+            --focus-color: #f0b429;
+        }
 
-        .card { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        html {
+            scroll-behavior: smooth;
+        }
 
-        .card:hover { transform: translateY(-5px); }
-
-        .news-img { height: 200px; object-fit: cover; cursor: pointer; }
-
-        
-
-        /* Navbar โปร่งใสทันสมัย */
+        body {
+            font-family: "Sarabun", sans-serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
 
         .navbar-custom {
-
-            background: rgba(25, 135, 84, 0.9);
-
+            background: rgba(25, 135, 84, 0.96);
             backdrop-filter: blur(10px);
-
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
-
-        /* ส่วนหัว Hero Section ดีไซน์ใหม่ สวยงามอลังการ */
-
-        .hero-section-modern { 
-
+        .hero-section {
             position: relative;
-
-            background: linear-gradient(rgba(10, 40, 20, 0.65), rgba(10, 30, 20, 0.75)), url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80'); 
-
-            background-size: cover; 
-
-            background-position: center;
-
-            color: white; 
-
-            padding: 130px 0 110px 0; 
-
-            text-align: center;
-
             overflow: hidden;
-
-        }
-
-        .hero-badge {
-
-            background: rgba(255, 255, 255, 0.15);
-
-            backdrop-filter: blur(5px);
-
-            border: 1px solid rgba(255, 255, 255, 0.3);
-
-            padding: 6px 16px;
-
-            border-radius: 50px;
-
-            font-size: 0.9rem;
-
-            letter-spacing: 1px;
-
-            display: inline-block;
-
-            margin-bottom: 20px;
-
-            animation: fadeInDown 1s ease-in-out;
-
+            padding: 110px 0;
+            color: #fff;
+            text-align: center;
+            background:
+                linear-gradient(rgba(10, 40, 20, 0.68), rgba(10, 30, 20, 0.78)),
+                url("https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80");
+            background-size: cover;
+            background-position: center;
         }
 
         .hero-title {
-
+            font-size: clamp(2rem, 5vw, 3.2rem);
             font-weight: 700;
-
-            font-size: 3rem;
-
-            text-shadow: 0 3px 10px rgba(0,0,0,0.4);
-
-            margin-bottom: 15px;
-
-            animation: fadeInUp 1s ease-in-out;
-
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
         }
 
-        .hero-subtitle {
-
-            font-size: 1.25rem;
-
-            color: #e2e8f0;
-
-            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
-
-            max-width: 700px;
-
-            margin: 0 auto;
-
-            animation: fadeInUp 1.2s ease-in-out;
-
+        .hero-badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 7px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.14);
         }
 
-
-        @keyframes fadeInDown {
-
-            from { opacity: 0; transform: translateY(-20px); }
-
-            to { opacity: 1; transform: translateY(0); }
-
+        .card {
+            height: 100%;
+            border: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease;
         }
 
-        @keyframes fadeInUp {
-
-            from { opacity: 0; transform: translateY(20px); }
-
-            to { opacity: 1; transform: translateY(0); }
-
+        .card:hover {
+            transform: translateY(-3px);
         }
 
+        .news-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+        }
 
-        /* เอฟเฟกต์หิมะตก */
+        .news-card-title {
+            cursor: pointer;
+        }
+
+        .news-card-title:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 1050;
+            display: none;
+            width: 46px;
+            height: 46px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-to-top.is-visible {
+            display: inline-flex;
+        }
 
         .snowflake {
-
             position: fixed;
-
-            top: -10px;
-
-            z-index: 9999;
-
+            top: -20px;
+            z-index: 999;
+            color: #fff;
+            pointer-events: none;
             user-select: none;
-
-            cursor: default;
-
-            color: #ffffff;
-
             animation: fall linear infinite;
-
         }
 
         @keyframes fall {
-
-            0% { transform: translateY(-10px) translateX(0); opacity: 1; }
-
-            100% { transform: translateY(105vh) translateX(20px); opacity: 0.3; }
-
+            from {
+                transform: translateY(-20px) translateX(0);
+                opacity: 0.9;
+            }
+            to {
+                transform: translateY(105vh) translateX(20px);
+                opacity: 0.2;
+            }
         }
 
-    </style>
+        :focus-visible {
+            outline: 3px solid var(--focus-color);
+            outline-offset: 3px;
+        }
 
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 75px 15px;
+            }
+
+            .news-img {
+                height: 220px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <a class="visually-hidden-focusable position-absolute top-0 start-0 p-2 bg-white"
+       href="#mainContent">ข้ามไปยังเนื้อหาหลัก</a>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
-
-    <div class="container">
-
-        <a class="navbar-brand fw-bold fs-4" href="index.html"><i class="fa-solid fa-tree me-2 text-warning"></i>ศูนย์ป่าไม้ขอนแก่น</a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-
-            <ul class="navbar-nav ms-auto align-items-lg-center">
-
-                <li class="nav-item"><a class="nav-link active px-3" href="index.html">หน้าแรก</a></li>
-
-                <li class="nav-item"><a class="nav-link px-3" href="about.html">ข้อมูลองค์กร</a></li>
-
-                <li class="nav-item"><a class="nav-link px-3" href="#news">ข่าวสาร</a></li>
-
-                <li class="nav-item"><a class="nav-link px-3" href="#documents">คลังเอกสาร</a></li>
-                <li class="nav-item"><a class="nav-link px-3" href="https://script.google.com/macros/s/AKfycbwdqyqKrvJWU0zXcrX6NEDXInlNrBx3uvdfd-2rPNr99YfCH5E9i_0eLjHVzg54NL3s/exec">ดึงลิงก์ (URL)</a></li>
-                
-
-                <li class="nav-item ms-lg-3"><a class="btn btn-warning text-dark fw-bold btn-sm px-3 py-2 shadow-sm" href="login.html"><i class="fa-solid fa-lock me-1"></i>เข้าสู่ระบบเจ้าหน้าที่</a></li>
-
-            </ul>
-
-        </div>
-
-    </div>
-
-</nav>
-
-
-    <!-- ส่วนหัว Hero Section ดีไซน์ใหม่ สวยงามโดดเด่น -->
-    <div class="hero-section-modern">
-        <div class="container position-relative">
-             <h1 class="hero-title">ศูนย์ป่าไม้ขอนแก่น</h1>
-            <div class="hero-badge"><i class="fa-solid fa-shield-halved me-2 text-warning"></i>กรมป่าไม้ กระทรวงทรัพยากรธรรมชาติและสิ่งแวดล้อม</div>
-            <!-- <p class="hero-subtitle">มุ่งมั่นดูแลรักษาทรัพยากรป่าไม้ ส่งเสริมการปลูกป่า</p> 
-                <p class="hero-subtitle"> และให้บริการประชาชนด้วยความโปร่งใส</p> -->
-        </div>
-
-    </div>
-    <!-- ส่วนสไลด์ภาพหน้าแรก (A4 Size Carousel) -->
-    <!-- <div class="carousel-a4-container">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top" aria-label="เมนูหลัก">
         <div class="container">
-            <div id="heroA4Carousel" class="carousel slide carousel-a4 shadow" data-bs-ride="carousel">
-                <div class="carousel-indicators" id="carouselIndicators"></div>
-                <div class="carousel-inner h-100" id="carouselInner">
-                    <div class="carousel-item active h-100 text-center text-white d-flex align-items-center justify-content-center">
-                        <div class="spinner-border text-success" role="status"></div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#heroA4Carousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#heroA4Carousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+            <a class="navbar-brand fw-bold fs-5" href="index.html">
+                <i class="fa-solid fa-tree me-2 text-warning" aria-hidden="true"></i>
+                ศูนย์ป่าไม้ขอนแก่น
+            </a>
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="เปิดหรือปิดเมนู">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active px-3" aria-current="page" href="index.html">หน้าแรก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="about.html">ข้อมูลองค์กร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#news">ข่าวสาร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#documents">คลังเอกสาร</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-warning text-dark fw-bold btn-sm px-3 py-2"
+                           href="login.html">
+                            <i class="fa-solid fa-lock me-1" aria-hidden="true"></i>
+                            เข้าสู่ระบบเจ้าหน้าที่
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div> -->
-
-    <div class="container my-5">
-        <section id="news" class="mb-5">
-            <h2 class="text-success border-bottom pb-2 mb-4"><i class="fa-solid fa-bullhorn me-2"></i>ข่าวสารและกิจกรรม</h2>
-            <div class="row" id="newsContainer"><div class="text-center text-muted py-4">กำลังโหลดข้อมูลข่าวสาร...</div></div>
-            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
-    <small id="newsPageInfo" class="text-muted"></small>
-    <nav aria-label="แบ่งหน้าข่าว">
-        <ul class="pagination pagination-sm mb-0" id="newsPagination"></ul>
     </nav>
-</div>
+
+    <header class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">ศูนย์ป่าไม้ขอนแก่น</h1>
+            <p class="hero-badge mb-0">
+                <i class="fa-solid fa-shield-halved me-2 text-warning" aria-hidden="true"></i>
+                กรมป่าไม้ กระทรวงทรัพยากรธรรมชาติและสิ่งแวดล้อม
+            </p>
+        </div>
+    </header>
+
+    <main id="mainContent" class="container my-5">
+        <section id="news" class="mb-5" aria-labelledby="newsHeading">
+            <h2 id="newsHeading" class="text-success border-bottom pb-2 mb-4">
+                <i class="fa-solid fa-bullhorn me-2" aria-hidden="true"></i>
+                ข่าวสารและกิจกรรม
+            </h2>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-8">
+                    <label for="newsSearch" class="form-label">ค้นหาข่าว</label>
+                    <input type="search" id="newsSearch" class="form-control"
+                           placeholder="ค้นหาจากชื่อข่าว เนื้อหา หรือผู้เผยแพร่"
+                           autocomplete="off">
+                </div>
+                <div class="col-md-4">
+                    <label for="newsCategory" class="form-label">กรองตามหมวดหมู่</label>
+                    <select id="newsCategory" class="form-select">
+                        <option value="">ทุกหมวดหมู่</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="newsStatus" aria-live="polite"></div>
+            <div class="row" id="newsContainer" aria-live="polite"></div>
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+                <small id="newsPageInfo" class="text-muted" aria-live="polite"></small>
+                <nav aria-label="แบ่งหน้าข่าว">
+                    <ul class="pagination pagination-sm mb-0" id="newsPagination"></ul>
+                </nav>
+            </div>
         </section>
 
-        <section id="documents" class="mb-5">
-            <h2 class="text-success border-bottom pb-2 mb-4"><i class="fa-solid fa-file-arrow-down me-2"></i>ดาวน์โหลดเอกสารราชการ</h2>
+        <section id="documents" class="mb-5" aria-labelledby="documentsHeading">
+            <h2 id="documentsHeading" class="text-success border-bottom pb-2 mb-4">
+                <i class="fa-solid fa-file-arrow-down me-2" aria-hidden="true"></i>
+                ดาวน์โหลดเอกสารราชการ
+            </h2>
+
+            <div class="mb-3">
+                <label for="documentSearch" class="form-label">ค้นหาเอกสาร</label>
+                <input type="search" id="documentSearch" class="form-control"
+                       placeholder="ค้นหาจากชื่อเอกสาร หมวดหมู่ หรือผู้เผยแพร่"
+                       autocomplete="off">
+            </div>
+
+            <div id="documentStatus" aria-live="polite"></div>
+
             <div class="table-responsive bg-white p-3 rounded shadow-sm">
                 <table class="table table-hover align-middle">
                     <thead class="table-success">
-                        <tr><th>ชื่อเอกสาร</th><th>หมวดหมู่</th><th>ผู้เผยแพร่</th><th>วันที่</th><th>ดาวน์โหลด</th></tr>
+                        <tr>
+                            <th scope="col">ชื่อเอกสาร</th>
+                            <th scope="col">หมวดหมู่</th>
+                            <th scope="col">ผู้เผยแพร่</th>
+                            <th scope="col">วันที่</th>
+                            <th scope="col">ดาวน์โหลด</th>
+                        </tr>
                     </thead>
-                    <tbody id="docTableBody"><tr><td colspan="5" class="text-center text-muted">กำลังโหลดเอกสาร...</td></tr></tbody>
+                    <tbody id="docTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">กำลังโหลดเอกสาร...</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </section>
-    </div>
+    </main>
 
-    <!-- Popup Modal เด้งอัตโนมัติเมื่อเข้าเว็บ -->
-    <div class="modal fade" id="welcomePopupModal" tabindex="-1">
+    <!-- Popup ข่าวล่าสุด -->
+    <div class="modal fade" id="welcomePopupModal" tabindex="-1"
+         aria-labelledby="welcomePopupTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-success border-2">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title"><i class="fa-solid fa-bullhorn me-2"></i>ประกาศสำคัญ / ข่าวล่าสุด</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <h2 class="modal-title fs-5" id="welcomePopupTitle">
+                        <i class="fa-solid fa-bullhorn me-2" aria-hidden="true"></i>
+                        ประกาศสำคัญ / ข่าวล่าสุด
+                    </h2>
+                    <button type="button" class="btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="ปิด"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img id="popupNewsImg" src="" class="img-fluid rounded mb-3 shadow-sm" style="max-height: 250px; width: 100%; object-fit: contain; background: #000; display: none;" alt="ภาพประกาศ">
-                    <h4 id="popupNewsTitle" class="text-success fw-bold"></h4>
-                    <p id="popupNewsContent" class="text-muted small mt-2" style="max-height: 100px; overflow-y: auto;"></p>
+                    <img id="popupNewsImg" src="" alt=""
+                         class="img-fluid rounded mb-3 shadow-sm"
+                         style="max-height:250px;width:100%;object-fit:contain;background:#000;display:none;">
+                    <h3 id="popupNewsTitle" class="h5 text-success fw-bold"></h3>
+                    <p id="popupNewsContent" class="text-muted small mt-2"
+                       style="max-height:100px;overflow-y:auto;"></p>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success btn-sm px-4" id="popupDetailBtn">อ่านรายละเอียดเพิ่มเติม</button>
-                    <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
+                    <button type="button" class="btn btn-success btn-sm px-4" id="popupDetailBtn">
+                        อ่านรายละเอียดเพิ่มเติม
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm px-4"
+                            data-bs-dismiss="modal">ปิดหน้าต่าง</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal สำหรับแสดงรายละเอียดข่าวและรูปภาพทั้งหมด -->
-    <div class="modal fade" id="newsDetailModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+    <!-- รายละเอียดข่าว -->
+    <div class="modal fade" id="newsDetailModal" tabindex="-1"
+         aria-labelledby="modalNewsTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-success" id="modalNewsTitle"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h2 class="modal-title fs-5 text-success" id="modalNewsTitle"></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="ปิดรายละเอียดข่าว"></button>
                 </div>
+
                 <div class="modal-body">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
-                        <p class="text-muted small mb-0"><i class="fa-solid fa-calendar-days me-1"></i> <span id="modalNewsDate"></span> | โดย: <span id="modalNewsAuthor"></span></p>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                <i class="fa-solid fa-share-nodes me-1"></i> แชร์กิจกรรมนี้
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" id="shareFacebook" target="_blank"><i class="fa-brands fa-facebook text-primary me-2"></i> Facebook</a></li>
-                                <li><a class="dropdown-item" href="#" id="shareLine" target="_blank"><i class="fa-brands fa-line text-success me-2"></i> LINE</a></li>
-                                <li><a class="dropdown-item" href="#" id="shareTwitter" target="_blank"><i class="fa-brands fa-x-twitter me-2"></i> X (Twitter)</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#" onclick="copyCurrentLink(event)"><i class="fa-solid fa-copy me-2"></i> คัดลอกลิงก์</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <p class="text-muted small mb-2">
+                        <i class="fa-solid fa-calendar-days me-1" aria-hidden="true"></i>
+                        <span id="modalNewsDate"></span>
+                        <span aria-hidden="true"> | </span>
+                        โดย: <span id="modalNewsAuthor"></span>
+                    </p>
                     <hr>
-                    <p id="modalNewsContent" style="white-space: pre-line;"></p>
-                    <h6 class="mt-4 mb-3"><i class="fa-solid fa-images me-2"></i>รูปภาพกิจกรรมทั้งหมด</h6>
+                    <p id="modalNewsContent" style="white-space:pre-line;"></p>
+                    <h3 class="h6 mt-4 mb-3">
+                        <i class="fa-solid fa-images me-2" aria-hidden="true"></i>
+                        รูปภาพกิจกรรม
+                    </h3>
                     <div class="row" id="modalImagesContainer"></div>
+                </div>
+
+                <div class="modal-footer justify-content-between flex-wrap gap-2">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-success btn-sm"
+                                id="previousNewsBtn">
+                            <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>
+                            ข่าวก่อนหน้า
+                        </button>
+                        <button type="button" class="btn btn-outline-success btn-sm"
+                                id="nextNewsBtn">
+                            ข่าวถัดไป
+                            <i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-success btn-sm" id="shareNewsBtn">
+                            <i class="fa-solid fa-share-nodes me-1" aria-hidden="true"></i>
+                            แชร์ข่าว
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm"
+                                data-bs-dismiss="modal">ปิด</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-  <footer class="bg-dark text-white pt-5 pb-3 mt-5 border-top border-success border-4">
+    <footer class="bg-dark text-white pt-5 pb-3 mt-5 border-top border-success border-4">
         <div class="container">
             <div class="row g-4 align-items-center">
-                <!-- ข้อมูลติดต่อหน่วยงาน (ขยายกว้างขึ้นเป็น col-lg-5) -->
-                <div class="col-lg-5 col-md-6 mb-3 mb-lg-0">
-                    <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-tree me-2"></i>ศูนย์ป่าไม้ขอนแก่น</h5>
-                    <p class="text-white small mb-2"><i class="fa-solid fa-location-dot me-2 text-success"></i> เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น</p>
-                    <p class="text-white small mb-2"><i class="fa-solid fa-phone me-2 text-success"></i> โทรศัพท์ / โทรสาร: 043-330381 - 115</p>
-                    <p class="text-white small mb-3"><i class="fa-solid fa-envelope me-2 text-success"></i> อีเมล: Rfd7kk01@gmail.com</p>
-                    <a href="https://www.facebook.com/profile.php?id=*************05" target="_blank" class="btn btn-outline-light btn-sm">
-                        <i class="fa-brands fa-facebook text-primary me-1"></i> ติดตาม Facebook เพจ
+                <div class="col-lg-5 col-md-6">
+                    <h2 class="h5 fw-bold text-success mb-3">
+                        <i class="fa-solid fa-tree me-2" aria-hidden="true"></i>
+                        ศูนย์ป่าไม้ขอนแก่น
+                    </h2>
+                    <p class="small mb-2">
+                        <i class="fa-solid fa-location-dot me-2 text-success" aria-hidden="true"></i>
+                        เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น
+                    </p>
+                    <p class="small mb-2">
+                        <i class="fa-solid fa-phone me-2 text-success" aria-hidden="true"></i>
+                        โทรศัพท์ / โทรสาร: 043-330381 ต่อ 115
+                    </p>
+                    <a href="https://www.facebook.com/"
+                       target="_blank" rel="noopener noreferrer"
+                       class="btn btn-outline-light btn-sm mt-2">
+                        <i class="fa-brands fa-facebook text-primary me-1" aria-hidden="true"></i>
+                        Facebook
                     </a>
                 </div>
-                
-                <!-- สถิติผู้เข้าชมเว็บไซต์ Counter12 (col-lg-2 กำลังพอดี) -->
-                <div class="col-lg-2 col-md-6 mb-3 mb-lg-0 text-center">
-                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block px-3">
-                        <div class="text-white-50 small mb-2" style="font-size: 0.8rem;"><i class="fa-solid fa-chart-line me-1 text-success"></i> สถิติผู้เข้าชม</div>
-                        <div align="center">
-                            <a href='https://www.counter12.com'><img src='https://www.counter12.com/img-Z4wA8Ddb598ba92C-11.gif' border='0' alt='conter12'></a>
-                            <script type='text/javascript' src='https://www.counter12.com/ad.js?id=Z4wA8Ddb598ba92C'></script>
+
+                <div class="col-lg-2 col-md-6 text-center">
+                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block">
+                        <div class="text-white-50 small mb-2">
+                            <i class="fa-solid fa-chart-line me-1 text-success" aria-hidden="true"></i>
+                            สถิติผู้เข้าชม
                         </div>
+                        <a href="https://www.counter12.com/"
+                           target="_blank" rel="noopener noreferrer">
+                            <img src="https://www.counter12.com/img-Z4wA8Ddb598ba92C-11.gif"
+                                 alt="สถิติผู้เข้าชมเว็บไซต์ Counter12"
+                                 loading="lazy">
+                        </a>
+                        <script src="https://www.counter12.com/ad.js?id=Z4wA8Ddb598ba92C"></script>
                     </div>
                 </div>
 
-                <!-- ลิงก์หน่วยงานที่เกี่ยวข้อง (ขยายกว้างขึ้นเป็น col-lg-5) -->
-                <div class="col-lg-5 col-md-12 text-lg-end text-md-start">
-                    <h6 class="fw-bold text-white mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h6>
+                <div class="col-lg-5 col-md-12 text-lg-end">
+                    <h2 class="h6 fw-bold mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h2>
                     <div class="d-flex flex-column gap-2">
-                        <a href="https://forest.go.th" target="_blank" class="text-decoration-none text-white small"><i class="fa-solid fa-angle-right me-1 text-success"></i> กรมป่าไม้</a>
-                        <a href="https://www.forest.go.th/khonkaen7" class="text-decoration-none text-white small"><i class="fa-solid fa-angle-right me-1 text-success"></i> สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)</a>
+                        <a href="https://forest.go.th"
+                           target="_blank" rel="noopener noreferrer"
+                           class="text-decoration-none text-white small">
+                            <i class="fa-solid fa-angle-right me-1 text-success" aria-hidden="true"></i>
+                            กรมป่าไม้
+                        </a>
+                        <a href="https://www.forest.go.th/khonkaen7"
+                           target="_blank" rel="noopener noreferrer"
+                           class="text-decoration-none text-white small">
+                            <i class="fa-solid fa-angle-right me-1 text-success" aria-hidden="true"></i>
+                            สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)
+                        </a>
                     </div>
                 </div>
             </div>
-            
+
             <hr class="border-secondary my-4">
-            
-            <div class="row text-center">
-                <div class="col">
-                    <p class="text-white small mb-0">© 2026 KhonKaen Forest Office. All Rights Reserved. By Witthawat</p>
-                </div>
-            </div>
+            <p class="text-center small mb-0">
+                © 2026 KhonKaen Forest Office. All Rights Reserved.
+            </p>
         </div>
     </footer>
 
+    <button id="backToTop" type="button" class="btn btn-success back-to-top"
+            aria-label="กลับขึ้นด้านบน" title="กลับขึ้นด้านบน">
+        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzn1IbL2o832StUyTrLyGDTt0DSYM-2gY3VWsSZwfxk4gnJ7c1NeF-lZbLlvQ5voTzXnQ/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbxqSYSPhpsZdJexQRdSBgnGeHLnKUQgNhQG4oZoaETsDQtTtY3m_TgioxSHr8GFl27P3w/exec";
         const NEWS_PER_PAGE = 9;
-            let currentNewsPage = 1;
-            let globalNewsList = [];
+        const DEFAULT_NEWS_IMAGE = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=900&q=80";
 
-        let detailModal, popupModal;
+        let allNews = [];
+        let filteredNews = [];
+        let allDocuments = [];
+        let currentNewsPage = 1;
+        let currentNewsId = null;
+        let detailModal;
+        let popupModal;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            detailModal = new bootstrap.Modal(document.getElementById('newsDetailModal'));
-            popupModal = new bootstrap.Modal(document.getElementById('welcomePopupModal'));
-            loadSlides();
-            loadNews();
-            loadDocuments();
-            initSnowEffect(); // เริ่มต้นทำงานเอฟเฟกต์หิมะ
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2800,
+            timerProgressBar: true
         });
 
-        // ฟังก์ชันสร้างหิมะโปรยปราย
-        function initSnowEffect() {
-            const snowCount = 40; // จำนวนเกล็ดหิมะบนหน้าจอ
-            for (let i = 0; i < snowCount; i++) {
-                let star = document.createElement('div');
-                star.className = 'snowflake';
-                star.innerHTML = '❄';
-                let startLeft = Math.random() * window.innerWidth;
-                let startOpacity = Math.random() * 0.7 + 0.3;
-                let size = Math.random() * 10 + 10;
-                let duration = Math.random() * 10 + 5;
-                let delay = Math.random() * 10;
+        function showToast(icon, title) {
+            Toast.fire({ icon, title });
+        }
 
-                star.style.left = startLeft + 'px';
-                star.style.opacity = startOpacity;
-                star.style.fontSize = size + 'px';
-                star.style.animationDuration = duration + 's';
-                star.style.animationDelay = delay + 's';
-                
-                document.body.appendChild(star);
+        function showRetryAlert(title, message, retryFunction) {
+            Swal.fire({
+                icon: "error",
+                title,
+                text: message,
+                showCancelButton: true,
+                confirmButtonText: "ลองอีกครั้ง",
+                cancelButtonText: "ปิด",
+                confirmButtonColor: "#198754",
+                reverseButtons: true
+            }).then(result => {
+                if (result.isConfirmed) retryFunction();
+            });
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            detailModal = new bootstrap.Modal(document.getElementById("newsDetailModal"));
+            popupModal = new bootstrap.Modal(document.getElementById("welcomePopupModal"));
+
+            document.getElementById("newsSearch").addEventListener("input", applyNewsFilters);
+            document.getElementById("newsCategory").addEventListener("change", applyNewsFilters);
+            document.getElementById("documentSearch").addEventListener("input", renderDocuments);
+
+            document.getElementById("previousNewsBtn").addEventListener("click", () => moveNews(-1));
+            document.getElementById("nextNewsBtn").addEventListener("click", () => moveNews(1));
+            document.getElementById("shareNewsBtn").addEventListener("click", shareCurrentNews);
+
+            document.getElementById("backToTop").addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: reducedMotion ? "auto" : "smooth"
+                });
+            });
+
+            window.addEventListener("scroll", updateBackToTop, { passive: true });
+            window.addEventListener("hashchange", openNewsFromHash);
+
+            document.getElementById("newsDetailModal").addEventListener("hidden.bs.modal", () => {
+                currentNewsId = null;
+
+                if (window.location.hash.startsWith("#news=")) {
+                    history.replaceState(null, "", `${location.pathname}${location.search}`);
+                }
+            });
+
+            if (!reducedMotion) initSnowEffect();
+
+            loadNews();
+            loadDocuments();
+
+            // ปิด loadSlides() เพราะส่วน Carousel ในหน้าเดิมถูกปิด/ไม่มี HTML รองรับ
+        });
+
+        function initSnowEffect() {
+            const snowCount = 20;
+
+            for (let i = 0; i < snowCount; i++) {
+                const flake = document.createElement("div");
+                flake.className = "snowflake";
+                flake.textContent = "❄";
+                flake.setAttribute("aria-hidden", "true");
+                flake.style.left = `${Math.random() * window.innerWidth}px`;
+                flake.style.opacity = String(Math.random() * 0.5 + 0.2);
+                flake.style.fontSize = `${Math.random() * 8 + 8}px`;
+                flake.style.animationDuration = `${Math.random() * 10 + 8}s`;
+                flake.style.animationDelay = `${Math.random() * 10}s`;
+                document.body.appendChild(flake);
             }
         }
 
-        function formatDriveUrl(url) {
-            if (!url) return "";
-            url = url.trim();
-            if (url.includes("drive.google.com")) {
-                let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                if (match && match[1]) {
-                    return "https://lh3.googleusercontent.com/d/" + match[1];
+        function setStatus(containerId, message, type = "info", retryFunction = null) {
+            const container = document.getElementById(containerId);
+            container.replaceChildren();
+
+            if (!message) return;
+
+            const alert = document.createElement("div");
+            alert.className = `alert alert-${type} d-flex flex-wrap align-items-center justify-content-between gap-2`;
+            alert.setAttribute("role", type === "danger" ? "alert" : "status");
+
+            const text = document.createElement("span");
+            text.textContent = message;
+            alert.appendChild(text);
+
+            if (retryFunction) {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "btn btn-sm btn-outline-dark";
+                button.textContent = "ลองอีกครั้ง";
+                button.addEventListener("click", retryFunction);
+                alert.appendChild(button);
+            }
+
+            container.appendChild(alert);
+        }
+
+        function safeHttpUrl(value) {
+            if (!value) return "";
+
+            try {
+                const url = new URL(String(value).trim(), window.location.href);
+                return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+            } catch {
+                return "";
+            }
+        }
+
+        function formatDriveUrl(value) {
+            if (!value) return "";
+
+            const raw = String(value).trim();
+            let match = raw.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+
+            if (!match) {
+                try {
+                    const parsed = new URL(raw);
+                    if (parsed.hostname.endsWith("drive.google.com")) {
+                        const id = parsed.searchParams.get("id");
+                        if (id) return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1600`;
+                    }
+                } catch {
+                    // คืนค่า URL ว่างด้านล่าง หาก URL ไม่ถูกต้อง
                 }
             }
-            return url;
+
+            if (match && match[1]) {
+                return `https://drive.google.com/thumbnail?id=${encodeURIComponent(match[1])}&sz=w1600`;
+            }
+
+            return safeHttpUrl(raw);
         }
 
-        function getImagesArray(imageUrlStr) {
-            if (!imageUrlStr) return [];
-            return imageUrlStr.split(',').map(url => formatDriveUrl(url)).filter(url => url.length > 0);
+        function getImagesArray(value) {
+            if (!value) return [];
+
+            return String(value)
+                .split(",")
+                .map(url => formatDriveUrl(url))
+                .filter(Boolean);
         }
 
-        function loadSlides() {
-            fetch(API_URL + "?action=getSlides")
-                .then(res => res.json())
-                .then(data => {
-                    let carouselInnerHtml = "";
-                    let carouselIndicatorsHtml = "";
-                    
-                    if(data.status === "success" && data.data.length > 0) {
-                        let slides = data.data.sort((a, b) => {
-                            let orderA = a.sort_order !== "" && !isNaN(a.sort_order) ? Number(a.sort_order) : 999;
-                            let orderB = b.sort_order !== "" && !isNaN(b.sort_order) ? Number(b.sort_order) : 999;
-                            return orderA - orderB;
-                        });
+        function toDateText(value) {
+            if (!value) return "-";
 
-                        slides.forEach((item, index) => {
-                            let imgUrl = formatDriveUrl(item.image_url);
-                            let activeClass = index === 0 ? "active" : "";
-                            carouselIndicatorsHtml += `<button type="button" data-bs-target="#heroA4Carousel" data-bs-slide-to="${index}" class="${activeClass}"></button>`;
-                            
-                            carouselInnerHtml += `
-                                <div class="carousel-item ${activeClass} h-100">
-                                    <img src="${imgUrl}" class="d-block w-100" alt="${item.title}" style="object-fit: contain; background: #111;">
-                                    ${item.title ? `<div class="carousel-caption carousel-caption-custom d-none d-md-block"><h5 class="fw-bold text-success mb-0">${item.title}</h5></div>` : ''}
-                                </div>`;
-                        });
+            const date = new Date(value);
+            return Number.isNaN(date.getTime())
+                ? String(value)
+                : date.toLocaleDateString("th-TH");
+        }
 
-                        document.getElementById('carouselInner').innerHTML = carouselInnerHtml;
-                        document.getElementById('carouselIndicators').innerHTML = carouselIndicatorsHtml;
-                    } else {
-                        document.getElementById('carouselInner').innerHTML = `<div class="carousel-item active h-100 d-flex align-items-center justify-content-center text-white"><h5>ศูนย์ป่าไม้ขอนแก่น</h5></div>`;
-                    }
-                }).catch(err => {
-                    document.getElementById('carouselInner').innerHTML = `<div class="carousel-item active h-100 d-flex align-items-center justify-content-center text-white"><h5>ศูนย์ป่าไม้ขอนแก่น</h5></div>`;
-                });
+        function normalise(value) {
+            return String(value || "").trim().toLocaleLowerCase("th");
         }
 
         function loadNews() {
-    fetch(API_URL + "?action=getNews")
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === "success" && data.data && data.data.length > 0) {
-                globalNewsList = data.data.sort((a, b) => {
-                    const orderA = a.sort_order !== "" && !isNaN(a.sort_order)
-                        ? Number(a.sort_order) : 999;
-                    const orderB = b.sort_order !== "" && !isNaN(b.sort_order)
-                        ? Number(b.sort_order) : 999;
+            const container = document.getElementById("newsContainer");
+            container.replaceChildren();
 
-                    if (orderA !== orderB) return orderA - orderB;
-                    return new Date(b.created_at) - new Date(a.created_at);
+            const loading = document.createElement("div");
+            loading.className = "col-12 text-center text-muted py-4";
+            loading.setAttribute("role", "status");
+
+            const spinner = document.createElement("span");
+            spinner.className = "spinner-border spinner-border-sm text-success me-2";
+            spinner.setAttribute("aria-hidden", "true");
+
+            loading.append(spinner, document.createTextNode("กำลังโหลดข้อมูลข่าวสาร..."));
+            container.appendChild(loading);
+
+            setStatus("newsStatus", "");
+            document.getElementById("newsPageInfo").textContent = "";
+            document.getElementById("newsPagination").replaceChildren();
+
+            fetch(`${API_URL}?action=getNews`)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.status !== "success" || !Array.isArray(result.data)) {
+                        throw new Error("รูปแบบข้อมูลข่าวไม่ถูกต้อง");
+                    }
+
+                    allNews = result.data.slice().sort((a, b) => {
+                        const aOrder = a.sort_order !== "" && !Number.isNaN(Number(a.sort_order))
+                            ? Number(a.sort_order) : 999;
+                        const bOrder = b.sort_order !== "" && !Number.isNaN(Number(b.sort_order))
+                            ? Number(b.sort_order) : 999;
+
+                        if (aOrder !== bOrder) return aOrder - bOrder;
+
+                        const aDate = new Date(a.created_at || 0).getTime() || 0;
+                        const bDate = new Date(b.created_at || 0).getTime() || 0;
+                        return bDate - aDate;
+                    });
+
+                    populateNewsCategories();
+                    applyNewsFilters();
+
+                    const hasNewsHash = /^#news=/.test(window.location.hash);
+                    if (hasNewsHash) {
+                        openNewsFromHash();
+                    } else if (allNews.length > 0) {
+                        showLatestNewsPopup();
+                    }
+                })
+                .catch(error => {
+                    console.error("โหลดข่าวไม่สำเร็จ:", error);
+                    container.replaceChildren();
+
+                    setStatus(
+                        "newsStatus",
+                        "โหลดข่าวไม่สำเร็จ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+                        "danger",
+                        loadNews
+                    );
+
+                    showRetryAlert(
+                        "โหลดข่าวไม่สำเร็จ",
+                        "ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต แล้วลองโหลดข่าวอีกครั้ง",
+                        loadNews
+                    );
+                });
+        }
+
+        function populateNewsCategories() {
+            const select = document.getElementById("newsCategory");
+            const currentValue = select.value;
+
+            const categories = [...new Set(
+                allNews
+                    .map(item => String(item.category || item.category_name || "").trim())
+                    .filter(Boolean)
+            )].sort((a, b) => a.localeCompare(b, "th"));
+
+            select.replaceChildren();
+
+            const allOption = document.createElement("option");
+            allOption.value = "";
+            allOption.textContent = "ทุกหมวดหมู่";
+            select.appendChild(allOption);
+
+            categories.forEach(category => {
+                const option = document.createElement("option");
+                option.value = category;
+                option.textContent = category;
+                select.appendChild(option);
+            });
+
+            if (categories.includes(currentValue)) select.value = currentValue;
+        }
+
+        function applyNewsFilters() {
+            const query = normalise(document.getElementById("newsSearch").value);
+            const category = document.getElementById("newsCategory").value;
+
+            filteredNews = allNews.filter(item => {
+                const searchable = [
+                    item.title,
+                    item.content,
+                    item.author,
+                    item.category,
+                    item.category_name
+                ].map(normalise).join(" ");
+
+                const itemCategory = String(item.category || item.category_name || "").trim();
+                return (!query || searchable.includes(query))
+                    && (!category || itemCategory === category);
+            });
+
+            currentNewsPage = 1;
+            renderNewsPage();
+        }
+
+        function renderNewsPage() {
+            const container = document.getElementById("newsContainer");
+            container.replaceChildren();
+
+            if (filteredNews.length === 0) {
+                const empty = document.createElement("div");
+                empty.className = "col-12 text-center text-muted py-4";
+                empty.textContent = allNews.length
+                    ? "ไม่พบข่าวที่ตรงกับคำค้นหรือหมวดหมู่"
+                    : "ไม่พบข้อมูลข่าวสาร";
+                container.appendChild(empty);
+
+                document.getElementById("newsPageInfo").textContent = "";
+                document.getElementById("newsPagination").replaceChildren();
+                return;
+            }
+
+            const totalPages = Math.ceil(filteredNews.length / NEWS_PER_PAGE);
+            const startIndex = (currentNewsPage - 1) * NEWS_PER_PAGE;
+            const pageItems = filteredNews.slice(startIndex, startIndex + NEWS_PER_PAGE);
+
+            pageItems.forEach(item => {
+                const column = document.createElement("div");
+                column.className = "col-md-4 mb-4";
+
+                const card = document.createElement("article");
+                card.className = "card";
+
+                const imageUrl = getImagesArray(item.image_url)[0] || DEFAULT_NEWS_IMAGE;
+                const image = document.createElement("img");
+                image.src = imageUrl;
+                image.alt = item.title ? `ภาพประกอบข่าว: ${item.title}` : "ภาพประกอบข่าว";
+                image.className = "card-img-top news-img";
+                image.loading = "lazy";
+                image.tabIndex = 0;
+                image.addEventListener("click", () => openNewsDetail(item.news_id));
+                image.addEventListener("keydown", event => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openNewsDetail(item.news_id);
+                    }
+                });
+                image.addEventListener("error", () => {
+                    if (image.src !== DEFAULT_NEWS_IMAGE) image.src = DEFAULT_NEWS_IMAGE;
+                    else image.remove();
+                }, { once: true });
+
+                const body = document.createElement("div");
+                body.className = "card-body";
+
+                const title = document.createElement("h3");
+                title.className = "h5 card-title text-success news-card-title";
+                title.tabIndex = 0;
+                title.textContent = item.title || "ไม่มีชื่อข่าว";
+                title.addEventListener("click", () => openNewsDetail(item.news_id));
+                title.addEventListener("keydown", event => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openNewsDetail(item.news_id);
+                    }
                 });
 
-                currentNewsPage = 1;
-                renderNewsPage();
+                const excerpt = document.createElement("p");
+                excerpt.className = "card-text text-muted small";
+                const content = String(item.content || "");
+                excerpt.textContent = content.length > 120
+                    ? `${content.slice(0, 120)}...`
+                    : content;
 
-                // แสดงข่าวลำดับแรกในหน้าต่างประกาศ
-                const latestNews = globalNewsList[0];
-                const popupImages = getImagesArray(latestNews.image_url);
+                body.append(title, excerpt);
 
-                document.getElementById("popupNewsTitle").innerText = latestNews.title || "";
-                document.getElementById("popupNewsContent").innerText =
-                    (latestNews.content || "").substring(0, 150) + "...";
+                const footer = document.createElement("div");
+                footer.className = "card-footer bg-white border-top-0 d-flex justify-content-between align-items-center text-muted small";
 
-                const popupImage = document.getElementById("popupNewsImg");
+                const date = document.createElement("span");
+                date.textContent = toDateText(item.created_at);
 
-                if (popupImages.length > 0) {
-                    popupImage.src = popupImages[0];
-                    popupImage.style.display = "block";
-                    popupImage.onerror = function () {
-                        this.style.display = "none";
-                    };
-                } else {
-                    popupImage.style.display = "none";
-                }
+                const readButton = document.createElement("button");
+                readButton.type = "button";
+                readButton.className = "btn btn-sm btn-outline-success";
+                readButton.textContent = "อ่านเพิ่มเติม";
+                readButton.addEventListener("click", () => openNewsDetail(item.news_id));
 
-                document.getElementById("popupDetailBtn").onclick = function () {
-                    popupModal.hide();
-                    openNewsDetail(latestNews.news_id);
-                };
+                footer.append(date, readButton);
+                card.append(image, body, footer);
+                column.appendChild(card);
+                container.appendChild(column);
+            });
 
-                popupModal.show();
-            } else {
-                document.getElementById("newsContainer").innerHTML =
-                    '<div class="col-12 text-center text-muted py-4">ไม่พบข้อมูลข่าวสาร</div>';
-                document.getElementById("newsPagination").innerHTML = "";
-                document.getElementById("newsPageInfo").textContent = "";
-            }
-        })
-        .catch(error => {
-            console.error("โหลดข่าวไม่สำเร็จ:", error);
-            document.getElementById("newsContainer").innerHTML =
-                '<div class="col-12 text-center text-danger py-4">เกิดข้อผิดพลาดในการโหลดข่าวสาร</div>';
-            document.getElementById("newsPagination").innerHTML = "";
-            document.getElementById("newsPageInfo").textContent = "";
-        });
-}
+            const firstItem = startIndex + 1;
+            const lastItem = Math.min(startIndex + NEWS_PER_PAGE, filteredNews.length);
 
-function renderNewsPage() {
-    const totalNews = globalNewsList.length;
-    const totalPages = Math.ceil(totalNews / NEWS_PER_PAGE);
-    const startIndex = (currentNewsPage - 1) * NEWS_PER_PAGE;
-    const pageNews = globalNewsList.slice(startIndex, startIndex + NEWS_PER_PAGE);
+            document.getElementById("newsPageInfo").textContent =
+                `แสดงข่าว ${firstItem}–${lastItem} จากทั้งหมด ${filteredNews.length} ข่าว`;
 
-    const defaultImg =
-        "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80";
+            renderNewsPagination(totalPages);
+        }
 
-    let html = "";
+        function renderNewsPagination(totalPages) {
+            const pagination = document.getElementById("newsPagination");
+            pagination.replaceChildren();
 
-    pageNews.forEach(item => {
-        const images = getImagesArray(item.image_url);
-        const imgSrc = images.length > 0 ? images[0] : defaultImg;
-        const content = item.content || "";
-        const shortContent = content.length > 90
-            ? content.substring(0, 90) + "..."
-            : content;
+            if (totalPages <= 1) return;
 
-        html += `
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="${imgSrc}"
-                         class="card-img-top news-img"
-                         alt="ภาพข่าว"
-                         onclick="openNewsDetail('${item.news_id}')"
-                         onerror="this.src='${defaultImg}'">
+            function addButton(label, page, disabled, active = false) {
+                const item = document.createElement("li");
+                item.className = `page-item${disabled ? " disabled" : ""}${active ? " active" : ""}`;
 
-                    <div class="card-body">
-                        <h5 class="card-title text-success"
-                            style="cursor:pointer"
-                            onclick="openNewsDetail('${item.news_id}')">
-                            ${item.title || ""}
-                        </h5>
-                        <p class="card-text text-muted small">${shortContent}</p>
-                    </div>
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "page-link";
+                button.textContent = label;
+                button.disabled = disabled;
 
-                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center text-muted small">
-                        <span>
-                            <i class="fa-solid fa-calendar-days me-1"></i>
-                            ${item.created_at
-                                ? new Date(item.created_at).toLocaleDateString("th-TH")
-                                : "-"}
-                        </span>
-                        <button class="btn btn-sm btn-outline-success"
-                                onclick="openNewsDetail('${item.news_id}')">
-                            อ่านเพิ่มเติม
-                        </button>
-                    </div>
-                </div>
-            </div>`;
-    });
+                if (active) button.setAttribute("aria-current", "page");
 
-    document.getElementById("newsContainer").innerHTML = html;
+                button.addEventListener("click", () => {
+                    currentNewsPage = page;
+                    renderNewsPage();
 
-    const firstItem = startIndex + 1;
-    const lastItem = Math.min(startIndex + NEWS_PER_PAGE, totalNews);
-    document.getElementById("newsPageInfo").textContent =
-        `แสดงข่าว ${firstItem}–${lastItem} จากทั้งหมด ${totalNews} ข่าว`;
-
-    renderNewsPagination(totalPages);
-}
-
-function renderNewsPagination(totalPages) {
-    const pagination = document.getElementById("newsPagination");
-
-    if (totalPages <= 1) {
-        pagination.innerHTML = "";
-        return;
-    }
-
-    let html = `
-        <li class="page-item ${currentNewsPage === 1 ? "disabled" : ""}">
-            <button class="page-link" onclick="changeNewsPage(${currentNewsPage - 1})">
-                ก่อนหน้า
-            </button>
-        </li>`;
-
-    for (let page = 1; page <= totalPages; page++) {
-        html += `
-            <li class="page-item ${page === currentNewsPage ? "active" : ""}">
-                <button class="page-link" onclick="changeNewsPage(${page})">
-                    ${page}
-                </button>
-            </li>`;
-    }
-
-    html += `
-        <li class="page-item ${currentNewsPage === totalPages ? "disabled" : ""}">
-            <button class="page-link" onclick="changeNewsPage(${currentNewsPage + 1})">
-                ถัดไป
-            </button>
-        </li>`;
-
-    pagination.innerHTML = html;
-}
-
-function changeNewsPage(page) {
-    const totalPages = Math.ceil(globalNewsList.length / NEWS_PER_PAGE);
-
-    if (page < 1 || page > totalPages) return;
-
-    currentNewsPage = page;
-    renderNewsPage();
-
-    document.getElementById("news").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
-
-        function openNewsDetail(newsId) {
-            let item = globalNewsList.find(n => n.news_id === newsId);
-            if(item) {
-                document.getElementById('modalNewsTitle').innerText = item.title;
-                document.getElementById('modalNewsDate').innerText = new Date(item.created_at).toLocaleDateString('th-TH');
-                document.getElementById('modalNewsAuthor').innerText = item.author;
-                document.getElementById('modalNewsContent').innerText = item.content;
-
-                let currentUrl = window.location.href.split('#')[0] + "#news=" + item.news_id;
-                let encodedUrl = encodeURIComponent(currentUrl);
-                let encodedTitle = encodeURIComponent(item.title);
-
-                document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
-                document.getElementById('shareLine').href = `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`;
-                document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
-
-                let images = getImagesArray(item.image_url);
-                let imgHtml = "";
-                if(images.length > 0) {
-                    images.forEach(url => {
-                        imgHtml += `<div class="col-md-4 mb-3"><a href="${url}" target="_blank"><img src="${url}" class="img-fluid rounded shadow-sm" style="height:180px; width:100%; object-fit:cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=600&q=80';"></a></div>`;
+                    document.getElementById("news").scrollIntoView({
+                        behavior: reducedMotion ? "auto" : "smooth",
+                        block: "start"
                     });
-                } else {
-                    imgHtml = '<div class="text-muted col-12">ไม่มีรูปภาพประกอบเพิ่มเติม</div>';
-                }
-                document.getElementById('modalImagesContainer').innerHTML = imgHtml;
-                detailModal.show();
+                });
+
+                item.appendChild(button);
+                pagination.appendChild(item);
+            }
+
+            addButton("ก่อนหน้า", currentNewsPage - 1, currentNewsPage === 1);
+
+            for (let page = 1; page <= totalPages; page++) {
+                addButton(String(page), page, false, page === currentNewsPage);
+            }
+
+            addButton("ถัดไป", currentNewsPage + 1, currentNewsPage === totalPages);
+        }
+
+        function showLatestNewsPopup() {
+            const latest = allNews[0];
+            if (!latest) return;
+
+            document.getElementById("popupNewsTitle").textContent = latest.title || "";
+            document.getElementById("popupNewsContent").textContent =
+                String(latest.content || "").slice(0, 150);
+
+            const image = document.getElementById("popupNewsImg");
+            const imageUrl = getImagesArray(latest.image_url)[0];
+
+            if (imageUrl) {
+                image.src = imageUrl;
+                image.alt = latest.title ? `ภาพประกาศ: ${latest.title}` : "ภาพประกาศ";
+                image.style.display = "block";
+                image.onerror = () => {
+                    image.removeAttribute("src");
+                    image.style.display = "none";
+                };
+            } else {
+                image.style.display = "none";
+            }
+
+            document.getElementById("popupDetailBtn").onclick = () => {
+                popupModal.hide();
+                openNewsDetail(latest.news_id);
+            };
+
+            popupModal.show();
+        }
+
+        function openNewsDetail(newsId, updateHash = true) {
+            const item = allNews.find(news => String(news.news_id) === String(newsId));
+
+            if (!item) {
+                showToast("info", "ไม่พบข่าวที่ต้องการเปิด");
+                return;
+            }
+
+            currentNewsId = String(item.news_id);
+
+            document.getElementById("modalNewsTitle").textContent = item.title || "ไม่มีชื่อข่าว";
+            document.getElementById("modalNewsDate").textContent = toDateText(item.created_at);
+            document.getElementById("modalNewsAuthor").textContent = item.author || "ไม่ระบุ";
+            document.getElementById("modalNewsContent").textContent = item.content || "";
+
+            const imagesContainer = document.getElementById("modalImagesContainer");
+            imagesContainer.replaceChildren();
+
+            const images = getImagesArray(item.image_url);
+
+            if (images.length === 0) {
+                const message = document.createElement("div");
+                message.className = "col-12 text-muted";
+                message.textContent = "ไม่มีรูปภาพประกอบเพิ่มเติม";
+                imagesContainer.appendChild(message);
+            } else {
+                images.forEach((url, index) => {
+                    const column = document.createElement("div");
+                    column.className = "col-md-4 mb-3";
+
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.setAttribute("aria-label", `เปิดภาพประกอบข่าวภาพที่ ${index + 1}`);
+
+                    const image = document.createElement("img");
+                    image.src = url;
+                    image.alt = `ภาพประกอบข่าวภาพที่ ${index + 1}`;
+                    image.className = "img-fluid rounded shadow-sm";
+                    image.loading = "lazy";
+                    image.style.height = "180px";
+                    image.style.width = "100%";
+                    image.style.objectFit = "cover";
+                    image.onerror = () => column.remove();
+
+                    link.appendChild(image);
+                    column.appendChild(link);
+                    imagesContainer.appendChild(column);
+                });
+            }
+
+            const index = allNews.findIndex(news => String(news.news_id) === currentNewsId);
+            document.getElementById("previousNewsBtn").disabled = index <= 0;
+            document.getElementById("nextNewsBtn").disabled = index < 0 || index >= allNews.length - 1;
+
+            if (updateHash) {
+                history.replaceState(
+                    null,
+                    "",
+                    `${location.pathname}${location.search}#news=${encodeURIComponent(currentNewsId)}`
+                );
+            }
+
+            detailModal.show();
+        }
+
+        function moveNews(direction) {
+            const currentIndex = allNews.findIndex(item => String(item.news_id) === currentNewsId);
+            const nextIndex = currentIndex + direction;
+
+            if (nextIndex >= 0 && nextIndex < allNews.length) {
+                openNewsDetail(allNews[nextIndex].news_id);
             }
         }
 
-        function copyCurrentLink(e) {
-            e.preventDefault();
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                alert("คัดลอกลิงก์เรียบร้อยแล้ว!");
-            });
+        function openNewsFromHash() {
+            const match = window.location.hash.match(/^#news=(.+)$/);
+
+            if (!match || allNews.length === 0) return;
+
+            let newsId;
+            try {
+                newsId = decodeURIComponent(match[1]);
+            } catch {
+                newsId = match[1];
+            }
+
+            const exists = allNews.some(item => String(item.news_id) === newsId);
+
+            if (exists) {
+                openNewsDetail(newsId, false);
+            } else {
+                showToast("info", "ไม่พบข่าวจากลิงก์นี้");
+            }
+        }
+
+        async function shareCurrentNews() {
+            const item = allNews.find(news => String(news.news_id) === currentNewsId);
+
+            if (!item) {
+                showToast("error", "ไม่พบข่าวที่ต้องการแชร์");
+                return;
+            }
+
+            const url = `${location.origin}${location.pathname}${location.search}#news=${encodeURIComponent(currentNewsId)}`;
+            const shareData = {
+                title: item.title || "ข่าวศูนย์ป่าไม้ขอนแก่น",
+                text: String(item.content || "").slice(0, 200),
+                url
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                    showToast("success", "เปิดเมนูแชร์เรียบร้อยแล้ว");
+                    return;
+                } catch (error) {
+                    if (error.name === "AbortError") return;
+                }
+            }
+
+            try {
+                await copyText(url);
+                showToast("success", "คัดลอกลิงก์ข่าวแล้ว");
+            } catch (error) {
+                console.error("คัดลอกลิงก์ไม่สำเร็จ:", error);
+
+                Swal.fire({
+                    icon: "error",
+                    title: "คัดลอกลิงก์ไม่สำเร็จ",
+                    text: "กรุณาคัดลอก URL จากแถบที่อยู่ของเบราว์เซอร์",
+                    confirmButtonText: "ปิด",
+                    confirmButtonColor: "#198754"
+                });
+            }
+        }
+
+        async function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return;
+            }
+
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            const copied = document.execCommand("copy");
+            textarea.remove();
+
+            if (!copied) throw new Error("คัดลอกไม่สำเร็จ");
         }
 
         function loadDocuments() {
-            fetch(API_URL + "?action=getDocuments")
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === "success" && data.data.length > 0) {
-                        let html = "";
-                        data.data.forEach(item => {
-                            // ดึงค่าตามชื่อหัวคอลัมน์ใน Google Sheets ป้องกันข้อมูลสลับกัน
-                            let title = item.title || item.doc_title || '-';
-                            let category = item.category || '-';
-                            let uploader = item.uploaded_by || item.author || '-';
-                            
-                            // ตรวจสอบและแปลงวันที่ให้ถูกต้อง
-                            let dateVal = item.created_at || item.date || '';
-                            let formattedDate = '-';
-                            if (dateVal) {
-                                let d = new Date(dateVal);
-                                if (!isNaN(d.getTime())) {
-                                    formattedDate = d.toLocaleDateString('th-TH');
-                                } else {
-                                    formattedDate = dateVal; // ถ้าแปลงไม่ได้ให้แสดงตามที่พิมพ์มา
-                                }
-                            }
+            const tbody = document.getElementById("docTableBody");
+            tbody.replaceChildren();
 
-                            let fileUrl = item.file_url || item.url || '#';
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+            cell.colSpan = 5;
+            cell.className = "text-center text-muted";
 
-                            html += `
-                                <tr>
-                                    <td>${title}</td>
-                                    <td><span class="badge bg-secondary">${category}</span></td>
-                                    <td>${uploader}</td>
-                                    <td>${formattedDate}</td>
-                                    <td><a href="${fileUrl}" target="_blank" class="btn btn-sm btn-success"><i class="fa-solid fa-download"></i> ดาวน์โหลด</a></td>
-                                </tr>`;
-                        });
-                        document.getElementById('docTableBody').innerHTML = html;
-                    } else {
-                        document.getElementById('docTableBody').innerHTML = '<tr><td colspan="5" class="text-center text-muted">ไม่พบเอกสารในระบบ</td></tr>';
+            const spinner = document.createElement("span");
+            spinner.className = "spinner-border spinner-border-sm text-success me-2";
+            spinner.setAttribute("aria-hidden", "true");
+
+            cell.append(spinner, document.createTextNode("กำลังโหลดเอกสาร..."));
+            row.appendChild(cell);
+            tbody.appendChild(row);
+
+            setStatus("documentStatus", "");
+
+            fetch(`${API_URL}?action=getDocuments`)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.status !== "success" || !Array.isArray(result.data)) {
+                        throw new Error("รูปแบบข้อมูลเอกสารไม่ถูกต้อง");
                     }
-                }).catch(err => {
-                    document.getElementById('docTableBody').innerHTML = '<tr><td colspan="5" class="text-center text-muted">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+
+                    allDocuments = result.data;
+                    renderDocuments();
+                })
+                .catch(error => {
+                    console.error("โหลดเอกสารไม่สำเร็จ:", error);
+                    tbody.replaceChildren();
+
+                    setStatus(
+                        "documentStatus",
+                        "โหลดเอกสารไม่สำเร็จ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+                        "danger",
+                        loadDocuments
+                    );
+
+                    showRetryAlert(
+                        "โหลดเอกสารไม่สำเร็จ",
+                        "ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต แล้วลองโหลดเอกสารอีกครั้ง",
+                        loadDocuments
+                    );
                 });
         }
 
-        function trackVisitor() {
-            // เช็คว่าใน Session นี้บันทึกหรือยัง ป้องกันการนับซ้ำเวลากดรีเฟรชรัวๆ
-            let isVisited = sessionStorage.getItem('visited');
-            let payload = {
-                action: "recordVisit",
-                session_id: "Visitor_" + Math.random().toString(36).substring(2, 9)
-            };
+        function renderDocuments() {
+            const tbody = document.getElementById("docTableBody");
+            const query = normalise(document.getElementById("documentSearch").value);
 
-            let req = isVisited ? fetch(API_URL + "?action=getVisitors") : fetch(API_URL, { method: "POST", body: JSON.stringify(payload) }).then(() => {
-                sessionStorage.setItem('visited', 'true');
-                return fetch(API_URL + "?action=getVisitors");
+            const documents = allDocuments.filter(item => {
+                const text = [
+                    item.title,
+                    item.doc_title,
+                    item.category,
+                    item.uploaded_by,
+                    item.author
+                ].map(normalise).join(" ");
+
+                return !query || text.includes(query);
             });
 
-            req.then(res => res.json())
-               .then(data => {
-                   if(data.status === "success") {
-                       // แสดงตัวเลขยอดผู้เข้าชมที่ Footer (ใส่ลูกเล่นคั่นหลักพัน เช่น 1,234)
-                       let totalVisits = data.data.length;
-                       document.getElementById('footerVisitorCount').innerText = totalVisits.toLocaleString();
-                   }
-               }).catch(err => {
-                   document.getElementById('footerVisitorCount').innerText = "-";
-               });
+            tbody.replaceChildren();
+
+            if (documents.length === 0) {
+                const row = document.createElement("tr");
+                const cell = document.createElement("td");
+                cell.colSpan = 5;
+                cell.className = "text-center text-muted";
+                cell.textContent = allDocuments.length
+                    ? "ไม่พบเอกสารที่ตรงกับคำค้น"
+                    : "ไม่พบเอกสารในระบบ";
+                row.appendChild(cell);
+                tbody.appendChild(row);
+                return;
+            }
+
+            documents.forEach(item => {
+                const row = document.createElement("tr");
+
+                const titleCell = document.createElement("td");
+                titleCell.textContent = item.title || item.doc_title || "-";
+
+                const categoryCell = document.createElement("td");
+                const badge = document.createElement("span");
+                badge.className = "badge bg-secondary";
+                badge.textContent = item.category || "-";
+                categoryCell.appendChild(badge);
+
+                const uploaderCell = document.createElement("td");
+                uploaderCell.textContent = item.uploaded_by || item.author || "-";
+
+                const dateCell = document.createElement("td");
+                dateCell.textContent = toDateText(item.created_at || item.date);
+
+                const downloadCell = document.createElement("td");
+                const fileUrl = safeHttpUrl(item.file_url || item.url);
+
+                if (fileUrl) {
+                    const link = document.createElement("a");
+                    link.href = fileUrl;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.className = "btn btn-sm btn-success";
+                    link.setAttribute("aria-label", `ดาวน์โหลด ${item.title || item.doc_title || "เอกสาร"}`);
+
+                    const icon = document.createElement("i");
+                    icon.className = "fa-solid fa-download me-1";
+                    icon.setAttribute("aria-hidden", "true");
+
+                    link.append(icon, document.createTextNode("ดาวน์โหลด"));
+                    downloadCell.appendChild(link);
+                } else {
+                    downloadCell.textContent = "ไม่มีลิงก์";
+                }
+
+                row.append(titleCell, categoryCell, uploaderCell, dateCell, downloadCell);
+                tbody.appendChild(row);
+            });
         }
-        
+
+        function updateBackToTop() {
+            document.getElementById("backToTop")
+                .classList.toggle("is-visible", window.scrollY > 350);
+        }
     </script>
 </body>
 </html>
-
-
