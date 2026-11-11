@@ -710,6 +710,26 @@
                     document.getElementById("visitorCountDisplay").textContent = "-";
                 });
         });
+        
+        // ฟังก์ชันจัดการปุ่มกลับขึ้นด้านบน
+const backToTopBtn = document.getElementById("backToTop");
+
+// 1. ตรวจจับการเลื่อนหน้าจอเพื่อแสดงหรือซ่อนปุ่ม
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+        backToTopBtn.classList.add("is-visible");
+    } else {
+        backToTopBtn.classList.remove("is-visible");
+    }
+}, { passive: true });
+
+// 2. สั่งให้เลื่อนกลับขึ้นด้านบนเมื่อคลิกปุ่ม
+backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
     </script>
 </body>
 </html>
