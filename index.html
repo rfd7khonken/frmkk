@@ -222,10 +222,16 @@
 
             <div class="row g-3 mb-3">
                 <div class="col-md-8">
-                    <label for="newsSearch" class="form-label">ค้นหาข่าว</label>
+                    <label for="" class="form-label">ค้นหาข่าว</label>
                     <input type="search" id="newsSearch" class="form-control"
                            placeholder="ค้นหาจากชื่อข่าว เนื้อหา หรือผู้เผยแพร่"
                            autocomplete="off">
+                </div>
+                <div class="col-md-4">
+                    <label for="newsCategory" class="form-label"></label>
+                    <div class="mb-3">
+
+                    </select>
                 </div>
             </div>
 
@@ -385,18 +391,54 @@
                     </a>
                 </div>
 
-                <!-- กล่องแสดงสถิติผู้เข้าชมที่ปรับขนาดเท่าเดิม -->
-                <div class="col-lg-2 col-md-6 text-center">
-                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block" style="min-width: 150px;">
+                <!-- <div class="col-lg-2 col-md-6 text-center">
+                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block">
                         <div class="text-white-50 small mb-2">
                             <i class="fa-solid fa-chart-line me-1 text-success" aria-hidden="true"></i>
                             สถิติผู้เข้าชม
                         </div>
-                        <div id="visitorCountDisplay" class="text-warning fw-bold fs-5 py-1">
-                            <span class="spinner-border spinner-border-sm text-success" role="status" aria-hidden="true"></span>
-                        </div>
-                    </div>
-                </div>
+                        <a href="https://www.counter12.com/"
+                           target="_blank" rel="noopener noreferrer">
+                            <img src="https://www.counter12.com/img-Z4wA8Ddb598ba92C-11.gif"
+                                 alt="สถิติผู้เข้าชมเว็บไซต์ Counter12"
+                                 loading="lazy">
+                        </a>
+                        <script src="https://www.counter12.com/ad.js?id=Z4wA8Ddb598ba92C"></script>
+                    </div> -->
+                <!-- </div> -->
+                <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block text-center">
+    <div class="text-white-50 small mb-1">
+        <i class="fa-solid fa-chart-line me-1 text-success" aria-hidden="true"></i>
+        สถิติผู้เข้าชม
+    </div>
+    <span id="visitorCountDisplay" class="text-white fw-bold fs-5">กำลังโหลด...</span>
+</div>
+
+<script>
+    // แทนที่ด้วย Web App URL ที่คุณคัดลอกมา
+    const STATS_API_URL = "https://script.google.com/macros/s/AKfycbxlaG1HqSo3eCUwWFC85nInsiEInGclaxNrwusbyeRBSrFrYcWVoUmSKiMa4JrBGZgKzQ/exec";
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams({
+            ua: navigator.userAgent,
+            ref: document.referrer || "Direct"
+        });
+
+        fetch(`${STATS_API_URL}?${params.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("visitorCountDisplay").textContent = Number(data.totalVisits).toLocaleString() + " ครั้ง";
+                } else {
+                    document.getElementById("visitorCountDisplay").textContent = "-";
+                }
+            })
+            .catch(error => {
+                console.error("Failed to load visitor stats:", error);
+                document.getElementById("visitorCountDisplay").textContent = "-";
+            });
+    });
+</script>
 
                 <div class="col-lg-5 col-md-12 text-lg-end">
                     <h2 class="h6 fw-bold mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h2>
@@ -434,7 +476,6 @@
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxqSYSPhpsZdJexQRdSBgnGeHLnKUQgNhQG4oZoaETsDQtTtY3m_TgioxSHr8GFl27P3w/exec";
-        const STATS_API_URL = "https://script.google.com/macros/s/AKfycbxlaG1HqSo3eCUwWFC85nInsiEInGclaxNrwusbyeRBSrFrYcWVoUmSKiMa4JrBGZgKzQ/exec";
         const NEWS_PER_PAGE = 9;
         const DEFAULT_NEWS_IMAGE = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=900&q=80";
 
@@ -480,6 +521,7 @@
             popupModal = new bootstrap.Modal(document.getElementById("welcomePopupModal"));
 
             document.getElementById("newsSearch").addEventListener("input", applyNewsFilters);
+            
             document.getElementById("documentSearch").addEventListener("input", renderDocuments);
 
             document.getElementById("previousNewsBtn").addEventListener("click", () => moveNews(-1));
@@ -498,6 +540,7 @@
 
             document.getElementById("newsDetailModal").addEventListener("hidden.bs.modal", () => {
                 currentNewsId = null;
+
                 if (window.location.hash.startsWith("#news=")) {
                     history.replaceState(null, "", `${location.pathname}${location.search}`);
                 }
@@ -508,30 +551,12 @@
             loadNews();
             loadDocuments();
 
-            // ดึงข้อมูลสถิติผู้เข้าชมเว็บไซต์
-            const params = new URLSearchParams({
-                ua: navigator.userAgent,
-                ref: document.referrer || "Direct"
-            });
-
-            fetch(`${STATS_API_URL}?${params.toString()}`)
-                .then(response => response.json())
-                .then(data => {
-                    const displayEl = document.getElementById("visitorCountDisplay");
-                    if (data.status === "success") {
-                        displayEl.textContent = Number(data.totalVisits).toLocaleString() + " ครั้ง";
-                    } else {
-                        displayEl.textContent = "-";
-                    }
-                })
-                .catch(error => {
-                    console.error("Failed to load visitor stats:", error);
-                    document.getElementById("visitorCountDisplay").textContent = "-";
-                });
+            // ปิด loadSlides() เพราะส่วน Carousel ในหน้าเดิมถูกปิด/ไม่มี HTML รองรับ
         });
 
         function initSnowEffect() {
             const snowCount = 20;
+
             for (let i = 0; i < snowCount; i++) {
                 const flake = document.createElement("div");
                 flake.className = "snowflake";
@@ -574,6 +599,7 @@
 
         function safeHttpUrl(value) {
             if (!value) return "";
+
             try {
                 const url = new URL(String(value).trim(), window.location.href);
                 return ["http:", "https:"].includes(url.protocol) ? url.href : "";
@@ -584,6 +610,7 @@
 
         function formatDriveUrl(value) {
             if (!value) return "";
+
             const raw = String(value).trim();
             let match = raw.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
 
@@ -594,7 +621,9 @@
                         const id = parsed.searchParams.get("id");
                         if (id) return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1600`;
                     }
-                } catch {}
+                } catch {
+                    // คืนค่า URL ว่างด้านล่าง หาก URL ไม่ถูกต้อง
+                }
             }
 
             if (match && match[1]) {
@@ -606,6 +635,7 @@
 
         function getImagesArray(value) {
             if (!value) return [];
+
             return String(value)
                 .split(",")
                 .map(url => formatDriveUrl(url))
@@ -614,6 +644,7 @@
 
         function toDateText(value) {
             if (!value) return "-";
+
             const date = new Date(value);
             return Number.isNaN(date.getTime())
                 ? String(value)
@@ -694,22 +725,24 @@
                 });
         }
 
+        
+
         function applyNewsFilters() {
-            const query = normalise(document.getElementById("newsSearch").value);
+    const query = normalise(document.getElementById("newsSearch").value);
 
-            filteredNews = allNews.filter(item => {
-                const searchableText = [
-                    item.title,
-                    item.content,
-                    item.author
-                ].map(normalise).join(" ");
+    filteredNews = allNews.filter(item => {
+        const searchableText = [
+            item.title,
+            item.content,
+            item.author
+        ].map(normalise).join(" ");
 
-                return !query || searchableText.includes(query);
-            });
+        return !query || searchableText.includes(query);
+    });
 
-            currentNewsPage = 1;
-            renderNewsPage();
-        }
+    currentNewsPage = 1;
+    renderNewsPage();
+}
 
         function renderNewsPage() {
             const container = document.getElementById("newsContainer");
@@ -787,12 +820,387 @@
 
                 const date = document.createElement("span");
                 date.textContent = toDateText(item.created_at);
-                footer.appendChild(date);
 
+                const readButton = document.createElement("button");
+                readButton.type = "button";
+                readButton.className = "btn btn-sm btn-outline-success";
+                readButton.textContent = "อ่านเพิ่มเติม";
+                readButton.addEventListener("click", () => openNewsDetail(item.news_id));
+
+                footer.append(date, readButton);
                 card.append(image, body, footer);
                 column.appendChild(card);
                 container.appendChild(column);
             });
+
+            const firstItem = startIndex + 1;
+            const lastItem = Math.min(startIndex + NEWS_PER_PAGE, filteredNews.length);
+
+            document.getElementById("newsPageInfo").textContent =
+                `แสดงข่าว ${firstItem}–${lastItem} จากทั้งหมด ${filteredNews.length} ข่าว`;
+
+            renderNewsPagination(totalPages);
+        }
+
+        function renderNewsPagination(totalPages) {
+            const pagination = document.getElementById("newsPagination");
+            pagination.replaceChildren();
+
+            if (totalPages <= 1) return;
+
+            function addButton(label, page, disabled, active = false) {
+                const item = document.createElement("li");
+                item.className = `page-item${disabled ? " disabled" : ""}${active ? " active" : ""}`;
+
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "page-link";
+                button.textContent = label;
+                button.disabled = disabled;
+
+                if (active) button.setAttribute("aria-current", "page");
+
+                button.addEventListener("click", () => {
+                    currentNewsPage = page;
+                    renderNewsPage();
+
+                    document.getElementById("news").scrollIntoView({
+                        behavior: reducedMotion ? "auto" : "smooth",
+                        block: "start"
+                    });
+                });
+
+                item.appendChild(button);
+                pagination.appendChild(item);
+            }
+
+            addButton("ก่อนหน้า", currentNewsPage - 1, currentNewsPage === 1);
+
+            for (let page = 1; page <= totalPages; page++) {
+                addButton(String(page), page, false, page === currentNewsPage);
+            }
+
+            addButton("ถัดไป", currentNewsPage + 1, currentNewsPage === totalPages);
+        }
+
+        function showLatestNewsPopup() {
+            const latest = allNews[0];
+            if (!latest) return;
+
+            document.getElementById("popupNewsTitle").textContent = latest.title || "";
+            document.getElementById("popupNewsContent").textContent =
+                String(latest.content || "").slice(0, 150);
+
+            const image = document.getElementById("popupNewsImg");
+            const imageUrl = getImagesArray(latest.image_url)[0];
+
+            if (imageUrl) {
+                image.src = imageUrl;
+                image.alt = latest.title ? `ภาพประกาศ: ${latest.title}` : "ภาพประกาศ";
+                image.style.display = "block";
+                image.onerror = () => {
+                    image.removeAttribute("src");
+                    image.style.display = "none";
+                };
+            } else {
+                image.style.display = "none";
+            }
+
+            document.getElementById("popupDetailBtn").onclick = () => {
+                popupModal.hide();
+                openNewsDetail(latest.news_id);
+            };
+
+            popupModal.show();
+        }
+
+        function openNewsDetail(newsId, updateHash = true) {
+            const item = allNews.find(news => String(news.news_id) === String(newsId));
+
+            if (!item) {
+                showToast("info", "ไม่พบข่าวที่ต้องการเปิด");
+                return;
+            }
+
+            currentNewsId = String(item.news_id);
+
+            document.getElementById("modalNewsTitle").textContent = item.title || "ไม่มีชื่อข่าว";
+            document.getElementById("modalNewsDate").textContent = toDateText(item.created_at);
+            document.getElementById("modalNewsAuthor").textContent = item.author || "ไม่ระบุ";
+            document.getElementById("modalNewsContent").textContent = item.content || "";
+
+            const imagesContainer = document.getElementById("modalImagesContainer");
+            imagesContainer.replaceChildren();
+
+            const images = getImagesArray(item.image_url);
+
+            if (images.length === 0) {
+                const message = document.createElement("div");
+                message.className = "col-12 text-muted";
+                message.textContent = "ไม่มีรูปภาพประกอบเพิ่มเติม";
+                imagesContainer.appendChild(message);
+            } else {
+                images.forEach((url, index) => {
+                    const column = document.createElement("div");
+                    column.className = "col-md-4 mb-3";
+
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.setAttribute("aria-label", `เปิดภาพประกอบข่าวภาพที่ ${index + 1}`);
+
+                    const image = document.createElement("img");
+                    image.src = url;
+                    image.alt = `ภาพประกอบข่าวภาพที่ ${index + 1}`;
+                    image.className = "img-fluid rounded shadow-sm";
+                    image.loading = "lazy";
+                    image.style.height = "180px";
+                    image.style.width = "100%";
+                    image.style.objectFit = "cover";
+                    image.onerror = () => column.remove();
+
+                    link.appendChild(image);
+                    column.appendChild(link);
+                    imagesContainer.appendChild(column);
+                });
+            }
+
+            const index = allNews.findIndex(news => String(news.news_id) === currentNewsId);
+            document.getElementById("previousNewsBtn").disabled = index <= 0;
+            document.getElementById("nextNewsBtn").disabled = index < 0 || index >= allNews.length - 1;
+
+            if (updateHash) {
+                history.replaceState(
+                    null,
+                    "",
+                    `${location.pathname}${location.search}#news=${encodeURIComponent(currentNewsId)}`
+                );
+            }
+
+            detailModal.show();
+        }
+
+        function moveNews(direction) {
+            const currentIndex = allNews.findIndex(item => String(item.news_id) === currentNewsId);
+            const nextIndex = currentIndex + direction;
+
+            if (nextIndex >= 0 && nextIndex < allNews.length) {
+                openNewsDetail(allNews[nextIndex].news_id);
+            }
+        }
+
+        function openNewsFromHash() {
+            const match = window.location.hash.match(/^#news=(.+)$/);
+
+            if (!match || allNews.length === 0) return;
+
+            let newsId;
+            try {
+                newsId = decodeURIComponent(match[1]);
+            } catch {
+                newsId = match[1];
+            }
+
+            const exists = allNews.some(item => String(item.news_id) === newsId);
+
+            if (exists) {
+                openNewsDetail(newsId, false);
+            } else {
+                showToast("info", "ไม่พบข่าวจากลิงก์นี้");
+            }
+        }
+
+        async function shareCurrentNews() {
+            const item = allNews.find(news => String(news.news_id) === currentNewsId);
+
+            if (!item) {
+                showToast("error", "ไม่พบข่าวที่ต้องการแชร์");
+                return;
+            }
+
+            const url = `${location.origin}${location.pathname}${location.search}#news=${encodeURIComponent(currentNewsId)}`;
+            const shareData = {
+                title: item.title || "ข่าวศูนย์ป่าไม้ขอนแก่น",
+                text: String(item.content || "").slice(0, 200),
+                url
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                    showToast("success", "เปิดเมนูแชร์เรียบร้อยแล้ว");
+                    return;
+                } catch (error) {
+                    if (error.name === "AbortError") return;
+                }
+            }
+
+            try {
+                await copyText(url);
+                showToast("success", "คัดลอกลิงก์ข่าวแล้ว");
+            } catch (error) {
+                console.error("คัดลอกลิงก์ไม่สำเร็จ:", error);
+
+                Swal.fire({
+                    icon: "error",
+                    title: "คัดลอกลิงก์ไม่สำเร็จ",
+                    text: "กรุณาคัดลอก URL จากแถบที่อยู่ของเบราว์เซอร์",
+                    confirmButtonText: "ปิด",
+                    confirmButtonColor: "#198754"
+                });
+            }
+        }
+
+        async function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return;
+            }
+
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            const copied = document.execCommand("copy");
+            textarea.remove();
+
+            if (!copied) throw new Error("คัดลอกไม่สำเร็จ");
+        }
+
+        function loadDocuments() {
+            const tbody = document.getElementById("docTableBody");
+            tbody.replaceChildren();
+
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+            cell.colSpan = 5;
+            cell.className = "text-center text-muted";
+
+            const spinner = document.createElement("span");
+            spinner.className = "spinner-border spinner-border-sm text-success me-2";
+            spinner.setAttribute("aria-hidden", "true");
+
+            cell.append(spinner, document.createTextNode("กำลังโหลดเอกสาร..."));
+            row.appendChild(cell);
+            tbody.appendChild(row);
+
+            setStatus("documentStatus", "");
+
+            fetch(`${API_URL}?action=getDocuments`)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.status !== "success" || !Array.isArray(result.data)) {
+                        throw new Error("รูปแบบข้อมูลเอกสารไม่ถูกต้อง");
+                    }
+
+                    allDocuments = result.data;
+                    renderDocuments();
+                })
+                .catch(error => {
+                    console.error("โหลดเอกสารไม่สำเร็จ:", error);
+                    tbody.replaceChildren();
+
+                    setStatus(
+                        "documentStatus",
+                        "โหลดเอกสารไม่สำเร็จ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+                        "danger",
+                        loadDocuments
+                    );
+
+                    showRetryAlert(
+                        "โหลดเอกสารไม่สำเร็จ",
+                        "ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต แล้วลองโหลดเอกสารอีกครั้ง",
+                        loadDocuments
+                    );
+                });
+        }
+
+        function renderDocuments() {
+            const tbody = document.getElementById("docTableBody");
+            const query = normalise(document.getElementById("documentSearch").value);
+
+            const documents = allDocuments.filter(item => {
+                const text = [
+                    item.title,
+                    item.doc_title,
+                    item.category,
+                    item.uploaded_by,
+                    item.author
+                ].map(normalise).join(" ");
+
+                return !query || text.includes(query);
+            });
+
+            tbody.replaceChildren();
+
+            if (documents.length === 0) {
+                const row = document.createElement("tr");
+                const cell = document.createElement("td");
+                cell.colSpan = 5;
+                cell.className = "text-center text-muted";
+                cell.textContent = allDocuments.length
+                    ? "ไม่พบเอกสารที่ตรงกับคำค้น"
+                    : "ไม่พบเอกสารในระบบ";
+                row.appendChild(cell);
+                tbody.appendChild(row);
+                return;
+            }
+
+            documents.forEach(item => {
+                const row = document.createElement("tr");
+
+                const titleCell = document.createElement("td");
+                titleCell.textContent = item.title || item.doc_title || "-";
+
+                const categoryCell = document.createElement("td");
+                const badge = document.createElement("span");
+                badge.className = "badge bg-secondary";
+                badge.textContent = item.category || "-";
+                categoryCell.appendChild(badge);
+
+                const uploaderCell = document.createElement("td");
+                uploaderCell.textContent = item.uploaded_by || item.author || "-";
+
+                const dateCell = document.createElement("td");
+                dateCell.textContent = toDateText(item.created_at || item.date);
+
+                const downloadCell = document.createElement("td");
+                const fileUrl = safeHttpUrl(item.file_url || item.url);
+
+                if (fileUrl) {
+                    const link = document.createElement("a");
+                    link.href = fileUrl;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.className = "btn btn-sm btn-success";
+                    link.setAttribute("aria-label", `ดาวน์โหลด ${item.title || item.doc_title || "เอกสาร"}`);
+
+                    const icon = document.createElement("i");
+                    icon.className = "fa-solid fa-download me-1";
+                    icon.setAttribute("aria-hidden", "true");
+
+                    link.append(icon, document.createTextNode("ดาวน์โหลด"));
+                    downloadCell.appendChild(link);
+                } else {
+                    downloadCell.textContent = "ไม่มีลิงก์";
+                }
+
+                row.append(titleCell, categoryCell, uploaderCell, dateCell, downloadCell);
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateBackToTop() {
+            document.getElementById("backToTop")
+                .classList.toggle("is-visible", window.scrollY > 350);
         }
     </script>
 </body>
