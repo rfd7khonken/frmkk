@@ -612,72 +612,118 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white pt-5 pb-3 mt-5 border-top border-success border-4">
+   <script>
+    // แทนที่ด้วย Web App URL ที่คุณคัดลอกมา
+    const STATS_API_URL = "https://script.google.com/macros/s/AKfycbxlaG1HqSo3eCUwWFC85nInsiEInGclaxNrwusbyeRBSrFrYcWVoUmSKiMa4JrBGZgKzQ/exec";
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams({
+            ua: navigator.userAgent,
+            ref: document.referrer || "Direct"
+        });
+
+        fetch(`${STATS_API_URL}?${params.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("visitorCountDisplay").textContent = Number(data.totalVisits).toLocaleString() + " ครั้ง";
+                } else {
+                    document.getElementById("visitorCountDisplay").textContent = "-";
+                }
+            })
+            .catch(error => {
+                console.error("Failed to load visitor stats:", error);
+                document.getElementById("visitorCountDisplay").textContent = "-";
+            });
+    });
+</script>
+                <!-- <div class="col-lg-2 col-md-6 text-center">
+                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block">
+                        <div class="text-white-50 small mb-2">
+                            <i class="fa-solid fa-chart-line me-1 text-success" aria-hidden="true"></i>
+                            สถิติผู้เข้าชม
+                        </div>
+                        <a href="https://www.counter12.com/"
+                           target="_blank" rel="noopener noreferrer">
+                            <img src="https://www.counter12.com/img-Z4wA8Ddb598ba92C-11.gif"
+                                 alt="สถิติผู้เข้าชมเว็บไซต์ Counter12"
+                                 loading="lazy">
+                        </a>
+                        <script src="https://www.counter12.com/ad.js?id=Z4wA8Ddb598ba92C"></script>
+                    </div> -->
+                <!-- </div> -->
+<footer class="bg-dark text-white pt-4 pb-3 mt-5 border-top border-success border-4">
         <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-5 col-md-6">
-                    <h2 class="h5 fw-bold text-success mb-3">
-                        <i class="fa-solid fa-tree me-2"></i>ศูนย์ป่าไม้ขอนแก่น
+            <div class="row align-items-center gy-4">
+                <!-- ข้อมูลติดต่อ (ซ้าย) -->
+                <div class="col-lg-4 col-md-12 text-center text-lg-start">
+                    <h2 class="h5 fw-bold text-success mb-2">
+                        <i class="fa-solid fa-tree me-2" aria-hidden="true"></i>
+                        ศูนย์ป่าไม้ขอนแก่น
                     </h2>
-                    <p class="small mb-2">
-                        <i class="fa-solid fa-location-dot me-2 text-success"></i>
+                    <p class="small mb-1">
+                        <i class="fa-solid fa-location-dot me-2 text-success" aria-hidden="true"></i>
                         เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น
                     </p>
                     <p class="small mb-2">
-                        <i class="fa-solid fa-phone me-2 text-success"></i>
-                        โทรศัพท์: 043-330-381-2 ต่อ 115
+                        <i class="fa-solid fa-phone me-2 text-success" aria-hidden="true"></i>
+                        โทรศัพท์ / โทรสาร: 043-330381 ต่อ 115
                     </p>
-                    <p class="small mb-3">
-                        <i class="fa-solid fa-envelope me-2 text-success"></i>
-                        ติดต่อศูนย์ป่าไม้ขอนแก่น
-                    </p>
-                    <a href="https://forest.go.th" target="_blank" rel="noopener"
+                    <a href="https://www.facebook.com/"
+                       target="_blank" rel="noopener noreferrer"
                        class="btn btn-outline-light btn-sm">
-                        <i class="fa-solid fa-globe me-1"></i>เว็บไซต์กรมป่าไม้
+                        <i class="fa-brands fa-facebook text-primary me-1" aria-hidden="true"></i>
+                        Facebook
                     </a>
                 </div>
 
-                <div class="col-lg-2 col-md-6 text-center footer-stat">
-                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm d-inline-block">
-                        <div class="text-white-50 small mb-2">
-                            <i class="fa-solid fa-chart-line me-1 text-success"></i>สถิติผู้เข้าชม
+                <!-- กล่องสถิติผู้เข้าชม (ตรงกลาง) -->
+                <div class="col-lg-4 col-md-6 text-center">
+                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm mx-auto d-inline-block" style="min-width: 170px;">
+                        <div class="text-white-50 small mb-1">
+                            <i class="fa-solid fa-chart-line me-1 text-success" aria-hidden="true"></i>
+                            สถิติผู้เข้าชม
                         </div>
-                        <div>
-                            <a href="https://www.counter12.com" target="_blank" rel="noopener">
-                                <img src="https://www.counter12.com/img-Z4wA8Ddb598ba92C-11.gif"
-                                     alt="สถิติผู้เข้าชมเว็บไซต์"
-                                     loading="lazy">
-                            </a>
-                            <script src="https://www.counter12.com/ad.js?id=Z4wA8Ddb598ba92C"></script>
+                        <div id="visitorCountDisplay" class="text-warning fw-bold fs-5 py-1">
+                            <span class="spinner-border spinner-border-sm text-success" role="status" aria-hidden="true"></span>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-5 col-md-12 text-lg-end">
-                    <h2 class="h6 fw-bold mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h2>
-                    <div class="d-flex flex-column gap-2">
-                        <a href="https://forest.go.th" target="_blank" rel="noopener"
+                <!-- ลิงก์หน่วยงานที่เกี่ยวข้อง (ขวา) -->
+                <div class="col-lg-4 col-md-6 text-center text-lg-end">
+                    <h2 class="h6 fw-bold mb-2">ลิงก์หน่วยงานที่เกี่ยวข้อง</h2>
+                    <div class="d-flex flex-column gap-1">
+                        <a href="https://forest.go.th"
+                           target="_blank" rel="noopener noreferrer"
                            class="text-decoration-none text-white small">
-                            <i class="fa-solid fa-angle-right me-1 text-success"></i>กรมป่าไม้
+                            <i class="fa-solid fa-angle-right me-1 text-success" aria-hidden="true"></i>
+                            กรมป่าไม้
                         </a>
-                        <a href="https://www.forest.go.th/khonkaen7" target="_blank" rel="noopener"
+                        <a href="https://www.forest.go.th/khonkaen7"
+                           target="_blank" rel="noopener noreferrer"
                            class="text-decoration-none text-white small">
-                            <i class="fa-solid fa-angle-right me-1 text-success"></i>
+                            <i class="fa-solid fa-angle-right me-1 text-success" aria-hidden="true"></i>
                             สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)
                         </a>
                     </div>
                 </div>
             </div>
 
-            <hr class="border-secondary my-4">
-
-            <div class="text-center">
-                <p class="small mb-0">
-                    © 2026 ศูนย์ป่าไม้ขอนแก่น
-                </p>
-            </div>
+            <hr class="border-secondary my-3">
+            <p class="text-center small mb-0 text-white-50">
+                © 2026 KhonKaen Forest Office. All Rights Reserved.
+            </p>
         </div>
     </footer>
+
+    <button id="backToTop" type="button" class="btn btn-success back-to-top"
+            aria-label="กลับขึ้นด้านบน" title="กลับขึ้นด้านบน">
+        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
