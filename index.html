@@ -156,6 +156,27 @@
                 transition-duration: 0.01ms !important;
             }
         }
+        /* ป้องกันไม่ให้เอฟเฟกต์หิมะลอยทับ Footer */
+footer {
+    position: relative;
+    z-index: 1000;
+    background-color: #1a1e21 !important;
+}
+
+/* ปรับแต่งกล่องสถิติให้สวยสะดุดตาและคมชัด */
+.stats-card {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(25, 135, 84, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.stats-card:hover {
+    border-color: rgba(25, 135, 84, 1);
+    transform: translateY(-2px);
+}
     </style>
 </head>
 
@@ -406,70 +427,71 @@
                         <script src="https://www.counter12.com/ad.js?id=Z4wA8Ddb598ba92C"></script>
                     </div> -->
                 <!-- </div> -->
-<footer class="bg-dark text-white pt-4 pb-3 mt-5 border-top border-success border-4">
-        <div class="container">
-            <div class="row align-items-center gy-4">
-                <!-- ข้อมูลติดต่อ (ซ้าย) -->
-                <div class="col-lg-4 col-md-12 text-center text-lg-start">
-                    <h2 class="h5 fw-bold text-success mb-2">
-                        <i class="fa-solid fa-tree me-2" aria-hidden="true"></i>
-                        ศูนย์ป่าไม้ขอนแก่น
-                    </h2>
-                    <p class="small mb-1">
-                        <i class="fa-solid fa-location-dot me-2 text-success" aria-hidden="true"></i>
-                        เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น
-                    </p>
-                    <p class="small mb-2">
-                        <i class="fa-solid fa-phone me-2 text-success" aria-hidden="true"></i>
-                        โทรศัพท์ / โทรสาร: 043-330381 ต่อ 115
-                    </p>
-                    <a href="https://www.facebook.com/"
-                       target="_blank" rel="noopener noreferrer"
-                       class="btn btn-outline-light btn-sm">
-                        <i class="fa-brands fa-facebook text-primary me-1" aria-hidden="true"></i>
-                        Facebook
-                    </a>
-                </div>
+<footer class="bg-dark text-white pt-5 pb-4 mt-5 border-top border-success border-4">
+    <div class="container">
+        <div class="row g-4 align-items-center">
+            <!-- ข้อมูลติดต่อ (ฝั่งซ้าย) -->
+            <div class="col-lg-4 col-md-6 text-center text-md-start">
+                <h2 class="h5 fw-bold text-success mb-3">
+                    <i class="fa-solid fa-tree me-2" aria-hidden="true"></i>
+                    ศูนย์ป่าไม้ขอนแก่น
+                </h2>
+                <p class="small mb-2 text-white-50">
+                    <i class="fa-solid fa-location-dot me-2 text-success" aria-hidden="true"></i>
+                    เลขที่ 255/4 ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น
+                </p>
+                <p class="small mb-3 text-white-50">
+                    <i class="fa-solid fa-phone me-2 text-success" aria-hidden="true"></i>
+                    โทรศัพท์ / โทรสาร: 043-330381 ต่อ 115
+                </p>
+                <a href="https://www.facebook.com/"
+                   target="_blank" rel="noopener noreferrer"
+                   class="btn btn-outline-light btn-sm px-3">
+                    <i class="fa-brands fa-facebook text-primary me-1" aria-hidden="true"></i>
+                    Facebook
+                </a>
+            </div>
 
-                <!-- กล่องสถิติผู้เข้าชม (ตรงกลาง) -->
-                <div class="col-lg-4 col-md-6 text-center">
-                    <div class="p-3 bg-black bg-opacity-50 border border-success border-opacity-75 rounded shadow-sm mx-auto d-inline-block" style="min-width: 170px;">
-                        <div class="text-white-50 small mb-1">
-                            <i class="fa-solid fa-chart-line me-1 text-success" aria-hidden="true"></i>
-                            สถิติผู้เข้าชม
-                        </div>
-                        <div id="visitorCountDisplay" class="text-warning fw-bold fs-5 py-1">
-                            <span class="spinner-border spinner-border-sm text-success" role="status" aria-hidden="true"></span>
-                        </div>
+            <!-- กล่องแสดงสถิติผู้เข้าชม (ตรงกลาง) -->
+            <div class="col-lg-4 col-md-6 text-center">
+                <div class="stats-card p-3 d-inline-block mx-auto" style="min-width: 190px;">
+                    <div class="text-white-50 small mb-1">
+                        <i class="fa-solid fa-chart-line me-1 text-success" aria-hidden="true"></i>
+                        สถิติผู้เข้าชม
                     </div>
-                </div>
-
-                <!-- ลิงก์หน่วยงานที่เกี่ยวข้อง (ขวา) -->
-                <div class="col-lg-4 col-md-6 text-center text-lg-end">
-                    <h2 class="h6 fw-bold mb-2">ลิงก์หน่วยงานที่เกี่ยวข้อง</h2>
-                    <div class="d-flex flex-column gap-1">
-                        <a href="https://forest.go.th"
-                           target="_blank" rel="noopener noreferrer"
-                           class="text-decoration-none text-white small">
-                            <i class="fa-solid fa-angle-right me-1 text-success" aria-hidden="true"></i>
-                            กรมป่าไม้
-                        </a>
-                        <a href="https://www.forest.go.th/khonkaen7"
-                           target="_blank" rel="noopener noreferrer"
-                           class="text-decoration-none text-white small">
-                            <i class="fa-solid fa-angle-right me-1 text-success" aria-hidden="true"></i>
-                            สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)
-                        </a>
+                    <div id="visitorCountDisplay" class="text-warning fw-bold fs-4 py-1">
+                        <span class="spinner-border spinner-border-sm text-success" role="status" aria-hidden="true"></span>
                     </div>
                 </div>
             </div>
 
-            <hr class="border-secondary my-3">
-            <p class="text-center small mb-0 text-white-50">
-                © 2026 KhonKaen Forest Office. All Rights Reserved.
-            </p>
+            <!-- ลิงก์หน่วยงานที่เกี่ยวข้อง (ฝั่งขวา) -->
+            <div class="col-lg-4 col-md-12 text-center text-lg-end">
+                <h2 class="h6 fw-bold text-success mb-3">ลิงก์หน่วยงานที่เกี่ยวข้อง</h2>
+                <div class="d-flex flex-column gap-2 align-items-center align-items-lg-end">
+                    <a href="https://forest.go.th"
+                       target="_blank" rel="noopener noreferrer"
+                       class="text-decoration-none text-white-50 text-hover-white small">
+                        <i class="fa-solid fa-angle-right me-1 text-success" aria-hidden="true"></i>
+                        กรมป่าไม้
+                    </a>
+                    <a href="https://www.forest.go.th/khonkaen7"
+                       target="_blank" rel="noopener noreferrer"
+                       class="text-decoration-none text-white-50 text-hover-white small">
+                        <i class="fa-solid fa-angle-right me-1 text-success" aria-hidden="true"></i>
+                        สำนักจัดการทรัพยากรป่าไม้ที่ 7 (ขอนแก่น)
+                    </a>
+                </div>
+            </div>
         </div>
-    </footer>
+
+        <hr class="border-secondary my-4">
+
+        <p class="text-center small mb-0 text-white-50">
+            © 2026 KhonKaen Forest Office. All Rights Reserved ("W.Sinthurak).
+        </p>
+    </div>
+</footer>
 
     <button id="backToTop" type="button" class="btn btn-success back-to-top"
             aria-label="กลับขึ้นด้านบน" title="กลับขึ้นด้านบน">
